@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Date.h"
 #include "Person.h"
 
 class Lesson {

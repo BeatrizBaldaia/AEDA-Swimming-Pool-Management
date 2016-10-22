@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Date.h"
 #include "Lesson.h"
 
 class PoolUse {
