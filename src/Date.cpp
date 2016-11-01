@@ -2,15 +2,25 @@
 #include <iostream>
 #include "Date.h"
 
-Date::Date(const unsigned int & day, const unsigned int & month, const unsigned int & year) :
-	day(day), month(month), year(year)
+Date::Date(const unsigned int & day, const unsigned int & month, const unsigned int & year)
 {
+	if (month >= 1 && month <= 12)
+	{
+		if (day >= 1 && day <= daysInMonth(month, year))
+		{
+			this->day = day;
+			this->month = month;
+			this->year = year;
+		}
+		throw InvalidDay;
+	}
 
+	throw InvalidMonth;
 }
 
 Date::Date()
 {
-		
+
 }
 
 Date::Date(string & input)
@@ -102,7 +112,7 @@ bool Date::valid() const
 }
 
 bool Date::operator <= (const Date &date) const
-{
+		{
 	if (year < date.getYear())
 	{
 		return true;
@@ -122,10 +132,10 @@ bool Date::operator <= (const Date &date) const
 		}
 	}
 	return false;
-}
+		}
 
 bool Date::operator >= (const Date &date) const
-{
+		{
 	if (year > date.getYear())
 	{
 		return true;
@@ -145,7 +155,7 @@ bool Date::operator >= (const Date &date) const
 		}
 	}
 	return false;
-}
+		}
 
 bool Date::operator < (const Date &date) const
 {
@@ -194,9 +204,9 @@ bool Date::operator > (const Date &date) const
 }
 
 bool Date::operator==(const Date & date) const
-{
+		{
 	return this->day == date.day && this->month == date.month && this->year == date.year;
-}
+		}
 
 bool Date::between(const Date &min, const Date &max)
 {
@@ -248,14 +258,10 @@ istream & operator >> (istream & in, Date & date)
 	return in;
 }
 
-void Time::TimeDisplay() const{
-	cout << getHour() << ":" << getMinute() << " h" ;
-}
-
-DayOfWeek day_of_week(Date date){
+DayOfWeek calcDayOfWeek(Date date){
 	int d = date.getDay(), m = date.getMonth(), y = date.getYear();
 	static int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
-	    y -= m < 3;
+	y -= m < 3;
 	int result = ( y + y/4 - y/100 + y/400 + t[m-1] + d) % 7;
 	switch (result){
 	case 1: return MON;
@@ -266,4 +272,19 @@ DayOfWeek day_of_week(Date date){
 	case 6: return SAT;
 	case 7: return SUN;
 	}
+}
+
+ostream& operator <<(ostream& out, const Time& t) {
+	if (t.getHour() < 10) {
+		out << 0;
+	}
+
+	out << t.getHour() << ":";
+
+	if (t.getMinute() < 10) {
+		out << 0;
+	}
+	out << t.getMinute();
+
+	return out;
 }

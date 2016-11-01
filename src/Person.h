@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _PERSON_H_
+#define _PERSON_H_
 
 #include <iostream>
 #include <vector>
@@ -28,9 +29,9 @@ private:
 
 class Customer : public Person {
 public:
-	Customer(string name, Date birthDate) : Person(name, birhtDate) {}
+	Customer(string name, Date birthDate) : Person(name, birthDate) {} //TODO pass to .cpp
 	float getMonthCost(unsigned int month) const;
-	bool attendLesson(Lesson * lesson);
+	void attendLesson(Lesson * lesson, Date date);
 	bool freeSwim(Time startTime, Date date, unsigned int duration); //tenho que fazer a distinção entre FreeSwimUse e LessonUse porque ambas as classes derivadas têm estes 3 parâmetros
 	void addUse(PoolUse * pooluse);
 
@@ -40,8 +41,8 @@ private:
 
 class Teacher : public Person {
 public:
-	Teacher(string name, Date birthDate) : Person(name, birhtDate) {}
+	Teacher(string name, Date birthDate) : Person(name, birthDate) {}
 	float getMonthCost(unsigned int month) const {return 0.0;}
 };
 
-#pragma once
+#endif

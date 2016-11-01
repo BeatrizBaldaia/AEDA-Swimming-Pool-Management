@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _DATE_H_
+#define _DATE_H_
 
 #include <string>
 
@@ -27,9 +28,8 @@ public:
 	bool operator == (const Date &date) const;
 
 	bool between(const Date &min, const Date &max);
-
-	friend istream & operator >> (istream & in, Date & d);
 	
+	enum exception {InvalidMonth, InvalidDay};
 private:
 	unsigned int day;
 	unsigned int month;
@@ -38,10 +38,9 @@ private:
 
 class Time {
 public:
-	Time (unsigned int h, unsigned int m) : hour(h), minute(m) {}
-	unsigned int getHour() const {return hour;}
-	unsigned int getMinute() const {return minute;}
-	void TimeDisplay() const;
+	Time (unsigned int h, unsigned int m) : hour(h), minute(m) {} // TODO change to .cpp
+	unsigned int getHour() const {return hour;} // TODO change to .cpp
+	unsigned int getMinute() const {return minute;} // TODO change to .cpp
 private:
 	unsigned int hour;
 	unsigned int minute;
@@ -54,5 +53,9 @@ enum DayOfWeek {
 bool isLeapYear(const unsigned int &year);
 unsigned int daysInMonth(const unsigned int &month, const unsigned int &year);
 
+ostream & operator << (ostream & out, const Time & t);
+
 ostream & operator << (ostream & out, const Date & d);
 istream & operator >> (istream & in, Date & d);
+
+#endif

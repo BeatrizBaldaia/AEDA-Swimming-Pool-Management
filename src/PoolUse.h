@@ -1,16 +1,15 @@
-#pragma once
+#ifndef _POOLUSE_H_
+#define _POOLUSE_H_
 
 #include "Date.h"
 #include "Lesson.h"
 
 class PoolUse {
 public:
-	PoolUse(Date d, Time t, unsigned int dur) : date(d), time(t), duration(dur) {}
-	void TimeDisplay2() const;
-	void LessonDisplay() const {} //DEIXAMOS PollUse COMO UMA CLASSE ABSTRATA???
-	float getCost() const {return 0;} //tentei pôr abstrata e estava a dar erro na inicialização
-	int getMonth2() {return 0;}
-	Lesson * getLesson() const = 0;
+	PoolUse(Date d, Time t, unsigned int dur) : date(d), time(t), duration(dur) {}; // TODO pass to .cpp
+	Time getTime() const;
+	int getMonth() const;
+	virtual float getCost() const = 0;
 protected:
 	Date date;
 	Time time;
@@ -19,24 +18,21 @@ protected:
 
 class FreeSwimUse : public PoolUse {
 public:
-	FreeSwimUse (Date d, Time t, unsigned int dur) : PoolUse(d, t, dur) { cost30min = 2;} //2 euros meia hora de uso livre
-	void LessonDisplay() const;
+	FreeSwimUse (Date d, Time t, unsigned int dur); // TODO pass to .cpp 2 euros meia hora de uso livre
 	float getCost() const;
-	int getMonth2();
-	Lesson * getLesson() const {return NULL;}
 private:
-	float cost30min;
+	static float cost30;
 };
 
 class LessonUse : public PoolUse {
 public:
 	LessonUse (Date d, Time t, Lesson *l); //6 euros por aula, por exemplo, e duração sempre 1 hora
-	void LessonDisplay() const;
 	float getCost() const;
-	int getMonth2();
 	Lesson * getLesson() const;
-
 private:
 	Lesson * lesson;
-	float costlesson;
+
+	static float lessonCost;
 };
+
+#endif

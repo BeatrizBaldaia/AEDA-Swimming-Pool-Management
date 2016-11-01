@@ -1,17 +1,17 @@
 #include "Person.h"
 
+unsigned int Person::lastID = 0;
 
 Person::Person(string name, Date birthDate) : ID(lastID) {
 	this->name = name;
 	this->birthDate = birthDate;
-	lastID ++;
+	lastID++;
 }
 
 float Customer::getMonthCost(unsigned int month) const{
 	float sum = 0;
-	for(auto x : uses ){ // nao estava a comseguir fazer const PoolUse * &x : uses
-		if(x->getMonth2() == month){
-			x->LessonDisplay();
+	for(PoolUse * x : uses){
+		if(x->getMonth() == month){
 			cout << endl;
 			sum += x->getCost();
 		}
@@ -19,15 +19,10 @@ float Customer::getMonthCost(unsigned int month) const{
 	return sum;
 }
 
-bool Customer::attendLesson(Lesson * lesson){
-	for(auto x : uses){
-		if(x->getLesson() == lesson){
-			return true;
-		}
-	}
-	return false;
+void Customer::attendLesson(Lesson * lesson){
+	//TODO add LessonUse to uses;
 }
 
 void Customer::addUse(PoolUse * pooluse){
-	uses.push_back(pooluse)
+	uses.push_back(pooluse);
 }
