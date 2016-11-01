@@ -10,5 +10,4 @@ private:
 	vector <Customer *> customers;
 	vector <Teacher *> teachers;
 	vector <Lesson *> schedule;
-
 };

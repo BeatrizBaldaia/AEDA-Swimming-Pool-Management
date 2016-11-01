@@ -37,6 +37,11 @@ private:
 };
 
 class Time {
+public:
+	Time (unsigned int h, unsigned int m) : hour(h), minute(m) {}
+	unsigned int getHour() const {return hour;}
+	unsigned int getMinute() const {return minute;}
+	void TimeDisplay() const;
 private:
 	unsigned int hour;
 	unsigned int minute;
