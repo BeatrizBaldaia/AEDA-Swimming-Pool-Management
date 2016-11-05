@@ -6,7 +6,7 @@
 
 class PoolUse {
 public:
-	PoolUse(Date d, Time t, unsigned int dur) : date(d), time(t), duration(dur) {}; // TODO pass to .cpp
+	PoolUse(Date d, Time t, unsigned int dur);
 	Time getTime() const;
 	int getMonth() const;
 	virtual float getCost() const = 0;
@@ -18,7 +18,7 @@ protected:
 
 class FreeSwimUse : public PoolUse {
 public:
-	FreeSwimUse (Date d, Time t, unsigned int dur); // TODO pass to .cpp 2 euros meia hora de uso livre
+	FreeSwimUse (Date d, Time t, unsigned int dur);
 	float getCost() const;
 private:
 	static float cost30;
@@ -26,7 +26,7 @@ private:
 
 class LessonUse : public PoolUse {
 public:
-	LessonUse (Date d, Time t, Lesson *l); //6 euros por aula, por exemplo, e duração sempre 1 hora
+	LessonUse (Date d, Time t, Lesson *l); //duração sempre 1 hora
 	float getCost() const;
 	Lesson * getLesson() const;
 private:

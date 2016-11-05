@@ -38,9 +38,9 @@ private:
 
 class Time {
 public:
-	Time (unsigned int h, unsigned int m) : hour(h), minute(m) {} // TODO change to .cpp
-	unsigned int getHour() const {return hour;} // TODO change to .cpp
-	unsigned int getMinute() const {return minute;} // TODO change to .cpp
+	Time (unsigned int h, unsigned int m);
+	unsigned int getHour() const;
+	unsigned int getMinute() const;
 private:
 	unsigned int hour;
 	unsigned int minute;

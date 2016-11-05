@@ -288,3 +288,16 @@ ostream& operator <<(ostream& out, const Time& t) {
 
 	return out;
 }
+
+Time::Time(unsigned int h, unsigned int m){
+	hour = h;
+	minute = m;
+}
+
+unsigned int Time::getMinute() const{
+	return minute;
+}
+
+unsigned int Time::getHour() const{
+	return hour;
+}
