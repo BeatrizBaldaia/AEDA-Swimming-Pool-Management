@@ -10,6 +10,7 @@ public:
 	Time getTime() const;
 	Date getDate() const;
 	virtual float getCost() const = 0;
+	Lesson * getLesson() const = 0;
 protected:
 	Date date;
 	Time time;
@@ -22,6 +23,7 @@ public:
 	float getCost() const;
 	Time getTime() const;
 	Date getDate() const;
+	Lesson * getLesson() const;
 private:
 	static float cost30;
 };

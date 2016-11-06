@@ -57,3 +57,6 @@ Date FreeSwimUse::getDate() const{
 	return PoolUse::getDate();
 }
 
+Lesson * FreeSwimUse::getLesson() const{
+	return NULL;
+}

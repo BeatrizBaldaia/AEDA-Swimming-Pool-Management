@@ -33,7 +33,7 @@ public:
 	void attendLesson(Lesson * lesson, Date date, Time time);
 	void freeSwim(Time startTime, Date date, unsigned int duration);
 	void addUse(PoolUse * pooluse);
-
+	bool attendedLesson(Lesson * lesson);
 private:
 	vector <PoolUse *> uses;
 };

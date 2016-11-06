@@ -316,6 +316,18 @@ unsigned int Time::getHour() const{
 	return hour;
 }
 
+bool Time::operator > (const Time & t2) const{
+	if(hour == t2.getHour() && minute > t2.getMinute()){
+		return true;
+	}
+	else{
+		if(hour > t2.getHour()){
+			return true;
+		}
+		return false;
+	}
+}
+
 ostream& operator <<(ostream& out, const Time& t) {
 	if (t.getHour() < 10) {
 		out << 0;

@@ -35,7 +35,7 @@ Customer::Customer(string name, Date birthDate) : Person(name, birthDate){}
 float Customer::getMonthCost(unsigned int month) const{
 	float sum = 0;
 	for(PoolUse * x : uses){
-		if(x->getMonth() == month){
+		if(x->getDate().getMonth() == month){
 			cout << endl;
 			sum += x->getCost();
 		}
@@ -57,6 +57,14 @@ void Customer::freeSwim(Time startTime, Date date, unsigned int duration){
 	uses.push_back(x);
 }
 
+bool Customer::attendedLesson(Lesson * lesson){
+	for(PoolUse * x : uses){
+		if(x->getLesson() == lesson){
+			return true;
+		}
+	}
+	return false;
+}
 
 /* TEACHER */
 
