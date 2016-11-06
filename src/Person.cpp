@@ -35,7 +35,7 @@ Customer::Customer(string name, Date birthDate) : Person(name, birthDate){}
 float Customer::getMonthCost(unsigned int month) const{
 	float sum = 0;
 	for(PoolUse * x : uses){
-		if(x->getMonth() == month){
+		if(x->getDate().getMonth() == month){
 			cout << endl;
 			sum += x->getCost();
 		}

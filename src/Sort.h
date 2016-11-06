@@ -1,8 +1,7 @@
-#ifndef SRC_SORT_H_
-#define SRC_SORT_H_
+#ifndef _SORT_H_
+#define _SORT_H_
 
 #include <iostream>
-#include <stdlib.h>
 #include <algorithm>
 #include <vector>
 
