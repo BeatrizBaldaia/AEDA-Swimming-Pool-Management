@@ -32,7 +32,7 @@ public:
 	Customer(string name, Date birthDate);
 	float getMonthCost(unsigned int month) const;
 	void attendLesson(Lesson * lesson, Date date, Time time);
-	void freeSwim(Time startTime, Date date, unsigned int duration); //tenho que fazer a distinção entre FreeSwimUse e LessonUse porque ambas as classes derivadas têm estes 3 parâmetros
+	void freeSwim(Time startTime, Date date, unsigned int duration);
 	void addUse(PoolUse * pooluse);
 
 private:
@@ -43,6 +43,9 @@ class Teacher : public Person {
 public:
 	Teacher(string name, Date birthDate);
 	float getMonthCost(unsigned int month) const;
+	int getNumberLessons() const;
+private:
+	int lessonsGiven;
 };
 
 #endif

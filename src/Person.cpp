@@ -40,8 +40,14 @@ void Customer::freeSwim(Time startTime, Date date, unsigned int duration){
 }
 /* TEACHER */
 
-Teacher::Teacher(string name, Date birthDate) : Person(name, birthDate){}
+Teacher::Teacher(string name, Date birthDate) : Person(name, birthDate){
+	lessonsGiven = 0;
+}
 
 float Teacher::getMonthCost(unsigned int month) const{
 	return 0.0;
+}
+
+int Teacher::getNumberLessons() const{
+	return lessonsGiven;
 }

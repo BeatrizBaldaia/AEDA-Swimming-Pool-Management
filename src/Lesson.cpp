@@ -6,10 +6,14 @@ Lesson::Lesson(LessonTime lessonTime, Modality modality){
 	this->lessonTime = lessonTime;
 	this->modality = modality;
 }
+
 Teacher * Lesson::getTeacher(){
 	return teacher;
 }
 
+void Lesson::setTeacher(Teacher * teacher){
+	this->teacher = teacher;
+}
 
 
 

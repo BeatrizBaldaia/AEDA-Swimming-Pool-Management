@@ -7,8 +7,8 @@
 class PoolUse {
 public:
 	PoolUse(Date d, Time t, unsigned int dur);
-	Time getTime() const;
-	int getMonth() const;
+	Time getTime() const; //é para definir isto???
+	int getMonth() const; //é para definir isto???
 	virtual float getCost() const = 0;
 protected:
 	Date date;
