@@ -7,8 +7,8 @@
 class PoolUse {
 public:
 	PoolUse(Date d, Time t, unsigned int dur);
-	Time getTime() const; //é para definir isto???
-	int getMonth() const; //é para definir isto???
+	Time getTime() const;
+	Date getDate() const;
 	virtual float getCost() const = 0;
 protected:
 	Date date;
@@ -20,6 +20,8 @@ class FreeSwimUse : public PoolUse {
 public:
 	FreeSwimUse (Date d, Time t, unsigned int dur);
 	float getCost() const;
+	Time getTime() const;
+	Date getDate() const;
 private:
 	static float cost30;
 };
@@ -29,6 +31,8 @@ public:
 	LessonUse (Date d, Time t, Lesson *l); //duração sempre 1 hora
 	float getCost() const;
 	Lesson * getLesson() const;
+	Time getTime() const;
+	Date getDate() const;
 private:
 	Lesson * lesson;
 

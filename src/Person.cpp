@@ -2,6 +2,7 @@
 
 unsigned int Person::lastID = 0;
 
+
 /* PERSON */
 
 Person::Person(string name, Date birthDate) : ID(lastID) {
@@ -9,6 +10,23 @@ Person::Person(string name, Date birthDate) : ID(lastID) {
 	this->birthDate = birthDate;
 	lastID++;
 }
+
+string Person::getName() const{
+	return name;
+}
+
+unsigned int Person::getID() const{
+	return ID;
+}
+
+Date Person::getBirthDate() const{
+	return birthDate;
+}
+
+void Person::setName(string name){
+	this->name = name;
+}
+
 
 /* CUSTOMER */
 
@@ -38,6 +56,8 @@ void Customer::freeSwim(Time startTime, Date date, unsigned int duration){
 	PoolUse * x = new FreeSwimUse(date, startTime, duration);
 	uses.push_back(x);
 }
+
+
 /* TEACHER */
 
 Teacher::Teacher(string name, Date birthDate) : Person(name, birthDate){
@@ -50,4 +70,16 @@ float Teacher::getMonthCost(unsigned int month) const{
 
 int Teacher::getNumberLessons() const{
 	return lessonsGiven;
+}
+
+string Teacher::getName() const{
+	return Person::getName();
+}
+
+bool Teacher::operator < (const Teacher & t2) const{
+	return lessonsGiven < t2.getNumberLessons();
+}
+
+void Teacher::setLesson(){
+	lessonsGiven ++;
 }

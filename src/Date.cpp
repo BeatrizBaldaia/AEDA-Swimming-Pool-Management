@@ -274,17 +274,31 @@ DayOfWeek calcDayOfWeek(Date date){
 	}
 }
 
-ostream& operator <<(ostream& out, const Time& t) {
-	if (t.getHour() < 10) {
-		out << 0;
-	}
+ostream & operator << (ostream & out, const DayOfWeek & d){
+	switch (d){
+		case MON:
+			out << "Monday";
+			break;
+		case TUE:
+			out << "Tuesday";
+			break;
+		case WED:
+			out << "Wednesday";
+			break;
+		case THU:
+			out << "Thursday";
+			break;
+		case FRI:
+			out << "Friday";
+			break;
+		case SAT:
+			out << "Saturday";
+			break;
+		case SUN:
+			out << "Sunday";
+			break;
 
-	out << t.getHour() << ":";
-
-	if (t.getMinute() < 10) {
-		out << 0;
-	}
-	out << t.getMinute();
+		}
 
 	return out;
 }
@@ -300,4 +314,19 @@ unsigned int Time::getMinute() const{
 
 unsigned int Time::getHour() const{
 	return hour;
+}
+
+ostream& operator <<(ostream& out, const Time& t) {
+	if (t.getHour() < 10) {
+		out << 0;
+	}
+
+	out << t.getHour() << ":";
+
+	if (t.getMinute() < 10) {
+		out << 0;
+	}
+	out << t.getMinute();
+
+	return out;
 }

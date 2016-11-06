@@ -11,6 +11,13 @@ PoolUse::PoolUse(Date d, Time t, unsigned int dur){
 	duration=dur;
 }
 
+Time PoolUse::getTime() const{
+	return time;
+}
+
+Date PoolUse::getDate() const{
+	return date;
+}
 /* LESSON_USE */
 
 LessonUse::LessonUse(Date d, Time t, Lesson * l) : PoolUse (d, t, Lesson::duration) {
@@ -25,6 +32,14 @@ float LessonUse::getCost() const{
 	return lessonCost;
 }
 
+Time LessonUse::getTime() const{
+	return PoolUse::getTime();
+}
+
+Date LessonUse::getDate() const{
+	return PoolUse::getDate();
+}
+
  /* FREE_SWIM_USE */
 
 FreeSwimUse::FreeSwimUse(Date d, Time t, unsigned int dur) : PoolUse(d, t, dur) {}
@@ -34,4 +49,11 @@ float FreeSwimUse::getCost() const{
 	return cost;
 }
 
+Time FreeSwimUse::getTime() const{
+	return PoolUse::getTime();
+}
+
+Date FreeSwimUse::getDate() const{
+	return PoolUse::getDate();
+}
 

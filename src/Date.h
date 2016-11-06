@@ -54,7 +54,7 @@ bool isLeapYear(const unsigned int &year);
 unsigned int daysInMonth(const unsigned int &month, const unsigned int &year);
 
 ostream & operator << (ostream & out, const Time & t);
-
+ostream & operator << (ostream & out, const DayOfWeek & d);
 ostream & operator << (ostream & out, const Date & d);
 istream & operator >> (istream & in, Date & d);
 

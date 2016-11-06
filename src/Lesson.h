@@ -4,6 +4,7 @@
 #include <vector>
 #include "Date.h"
 #include "Person.h"
+#include "Pool.h"
 
 typedef pair <DayOfWeek, Time> LessonTime;
 
@@ -11,8 +12,8 @@ enum Modality {
 	HydroGym, Zumba, AquaticPolo, ArtisticSwimming, CompetitiveSwimming, Learning
 };
 
-ostream & operator << (ostream & out, const Modality & m); //TODO: definir em .cpp
- //TODO: fazer o overload do operador << para Lesson
+ostream & operator << (ostream & out, const Modality & m);
+ostream & operator << (ostream & out, const Lesson & lesson);
 
 class Lesson {
 public:
@@ -20,6 +21,9 @@ public:
 	static unsigned int duration;
 	Teacher * getTeacher();
 	void setTeacher(Teacher * teacher);
+	DayOfWeek getDayOfWeek() const;
+	Time getTime() const;
+	Modality getModality() const;
 
 private:
 	Teacher * teacher;
