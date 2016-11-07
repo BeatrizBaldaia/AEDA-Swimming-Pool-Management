@@ -6,8 +6,9 @@ template <class Comparable>  // Comparable: deve possuir construtor cópia, opera
 const Comparable &median3(vector<Comparable> &v, int left, int right)
 {
 	int center = (left+right) /2;
-	if (v[center] < v[left])
+	if (v[center] < v[left]) {
 		swap(v[left], v[center]);
+	}
 	if (v[right] < v[left])
 		swap(v[left], v[right]);
 	if (v[right] < v[center])
@@ -54,8 +55,9 @@ void insertionSort(vector<Comparable> &v)
 	{
 		Comparable tmp = v[p];
 		int j;
-		for (j = p; j > 0 && tmp < v[j-1]; j--)
+		for (j = p; j > 0 && tmp < v[j-1]; j--) {
 			v[j] = v[j-1];
+		}
 		v[j] = tmp;
 	}
 }

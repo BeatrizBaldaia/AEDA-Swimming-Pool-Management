@@ -308,6 +308,9 @@ Time::Time(unsigned int h, unsigned int m){
 	minute = m;
 }
 
+Time::Time() {
+}
+
 unsigned int Time::getMinute() const{
 	return minute;
 }

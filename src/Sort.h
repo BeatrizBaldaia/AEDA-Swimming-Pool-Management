@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <vector>
 
+using namespace std;
+
 template <class Comparable>
 const Comparable &median3(vector<Comparable> &v, int left, int right);
 
@@ -16,6 +18,5 @@ void quickSort(vector<Comparable> &v);
 
 template <class Comparable>
 void insertionSort(vector<Comparable> &v);
-
 
 #endif /* SRC_SORT_H_ */

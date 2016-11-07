@@ -17,4 +17,8 @@ private:
 	vector <Lesson *> schedule;  //Se o número de elementos do vetor for inferior ou igual a 20 usar INSERTION SORT senão usar QUICK SORT
 };  //Quando é criado um objeto Lesson é logo atribuido o professor
 
+#else
+
+class Pool;
+
 #endif

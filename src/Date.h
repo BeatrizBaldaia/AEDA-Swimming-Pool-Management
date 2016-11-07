@@ -38,7 +38,8 @@ private:
 
 class Time {
 public:
-	Time (unsigned int h, unsigned int m);
+	Time();
+	Time(unsigned int h, unsigned int m);
 	unsigned int getHour() const;
 	unsigned int getMinute() const;
 private:
