@@ -3,7 +3,6 @@
 
 #include "Person.h"
 #include "Lesson.h"
-#include "Sort.h"
 
 
 class Pool {

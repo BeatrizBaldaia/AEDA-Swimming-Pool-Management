@@ -1,4 +1,5 @@
 #include "Pool.h"
+#include <algorithm>
 
 vector<Lesson *> Pool::getTeacherLessons(string name){
 	vector<Lesson *> result;
@@ -16,10 +17,5 @@ void Pool::addLesson(Lesson * lesson){
 	schedule.push_back(lesson);
 	teachers[0]->setLesson();
 
-	if(teachers.size() > 20){
-		quickSort(teachers);
-	}
-	else{
-		insertionSort(teachers);
-	}
+	sort(teachers.begin(),teachers.end(),[](Teacher * a, Teacher * b){return a->getNumberLessons() < b->getNumberLessons();});
 }
