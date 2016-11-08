@@ -6,18 +6,16 @@
 
 class PoolUse {
 public:
-<<<<<<< HEAD
 	PoolUse(Date d, Time t, unsigned int dur);
 	Time getTime() const;
 	Date getDate() const;
 	virtual float getCost() const = 0;
 	Lesson * getLesson() const = 0;
-=======
     PoolUse(Date d, Time t, unsigned int dur);
     Time getTime() const;
     Date getDate() const;
     virtual float getCost() const = 0;
->>>>>>> origin/master
+
 protected:
     Date date;
     Time time;
@@ -26,18 +24,15 @@ protected:
 
 class FreeSwimUse : public PoolUse {
 public:
-<<<<<<< HEAD
 	FreeSwimUse (Date d, Time t, unsigned int dur);
 	float getCost() const;
 	Time getTime() const;
 	Date getDate() const;
 	Lesson * getLesson() const;
-=======
     FreeSwimUse (Date d, Time t, unsigned int dur);
     float getCost() const;
     Time getTime() const;
     Date getDate() const;
->>>>>>> origin/master
 private:
     static float cost30;
 };
