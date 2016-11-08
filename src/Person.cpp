@@ -80,10 +80,6 @@ int Teacher::getNumberLessons() const{
 	return lessonsGiven;
 }
 
-string Teacher::getName() const{
-	return Person::getName();
-}
-
 bool Teacher::operator < (const Teacher & t2) const{
 	return lessonsGiven < t2.getNumberLessons();
 }

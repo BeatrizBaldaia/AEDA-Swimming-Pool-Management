@@ -4,7 +4,6 @@
 #include "PoolUse"
 #include "Person.h"
 #include "Lesson.h"
-#include "Sort.h"
 
 
 class Pool {
@@ -23,10 +22,17 @@ private:
 	static unsigned int maxCustomers;
 };
 
+<<<<<<< HEAD
 class InvalidLesson{
 public:
 	InvalidLesson(DayOfWeek day,Time time);
 	DayOfWeek day;
 	Time time;
 };
+=======
+#else
+
+class Pool;
+
+>>>>>>> origin/master
 #endif

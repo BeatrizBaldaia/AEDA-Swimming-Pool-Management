@@ -48,5 +48,8 @@ public:
 private:
 	int lessonsGiven;
 };
+#else
+class Customer;
+class Teacher;
 
 #endif
