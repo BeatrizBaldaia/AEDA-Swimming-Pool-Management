@@ -43,7 +43,6 @@ public:
 	Teacher(string name, Date birthDate);
 	float getMonthCost(unsigned int month) const;
 	int getNumberLessons() const;
-	string getName() const;
 	bool operator < (const Teacher & t2) const;
 	void setLesson();
 private:
