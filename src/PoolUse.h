@@ -49,6 +49,8 @@ private:
 
     static float lessonCost;
 };
+
+
 #else
 class PoolUse;
 class LessonUse;

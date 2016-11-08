@@ -66,6 +66,22 @@ bool Customer::attendedLesson(Lesson * lesson){
 	return false;
 }
 
+int Customer::getEntryNumber() const{ //frequência com que os clientes vão á piscina
+	if(uses.size()==0){
+		return 0;
+	}
+	Date d = uses[0]->getDate();
+	int result = 1;
+	for(int i = 1; 1 < uses.size(); i++){
+		if(!(d == uses[i]->getDate())){
+			d = uses[i]->getDate();
+			result++;
+		}
+	}
+
+	return result;
+}
+
 /* TEACHER */
 
 Teacher::Teacher(string name, Date birthDate) : Person(name, birthDate){
@@ -86,4 +102,8 @@ bool Teacher::operator < (const Teacher & t2) const{
 
 void Teacher::setLesson(){
 	lessonsGiven ++;
+}
+
+int Teacher::getEntryNumber() const{
+	return 0;
 }
