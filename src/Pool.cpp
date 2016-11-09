@@ -22,7 +22,7 @@ void Pool::addLesson(Lesson * lesson){
 	sort(teachers.begin(),teachers.end(),[](Teacher * a, Teacher * b){return a->getNumberLessons() < b->getNumberLessons();});
 }
 
-int Pool::numberCostumerLesson(Lesson * lesson){
+unsigned int Pool::numberCostumerLesson(Lesson * lesson){
 	int result = 0;
 	for(Customer * x : customers){
 		if(x->attendedLesson(lesson)){
@@ -33,7 +33,7 @@ int Pool::numberCostumerLesson(Lesson * lesson){
 	return result;
 }
 
-int Pool::numberCostumerFree(Date day, Time startTime, Time endTime){
+unsigned int Pool::numberCostumerFree(Date day, Time startTime, Time endTime){
 	int result = 0;
 	for(const FreeSwimUse & x : freeuse){
 		if(x.getDate() == day){
@@ -58,9 +58,49 @@ Lesson * Pool::getLesson(DayOfWeek day, Time time) const{
 
 }
 
+
+vector<Customer *> Pool::getAllCostumer() const{
+	vector<Customer *> result;
+	for(Customer * x : customers){
+		result.push_back(x);
+	}
+	sort(result.begin(),result.end(),[](Customer * a, Customer * b){return a->getEntryNumber() < b->getEntryNumber();});
+
+	return result;
+}
+
+Customer * Pool::getCostumer(string name) const{
+	for(Customer * x : customers){
+		if(x->getName() == name){
+			return x;
+		}
+	}
+
+	throw NonExistentCustomerName(name);
+
+}
+
+Customer * Pool::getCostumer(unsigned int ID) const{
+	for(Customer * x : customers){
+		if(x->getID() == ID){
+			return x;
+		}
+	}
+
+	throw NonExistentCustomerID(ID);
+}
+
 /* EXCEÇÕES */
 
 InvalidLesson::InvalidLesson(DayOfWeek day,Time time){
 	this->day = day;
 	this->time = time;
+}
+
+NonExistentCustomerName::NonExistentCustomerName(string name){
+	this->name = name;
+}
+
+NonExistentCustomerID::NonExistentCustomerID(unsigned int ID){
+	this->ID = ID;
 }
