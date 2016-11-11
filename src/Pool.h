@@ -15,7 +15,7 @@ public:
 	vector<Customer *> getAllCostumer() const;
 	Customer * getCostumer(string name) const; //usa exceção: try{...} catch(NonExistentCustomer x){cout << "There's no such customer named " << x.name;
 	Customer * getCostumer (unsigned int ID) const; //usa exceção: try{...} catch(NonExistentCustomer x){cout << "There's no such customer with ID " << x.ID;
-	void setName(); //TODO implement method
+	void setName(string name);
 private:
 	vector <Customer *> customers;
 	vector <Teacher *> teachers; //Quando Pool é criado os vetores devem ser logo ordenados usando as funções sort;

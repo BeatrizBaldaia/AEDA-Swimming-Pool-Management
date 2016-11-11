@@ -14,6 +14,10 @@ vector<Lesson *> Pool::getLessonsByTeacher(string name){
 	return result;
 }
 
+void Pool::setName(string name){
+	this->name = name;
+}
+
 void Pool::addLesson(Lesson * lesson){
 	lesson->setTeacher(teachers[0]); //estamos a retornar o professor com menos aulas dadas porque o vetor teachers já está ordenado
 	schedule.push_back(lesson);
