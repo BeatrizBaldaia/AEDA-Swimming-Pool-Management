@@ -58,13 +58,8 @@ void Menu::invalidOption(string opt)
 	cout << endl << "ERROR: The option \"" << opt << "\" is invalid." << endl << endl;
 }
 
-Menu::Menu(string name) {
-	this->name = name;
-}
-
 void Menu::printMenu() const
 {
-	cout << name << endl;
 	for (size_t i = 1; i < entries.size(); i++)
 	{
 		cout << i << ". " << entries[i].first << endl;
