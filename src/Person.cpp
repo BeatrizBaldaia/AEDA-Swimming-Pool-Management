@@ -11,6 +11,15 @@ Person::Person(string name, Date birthDate) : ID(lastID) {
 	lastID++;
 }
 
+Person::Person(string name, Date birthDate, unsigned int ID) : ID(ID) {
+	this->name = name;
+	this->birthDate = birthDate;
+	if(ID > lastID) {
+		lastID = ID;
+	}
+}
+
+
 string Person::getName() const{
 	return name;
 }
@@ -30,7 +39,14 @@ void Person::setName(string name){
 
 /* CUSTOMER */
 
-Customer::Customer(string name, Date birthDate) : Person(name, birthDate){}
+Customer::Customer(string name, Date birthDate) : Person(name, birthDate) {
+
+}
+
+Customer::Customer(string name, Date birthDate, unsigned int ID) :
+		Person(name, birthDate, ID) {
+
+}
 
 float Customer::getMonthCost(unsigned int month) const{
 	float sum = 0;
@@ -84,12 +100,17 @@ int Customer::getEntryNumber() const{ //frequência com que os clientes vão á pis
 
 /* TEACHER */
 
-Teacher::Teacher(string name, Date birthDate) : Person(name, birthDate){
+Teacher::Teacher(string name, Date birthDate) : Person(name, birthDate) {
+	lessonsGiven = 0;
+}
+
+Teacher::Teacher(string name, Date birthDate, unsigned int ID) :
+		Person(name, birthDate, ID) {
 	lessonsGiven = 0;
 }
 
 float Teacher::getMonthCost(unsigned int month) const{
-	return 0.0;
+	return 0;
 }
 
 int Teacher::getNumberLessons() const{
@@ -101,7 +122,7 @@ bool Teacher::operator < (const Teacher & t2) const{
 }
 
 void Teacher::setLesson(){
-	lessonsGiven ++;
+	lessonsGiven++;
 }
 
 int Teacher::getEntryNumber() const{

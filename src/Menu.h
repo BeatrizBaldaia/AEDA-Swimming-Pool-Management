@@ -44,7 +44,7 @@ public:
 	vector <MenuEntry> entries;
 };
 
-class OneDateProcessor : public MenuHandler {
+/*class OneDateProcessor : public MenuHandler {
 public:
 	OneDateProcessor(string prompt, string error);
 	Date readDate(string prompt, string error);
@@ -66,7 +66,7 @@ protected:
 	virtual MenuResult handle(Date date1);
 
 	string prompt2;
-};
+};*/
 
 Date readDate(string prompt);
 

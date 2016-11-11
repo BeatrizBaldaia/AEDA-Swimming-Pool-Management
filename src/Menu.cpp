@@ -67,7 +67,7 @@ void Menu::printMenu() const
 	cout << endl << 0 << ". " << entries[0].first << endl;
 }
 
-OneDateProcessor::OneDateProcessor(string prompt, string error) :
+/*OneDateProcessor::OneDateProcessor(string prompt, string error) :
 	prompt1(prompt), error(error)
 {
 
@@ -109,7 +109,7 @@ MenuResult TwoDateProcessor::handle(Date date1) {
 	Date date2 = readDate(prompt2, error);
 
 	return handle(date1, date2);
-}
+}*/
 
 Date readDate(string prompt)
 {

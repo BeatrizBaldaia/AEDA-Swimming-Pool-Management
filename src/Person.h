@@ -12,6 +12,7 @@ using namespace std;
 class Person {
 public:
 	Person(string name, Date birthDate);
+	Person(string name, Date birthDate, unsigned int ID);
 
 	string getName() const;
 	unsigned int getID() const;
@@ -30,6 +31,7 @@ private:
 class Customer : public Person {
 public:
 	Customer(string name, Date birthDate);
+	Customer(string name, Date birthDate, unsigned int ID);
 	float getMonthCost(unsigned int month) const;
 	void attendLesson(Lesson * lesson, Date date, Time time);
 	void freeSwim(Time startTime, Date date, unsigned int duration);
@@ -43,6 +45,7 @@ private:
 class Teacher : public Person {
 public:
 	Teacher(string name, Date birthDate);
+	Teacher(string name, Date birthDate, unsigned int ID);
 	float getMonthCost(unsigned int month) const;
 	int getNumberLessons() const;
 	bool operator < (const Teacher & t2) const;
