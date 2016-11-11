@@ -17,7 +17,7 @@ public:
 	unsigned int getID() const;
 	Date getBirthDate() const;
 	void setName(string name);
-	int getEntryNumber() const = 0;
+	virtual int getEntryNumber() const = 0;
 
 	static unsigned int lastID;
 

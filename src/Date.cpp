@@ -18,13 +18,11 @@ Date::Date(const unsigned int & day, const unsigned int & month, const unsigned 
 	throw InvalidMonth;
 }
 
-Date::Date()
-{
+Date::Date() {
 
 }
 
-Date::Date(string & input)
-{
+Date::Date(string & input) {
 	stringstream date;
 	date.str(input);
 	date >> day;
@@ -34,33 +32,27 @@ Date::Date(string & input)
 	date >> year;
 }
 
-unsigned int Date::getDay() const
-{
+unsigned int Date::getDay() const {
 	return day;
 }
 
-unsigned int Date::getMonth() const
-{
+unsigned int Date::getMonth() const {
 	return month;
 }
 
-unsigned int Date::getYear() const
-{
+unsigned int Date::getYear() const {
 	return year;
 }
 
-void Date::setDay(const unsigned int &day)
-{
+void Date::setDay(const unsigned int &day) {
 	this->day = day;
 }
 
-void Date::setMonth(const unsigned int &month)
-{
+void Date::setMonth(const unsigned int &month) {
 	this->month = month;
 }
 
-void Date::setYear(const unsigned int &year)
-{
+void Date::setYear(const unsigned int &year) {
 	this->year = year;
 }
 
@@ -111,8 +103,7 @@ bool Date::valid() const
 	return false;
 }
 
-bool Date::operator <= (const Date &date) const
-		{
+bool Date::operator <= (const Date &date) const {
 	if (year < date.getYear())
 	{
 		return true;
@@ -132,10 +123,9 @@ bool Date::operator <= (const Date &date) const
 		}
 	}
 	return false;
-		}
+}
 
-bool Date::operator >= (const Date &date) const
-		{
+bool Date::operator >= (const Date &date) const {
 	if (year > date.getYear())
 	{
 		return true;
@@ -155,10 +145,9 @@ bool Date::operator >= (const Date &date) const
 		}
 	}
 	return false;
-		}
+}
 
-bool Date::operator < (const Date &date) const
-{
+bool Date::operator < (const Date &date) const {
 	if (year < date.getYear())
 	{
 		return true;
@@ -180,8 +169,7 @@ bool Date::operator < (const Date &date) const
 	return false;
 }
 
-bool Date::operator > (const Date &date) const
-{
+bool Date::operator > (const Date &date) const {
 	if (year > date.getYear())
 	{
 		return true;
@@ -203,13 +191,11 @@ bool Date::operator > (const Date &date) const
 	return false;
 }
 
-bool Date::operator==(const Date & date) const
-		{
+bool Date::operator==(const Date & date) const {
 	return this->day == date.day && this->month == date.month && this->year == date.year;
-		}
+}
 
-bool Date::between(const Date &min, const Date &max)
-{
+bool Date::between(const Date &min, const Date &max) {
 	if (*this >= min && *this <= max)
 	{
 		return true;
@@ -220,8 +206,7 @@ bool Date::between(const Date &min, const Date &max)
 	}
 }
 
-ostream & operator << (ostream & out, const Date & d)
-{
+ostream & operator << (ostream & out, const Date & d) {
 	if (d.getDay() < 10)
 	{
 		out << '0';
@@ -243,8 +228,7 @@ ostream & operator << (ostream & out, const Date & d)
 	return out;
 }
 
-istream & operator >> (istream & in, Date & date)
-{
+istream & operator >> (istream & in, Date & date) {
 	int d, m, y;
 	in >> d;
 	in.ignore();
@@ -258,7 +242,7 @@ istream & operator >> (istream & in, Date & date)
 	return in;
 }
 
-DayOfWeek calcDayOfWeek(Date date){
+DayOfWeek calcDayOfWeek(Date date) {
 	int d = date.getDay(), m = date.getMonth(), y = date.getYear();
 	static int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
 	y -= m < 3;
@@ -274,36 +258,36 @@ DayOfWeek calcDayOfWeek(Date date){
 	}
 }
 
-ostream & operator << (ostream & out, const DayOfWeek & d){
+ostream & operator << (ostream & out, const DayOfWeek & d) {
 	switch (d){
-		case MON:
-			out << "Monday";
-			break;
-		case TUE:
-			out << "Tuesday";
-			break;
-		case WED:
-			out << "Wednesday";
-			break;
-		case THU:
-			out << "Thursday";
-			break;
-		case FRI:
-			out << "Friday";
-			break;
-		case SAT:
-			out << "Saturday";
-			break;
-		case SUN:
-			out << "Sunday";
-			break;
+	case MON:
+		out << "Monday";
+		break;
+	case TUE:
+		out << "Tuesday";
+		break;
+	case WED:
+		out << "Wednesday";
+		break;
+	case THU:
+		out << "Thursday";
+		break;
+	case FRI:
+		out << "Friday";
+		break;
+	case SAT:
+		out << "Saturday";
+		break;
+	case SUN:
+		out << "Sunday";
+		break;
 
-		}
+	}
 
 	return out;
 }
 
-Time::Time(unsigned int h, unsigned int m){
+Time::Time(unsigned int h, unsigned int m) {
 	hour = h;
 	minute = m;
 }
@@ -311,25 +295,14 @@ Time::Time(unsigned int h, unsigned int m){
 Time::Time() {
 }
 
-unsigned int Time::getMinute() const{
+unsigned int Time::getMinute() const {
 	return minute;
 }
 
-unsigned int Time::getHour() const{
+unsigned int Time::getHour() const {
 	return hour;
 }
 
-bool Time::operator > (const Time & t2) const{
-	if(hour == t2.getHour() && minute > t2.getMinute()){
-		return true;
-	}
-	else{
-		if(hour > t2.getHour()){
-			return true;
-		}
-		return false;
-	}
-}
 
 ostream& operator <<(ostream& out, const Time& t) {
 	if (t.getHour() < 10) {
@@ -344,4 +317,51 @@ ostream& operator <<(ostream& out, const Time& t) {
 	out << t.getMinute();
 
 	return out;
+}
+
+bool Time::operator <=(const Time& time) const {
+	if(hour <= time.getHour()) {
+		if(minute <= time.getMinute()) {
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
+
+bool Time::operator >=(const Time& time) const {
+	if(hour >= time.getHour()) {
+		if(minute >= time.getMinute()) {
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
+
+bool Time::operator <(const Time& time) const {
+	if(hour < time.getHour()) {
+		if(minute < time.getMinute()) {
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
+
+bool Time::operator >(const Time& time) const {
+	if(hour < time.getHour()) {
+		if(minute < time.getMinute()) {
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
+
+bool Time::operator ==(const Time& time) const {
+	if(hour == time.getHour() && minute == time.getMinute()) {
+		return true;
+	}
+	return false;
 }

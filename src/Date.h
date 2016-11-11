@@ -42,7 +42,11 @@ public:
 	Time(unsigned int h, unsigned int m);
 	unsigned int getHour() const;
 	unsigned int getMinute() const;
-	bool operator > (const Time & t2) const;
+	bool operator <= (const Time &time) const;
+	bool operator >= (const Time &time) const;
+	bool operator < (const Time &time) const;
+	bool operator > (const Time &time) const;
+	bool operator == (const Time &time) const;
 	//TODO: operador que adiciona a Time a duração da aula para saber a hora a que esta acaba
 private:
 	unsigned int hour;

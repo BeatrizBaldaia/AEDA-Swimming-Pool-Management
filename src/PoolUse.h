@@ -10,11 +10,7 @@ public:
 	Time getTime() const;
 	Date getDate() const;
 	virtual float getCost() const = 0;
-	Lesson * getLesson() const = 0;
-    PoolUse(Date d, Time t, unsigned int dur);
-    Time getTime() const;
-    Date getDate() const;
-    virtual float getCost() const = 0;
+	virtual Lesson * getLesson() const = 0;
 
 protected:
     Date date;
@@ -26,13 +22,7 @@ class FreeSwimUse : public PoolUse {
 public:
 	FreeSwimUse (Date d, Time t, unsigned int dur);
 	float getCost() const;
-	Time getTime() const;
-	Date getDate() const;
 	Lesson * getLesson() const;
-    FreeSwimUse (Date d, Time t, unsigned int dur);
-    float getCost() const;
-    Time getTime() const;
-    Date getDate() const;
 private:
     static float cost30;
 };
@@ -42,8 +32,6 @@ public:
     LessonUse (Date d, Time t, Lesson *l); //duração sempre 1 hora
     float getCost() const;
     Lesson * getLesson() const;
-    Time getTime() const;
-    Date getDate() const;
 private:
     Lesson * lesson;
 
@@ -53,6 +41,7 @@ private:
 
 #else
 class PoolUse;
+class FreeSwimUse;
 class LessonUse;
 
 #endif
