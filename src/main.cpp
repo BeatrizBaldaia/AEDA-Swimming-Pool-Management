@@ -1,7 +1,7 @@
 #include "Menu.h"
 
 int main() {
-	Menu menu;
+	Menu menu("Main Menu");
 
 	menu.entries.push_back(MenuEntry("Exit", Menu::exitHandler));
 	menu.entries.push_back(MenuEntry("This", Menu::exitHandler));

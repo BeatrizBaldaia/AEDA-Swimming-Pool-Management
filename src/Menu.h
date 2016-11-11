@@ -32,6 +32,7 @@ public:
 class Menu : public MenuHandler
 {
 public:
+	Menu(string name);
 	virtual MenuResult handle();
 	virtual void invalidOption(int opt);
 	virtual void invalidOption(string opt);
@@ -42,6 +43,7 @@ protected:
 public:
 	static ExitHandler exitHandler;
 	vector <MenuEntry> entries;
+	string name;
 };
 
 /*class OneDateProcessor : public MenuHandler {
