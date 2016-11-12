@@ -15,6 +15,7 @@ enum Modality {
 class Lesson {
 public:
     Lesson(LessonTime lessonTime, Modality modality);
+    Lesson();
     static unsigned int duration;
     Teacher * getTeacher() const;
     void setTeacher(Teacher * teacher);
@@ -28,9 +29,23 @@ private:
     LessonTime lessonTime;
 };
 
+class GivenLesson {
+public:
+	GivenLesson(Lesson lesson, Date date);
+	GivenLesson(Lesson lesson, Date date, unsigned int ID);
+	void addCustomer(Customer * customer);
+	static unsigned int lastID;
+private:
+	Lesson lesson;
+	Date date;
+	vector <Customer *> customers;
+	unsigned int ID;
+};
+
 ostream & operator << (ostream & out, const Modality & m);
 ostream & operator << (ostream & out, const Lesson & lesson);
 
 #else
 class Lesson;
+class GivenLesson;
 #endif

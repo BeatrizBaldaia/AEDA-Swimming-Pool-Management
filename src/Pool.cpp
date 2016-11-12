@@ -1,12 +1,10 @@
 #include "Pool.h"
 #include <algorithm>
 
-unsigned int Pool::maxCustomers = 20;
-
-vector<Lesson *> Pool::getLessonsByTeacher(string name){
-	vector<Lesson *> result;
-	for(Lesson * x : schedule){
-		if(x->getTeacher()->getName() == name){
+vector<Lesson> Pool::getLessonsByTeacher(string name){
+	vector<Lesson> result;
+	for(Lesson & x : schedule){
+		if(x.getTeacher()->getName() == name){
 			result.push_back(x);
 		}
 	}
@@ -18,8 +16,8 @@ void Pool::setName(string name){
 	this->name = name;
 }
 
-void Pool::addLesson(Lesson * lesson){
-	lesson->setTeacher(teachers[0]); //estamos a retornar o professor com menos aulas dadas porque o vetor teachers já está ordenado
+void Pool::addLesson(Lesson lesson){
+	lesson.setTeacher(teachers[0]); //estamos a retornar o professor com menos aulas dadas porque o vetor teachers já está ordenado
 	schedule.push_back(lesson);
 	teachers[0]->setLesson();
 
@@ -37,9 +35,9 @@ unsigned int Pool::CostumersInLesson(Lesson * lesson){
 	return result;
 }
 
-Lesson * Pool::getLesson(DayOfWeek day, Time time) const{
-	for(Lesson * x : schedule){
-		if(x->getDayOfWeek() == day && x->getTime() == time){
+Lesson Pool::getLesson(DayOfWeek day, Time time) const{
+	for(const Lesson & x : schedule){
+		if(x.getDayOfWeek() == day && x.getTime() == time){
 			return x;
 		}
 	}
@@ -92,4 +90,37 @@ NonExistentCustomerName::NonExistentCustomerName(string name){
 
 NonExistentCustomerID::NonExistentCustomerID(unsigned int ID){
 	this->ID = ID;
+}
+
+void Pool::setMaxCustomers(unsigned int n) {
+	maxCustomers = n;
+}
+
+string Pool::getName() const {
+	return name;
+}
+
+unsigned int Pool::getMaxCustomers() const {
+	return maxCustomers;
+}
+
+void Pool::setFileNames(vector<string> v) {
+	fileNames = v;
+}
+
+void Pool::writePoolInfo() {
+	ofstream poolInfoFile(fileNames[0]);
+
+}
+
+void Pool::writeCustomers() {
+}
+
+void Pool::writeTeachers() {
+}
+
+void Pool::writeSchedule() {
+}
+
+void Pool::writeGivenLessons() {
 }
