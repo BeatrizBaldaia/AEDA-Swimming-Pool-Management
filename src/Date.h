@@ -26,7 +26,7 @@ public:
 	bool operator < (const Date &date) const;
 	bool operator > (const Date &date) const;
 	bool operator == (const Date &date) const;
-	unsigned int operator -(const Time &time);
+
 
 	bool between(const Date &min, const Date &max);
 	
@@ -48,6 +48,7 @@ public:
 	bool operator < (const Time &time) const;
 	bool operator > (const Time &time) const;
 	bool operator == (const Time &time) const;
+	unsigned int getTimeGap(const Time &time);
 	//TODO: operador que adiciona a Time a duração da aula para saber a hora a que esta acaba
 private:
 	unsigned int hour;

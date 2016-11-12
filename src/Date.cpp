@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iostream>
+#include <cmath>
 #include "Date.h"
 
 Date::Date(const unsigned int & day, const unsigned int & month, const unsigned int & year)
@@ -339,7 +340,7 @@ bool Time::operator >=(const Time& time) const {
 	return false;
 }
 
-#include <cmath>
+
 
 bool Time::operator <(const Time& time) const {
 	return hour*60+minute < time.getHour()*60+time.getMinute();
@@ -349,7 +350,7 @@ bool Time::operator >(const Time& time) const {
 	return hour*60+minute > time.getHour()*60+time.getMinute();
 }
 
-unsigned int Time::operator -(const Time &time){
+unsigned int Time::getTimeGap (const Time &time){
 	return abs(hour*60+minute - time.getHour()*60+time.getMinute());
 }
 

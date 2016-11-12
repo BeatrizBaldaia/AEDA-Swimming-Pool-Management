@@ -47,4 +47,5 @@ MenuResult AddCustomer::handle() {
 	cout << "Insert the customer's birthdate: ";
 
 	return EXIT;
+
 }

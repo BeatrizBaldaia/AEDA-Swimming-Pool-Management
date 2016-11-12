@@ -198,13 +198,13 @@ Lesson Pool::getNextLesson(DayOfWeek day, Time time) const{ //Ia usar esta funçã
 	for(Lesson x : schedule){
 		if(x.getDayOfWeek() == day){
 			if(x.getTime() < time){
-				if((x.getTime() - time) < 60){ //aula que inda está a decorrer
+				if(x.getTime().getTimeGap(time) < 60){ //aula que inda está a decorrer
 					return x;
 				}
 			}
 			else{
-				if((x.getTime()-time) < gap){ //nao percebo porque que aqui dá erro visto que o overload do operador - da classe Time retorna um unsigned int
-					gap = x.getTime()-time;
+				if(x.getTime().getTimeGap(time) < gap){ //nao percebo porque que aqui dá erro visto que o overload do operador - da classe Time retorna um unsigned int
+					gap = x.getTime().getTimeGap(time);
 					next = x;
 					excecao = false;
 				}
