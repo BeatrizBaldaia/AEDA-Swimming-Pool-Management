@@ -73,6 +73,10 @@ Customer * Pool::getCostumer(unsigned int ID) const{
 
 /* EXCEÇÕES */
 
+NoMoreLesson::NoMoreLesson(){
+
+}
+
 InvalidLesson::InvalidLesson(DayOfWeek day,Time time){
 	this->day = day;
 	this->time = time;
@@ -85,6 +89,8 @@ NonExistentCustomerName::NonExistentCustomerName(string name){
 NonExistentCustomerID::NonExistentCustomerID(unsigned int ID){
 	this->ID = ID;
 }
+
+///////////////////////////////////////////////////////////////////////////
 
 void Pool::setMaxCustomers(unsigned int n) {
 	maxCustomers = n;
@@ -183,4 +189,31 @@ void Pool::writeGivenLessons() {
 		}
 		givenLessonsFile << endl;
 	}
+}
+
+Lesson Pool::getNextLesson(DayOfWeek day, Time time) const{ //Ia usar esta função para o menu PoolOccupation para obter a aula que estava a ocorrer ou a próxima aula que ia começar
+	unsigned int gap= 100000;
+	bool excecao = true;
+	Lesson next;
+	for(Lesson x : schedule){
+		if(x.getDayOfWeek() == day){
+			if(x.getTime() < time){
+				if((x.getTime() - time) < 60){ //aula que inda está a decorrer
+					return x;
+				}
+			}
+			else{
+				if((x.getTime()-time) < gap){ //nao percebo porque que aqui dá erro visto que o overload do operador - da classe Time retorna um unsigned int
+					gap = x.getTime()-time;
+					next = x;
+					excecao = false;
+				}
+			}
+		}
+	}
+	if (excecao){ //neste dia não há mais aulas
+		throw NoMoreLesson();
+	}
+
+	return next;
 }

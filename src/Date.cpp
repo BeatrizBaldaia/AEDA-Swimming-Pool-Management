@@ -339,24 +339,18 @@ bool Time::operator >=(const Time& time) const {
 	return false;
 }
 
+#include <cmath>
+
 bool Time::operator <(const Time& time) const {
-	if(hour < time.getHour()) {
-		if(minute < time.getMinute()) {
-			return true;
-		}
-		return false;
-	}
-	return false;
+	return hour*60+minute < time.getHour()*60+time.getMinute();
 }
 
 bool Time::operator >(const Time& time) const {
-	if(hour < time.getHour()) {
-		if(minute < time.getMinute()) {
-			return true;
-		}
-		return false;
-	}
-	return false;
+	return hour*60+minute > time.getHour()*60+time.getMinute();
+}
+
+unsigned int Time::operator -(const Time &time){
+	return abs(hour*60+minute - time.getHour()*60+time.getMinute());
 }
 
 bool Time::operator ==(const Time& time) const {
@@ -365,3 +359,4 @@ bool Time::operator ==(const Time& time) const {
 	}
 	return false;
 }
+

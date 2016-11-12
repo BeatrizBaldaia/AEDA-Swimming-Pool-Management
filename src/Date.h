@@ -26,6 +26,7 @@ public:
 	bool operator < (const Date &date) const;
 	bool operator > (const Date &date) const;
 	bool operator == (const Date &date) const;
+	unsigned int operator -(const Time &time);
 
 	bool between(const Date &min, const Date &max);
 	

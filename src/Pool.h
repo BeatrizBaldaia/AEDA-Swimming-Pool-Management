@@ -19,7 +19,7 @@ public:
 	void setMaxCustomers(unsigned int n);
 	string getName() const;
 	unsigned int getMaxCustomers() const;
-
+	Lesson Pool::getNextLesson(DayOfWeek day, Time time) const;
 	void setFileNames(vector <string> v);
 
 	void load();
@@ -53,6 +53,10 @@ private:
 	unsigned int maxCustomers;
 };
 
+class NoMoreLesson{
+public:
+	NoMoreLesson();
+};
 
 class InvalidLesson{
 public:
