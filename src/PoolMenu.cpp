@@ -23,12 +23,37 @@ Date getCurrentDate(){  //retorna dia, mês e ano atual
 }
 
 Time getCurrentTime(){  //retorna tempo atual
-	static const DayOfWeek wday_name[] = {
-			MON, TUE, WED, THU, FRI, SAT, SUN
-	};
+
 	unsigned int hour, minute;
 	time_t rawtime;
 	struct tm * timeinfo;
+
+	time (&rawtime);
+	timeinfo = localtime (&rawtime);
+
+	hour = (unsigned int)timeinfo->tm_hour;
+	minute = (unsigned int)timeinfo->tm_min;
+
+	Time time(hour, minute);
+	return time;
+}
+
+DayOfWeek getCurrentDayOfWeek(){  //retorna atual dia da semana
+	static const DayOfWeek wday_name[] = {
+			MON, TUE, WED, THU, FRI, SAT, SUN
+	};
+
+	DayOfWeek dw;
+	time_t rawtime;
+	struct tm * timeinfo;
+
+	time (&rawtime);
+	timeinfo = localtime (&rawtime);
+
+	dw = wday_name[timeinfo->tm_wday];
+	return dw;
+}
+
 
 
 PoolMenu::PoolMenu(Pool & pool) : pool(pool) {
