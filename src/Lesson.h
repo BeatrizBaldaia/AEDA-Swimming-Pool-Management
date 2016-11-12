@@ -34,6 +34,10 @@ public:
 	GivenLesson(Lesson lesson, Date date);
 	GivenLesson(Lesson lesson, Date date, unsigned int ID);
 	void addCustomer(Customer * customer);
+	unsigned int getID() const;
+	Lesson getLesson() const;
+	Date getDate() const;
+	vector <Customer *> getCustomers();
 	static unsigned int lastID;
 private:
 	Lesson lesson;

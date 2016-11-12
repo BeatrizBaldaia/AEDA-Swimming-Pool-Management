@@ -10,7 +10,7 @@ class Pool {
 public:
 	vector<Lesson> getLessonsByTeacher(string name);
 	void addLesson(Lesson lesson);
-	unsigned int CostumersInLesson(Lesson * lesson);
+	unsigned int CostumersInLesson(GivenLesson lesson);
 	Lesson getLesson(DayOfWeek day, Time time) const; //usa exceção: try{...} catch(InvalidLesson x){cout << "There's no lesson on " << x.day << " at " << x.time;
 	vector<Customer *> getAllCostumer() const;
 	Customer * getCostumer(string name) const; //usa exceção: try{...} catch(NonExistentCustomer x){cout << "There's no such customer named " << x.name;

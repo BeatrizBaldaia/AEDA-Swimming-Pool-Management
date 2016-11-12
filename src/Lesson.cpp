@@ -77,3 +77,19 @@ GivenLesson::GivenLesson(Lesson lesson, Date date, unsigned int ID) {
 void GivenLesson::addCustomer(Customer* customer) {
 	customers.push_back(customer);
 }
+
+unsigned int GivenLesson::getID() const {
+	return ID;
+}
+
+Lesson GivenLesson::getLesson() const {
+	return lesson;
+}
+
+Date GivenLesson::getDate() const {
+	return date;
+}
+
+vector<Customer*> GivenLesson::getCustomers() {
+	return customers;
+}

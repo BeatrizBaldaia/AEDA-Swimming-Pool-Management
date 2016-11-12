@@ -33,11 +33,12 @@ public:
 	Customer(string name, Date birthDate);
 	Customer(string name, Date birthDate, unsigned int ID);
 	float getMonthCost(unsigned int month) const;
-	void attendLesson(Lesson * lesson, Date date, Time time);
+	void attendLesson(GivenLesson lesson, Date date, Time time);
 	void freeSwim(Time startTime, Date date, unsigned int duration);
 	void addUse(PoolUse * pooluse);
-	bool attendedLesson(Lesson * lesson);
+	bool attendedLesson(const GivenLesson & lesson);
 	int getEntryNumber() const;
+	vector <PoolUse *> getPoolUses();
 private:
 	vector <PoolUse *> uses;
 };
@@ -52,7 +53,7 @@ public:
 	void setLesson();
 	int getEntryNumber() const;
 private:
-	int lessonsGiven;
+	int lessonsPerWeek;
 };
 #else
 class Customer;

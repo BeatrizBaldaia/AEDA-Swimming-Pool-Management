@@ -59,9 +59,8 @@ float Customer::getMonthCost(unsigned int month) const{
 	return sum;
 }
 
-void Customer::attendLesson(Lesson * lesson, Date date, Time time){
-	PoolUse * x = new LessonUse(date, time, lesson);
-	uses.push_back(x);
+void Customer::attendLesson(GivenLesson lesson, Date date, Time time){
+	//TODO reimplementar
 }
 
 void Customer::addUse(PoolUse * pooluse){
@@ -73,13 +72,9 @@ void Customer::freeSwim(Time startTime, Date date, unsigned int duration){
 	uses.push_back(x);
 }
 
-bool Customer::attendedLesson(Lesson * lesson){
-	for(PoolUse * x : uses){
-		if(x->getLesson() == lesson){
-			return true;
-		}
-	}
-	return false;
+bool Customer::attendedLesson(const GivenLesson & lesson){
+	return 0;
+	//TODO reimplementar
 }
 
 int Customer::getEntryNumber() const{ //frequência com que os clientes vão á piscina
@@ -101,12 +96,12 @@ int Customer::getEntryNumber() const{ //frequência com que os clientes vão á pis
 /* TEACHER */
 
 Teacher::Teacher(string name, Date birthDate) : Person(name, birthDate) {
-	lessonsGiven = 0;
+	lessonsPerWeek = 0;
 }
 
 Teacher::Teacher(string name, Date birthDate, unsigned int ID) :
 		Person(name, birthDate, ID) {
-	lessonsGiven = 0;
+	lessonsPerWeek = 0;
 }
 
 float Teacher::getMonthCost(unsigned int month) const{
@@ -114,17 +109,21 @@ float Teacher::getMonthCost(unsigned int month) const{
 }
 
 int Teacher::getNumberLessons() const{
-	return lessonsGiven;
+	return lessonsPerWeek;
 }
 
 bool Teacher::operator < (const Teacher & t2) const{
-	return lessonsGiven < t2.getNumberLessons();
+	return lessonsPerWeek < t2.getNumberLessons();
 }
 
 void Teacher::setLesson(){
-	lessonsGiven++;
+	lessonsPerWeek++;
 }
 
 int Teacher::getEntryNumber() const{
 	return 0;
+}
+
+vector<PoolUse*> Customer::getPoolUses() {
+	return uses;
 }
