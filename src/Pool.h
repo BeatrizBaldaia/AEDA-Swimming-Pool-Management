@@ -9,7 +9,7 @@
 class Pool {
 public:
 	vector<Lesson> getLessonsByTeacher(string name);
-	vector<GivenLesson> getGivenLessons();
+	vector<GivenLesson *> getGivenLessons();
 	void addLesson(Lesson lesson);
 	unsigned int CostumersInLesson(GivenLesson lesson);
 	unsigned int CostumersFreeUse(Date date, Time time);

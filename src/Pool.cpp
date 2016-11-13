@@ -167,17 +167,17 @@ void Pool::writeSchedule() {
 void Pool::writeGivenLessons() {
 	ofstream givenLessonsFile(fileNames[4]);
 	givenLessonsFile << givenLessons.size() << endl;
-	for(GivenLesson & i : givenLessons) {
-		givenLessonsFile << i.getID() << ";";
-		givenLessonsFile << i.getLesson().getTeacher()->getID() << ";";
-		int mod = i.getLesson().getModality();
+	for(GivenLesson * i : givenLessons) {
+		givenLessonsFile << i->getID() << ";";
+		givenLessonsFile << i->getLesson().getTeacher()->getID() << ";";
+		int mod = i->getLesson().getModality();
 		givenLessonsFile << mod << ";";
-		int day = i.getLesson().getDayOfWeek();
+		int day = i->getLesson().getDayOfWeek();
 		givenLessonsFile << day << ";";
-		givenLessonsFile << i.getLesson().getTime() << ";";
-		givenLessonsFile << i.getDate() << ";";
-		for(Customer * j : i.getCustomers()) {
-			if(j == i.getCustomers().back()) {
+		givenLessonsFile << i->getLesson().getTime() << ";";
+		givenLessonsFile << i->getDate() << ";";
+		for(Customer * j : i->getCustomers()) {
+			if(j == i->getCustomers().back()) {
 				givenLessonsFile << j->getID();
 			} else {
 				givenLessonsFile << j->getID() << " ";
@@ -209,7 +209,7 @@ void Pool::write() {
 
 
 
-vector<GivenLesson> Pool::getGivenLessons(){
+vector<GivenLesson *> Pool::getGivenLessons(){
 	return givenLessons;
 }
 

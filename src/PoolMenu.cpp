@@ -100,9 +100,9 @@ MenuResult CurrentOccupation::handle(){
 			//it = find(pool.getGivenLessons().begin(), pool.getGivenLessons().end(), givenlesson); //ALGORITMO DE PESQUISA!!!!
 			//unsigned int numberCustomersLesson = it->getCustomers().size(); //número de pessoas que estão na aula atual
 			unsigned int numberCustomersLesson = 0;
-			for(const GivenLesson &x : pool.getGivenLessons()){
-				if(x == givenlesson){
-					numberCustomersLesson = x.getCustomers().size();
+			for( GivenLesson * x : pool.getGivenLessons()){
+				if((*x) == givenlesson){
+					numberCustomersLesson = x->getCustomers().size();
 					break;
 				}
 			}
