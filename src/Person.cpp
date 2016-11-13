@@ -59,8 +59,9 @@ float Customer::getMonthCost(unsigned int month) const{
 	return sum;
 }
 
-void Customer::attendLesson(GivenLesson lesson, Date date, Time time){
-	//TODO reimplementar
+void Customer::attendLesson(GivenLesson * lesson, Date date, Time time){ //no menu de adicionar aula, nesta GivenLesson vamos ter de adicionar o cliente ao seu vetor de customers
+	PoolUse * addlesson = new LessonUse (date, time, lesson);
+	uses.push_back(addlesson);
 }
 
 void Customer::addUse(PoolUse * pooluse){
@@ -72,9 +73,13 @@ void Customer::freeSwim(Time startTime, Date date, unsigned int duration){
 	uses.push_back(x);
 }
 
-bool Customer::attendedLesson(const GivenLesson & lesson){
-	return 0;
-	//TODO reimplementar
+bool Customer::attendedLesson(const GivenLesson * lesson){
+	for(PoolUse * x : uses){
+		if(x->getLesson() == lesson){
+			return true;
+		}
+	}
+	return false;
 }
 
 int Customer::getEntryNumber() const{ //frequência com que os clientes vão á piscina

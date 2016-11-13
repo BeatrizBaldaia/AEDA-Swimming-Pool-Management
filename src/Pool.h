@@ -23,6 +23,7 @@ public:
 	unsigned int getMaxCustomers() const;
 	Lesson getNextLesson(DayOfWeek day, Time time, bool & currentlesson) const;
 	void setFileNames(vector <string> v);
+	void addFreeUse(PoolUse * freeUse);
 
 	void load();
 	void write();
@@ -43,7 +44,7 @@ private:
 	vector <Customer *> customers;
 	vector <Teacher *> teachers; //Quando Pool é criado os vetores devem ser logo ordenados usando as funções sort;
 	vector <Lesson> schedule;     //Se o número de elementos do vetor for inferior ou igual a 20 usar INSERTION SORT senão usar QUICK SORT
-	vector <GivenLesson> givenLessons;
+	vector <GivenLesson *> givenLessons;
 	vector <PoolUse *> freeuses; //sempre que alguem que usar a piscina em modo livre, o uso é guardado neste vetor; usar freeuses.insert(freeuses.begin(), PoolUse * objeto) e não freeuses.push_back(...) para termos sempre os objetos mais recentes no inicio
 
 	vector <string> fileNames;

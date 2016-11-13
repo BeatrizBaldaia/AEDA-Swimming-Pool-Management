@@ -255,3 +255,7 @@ unsigned int Pool::CostumersFreeUse(Date date, Time time){
 
 	return result;
 }
+
+void Pool::addFreeUse(PoolUse * freeUse){
+	freeuses.insert(freeuses.begin(), freeUse);
+}

@@ -33,10 +33,10 @@ public:
 	Customer(string name, Date birthDate);
 	Customer(string name, Date birthDate, unsigned int ID);
 	float getMonthCost(unsigned int month) const;
-	void attendLesson(GivenLesson lesson, Date date, Time time);
-	void freeSwim(Time startTime, Date date, unsigned int duration);
-	void addUse(PoolUse * pooluse);
-	bool attendedLesson(const GivenLesson & lesson);
+	void attendLesson(GivenLesson * lesson, Date date, Time time); //adicionar aula (cliente foi a aula)
+	void freeSwim(Time startTime, Date date, unsigned int duration); //adicionar uso em modo livre
+	void addUse(PoolUse * pooluse); //o mesmo que a função de cima...
+	bool attendedLesson(const GivenLesson * lesson);
 	int getEntryNumber() const;
 	vector <PoolUse *> getPoolUses();
 private:

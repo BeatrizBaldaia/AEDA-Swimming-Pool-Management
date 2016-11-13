@@ -34,7 +34,7 @@ class GivenLesson {
 public:
 	GivenLesson(Lesson lesson, Date date);
 	GivenLesson(Lesson lesson, Date date, unsigned int ID);
-	void addCustomer(Customer * customer);
+	void addCustomer(Customer * customer); //função usada no menu de adicionar aulas a clientes
 	unsigned int getID() const;
 	Lesson getLesson() const;
 	Date getDate() const;
