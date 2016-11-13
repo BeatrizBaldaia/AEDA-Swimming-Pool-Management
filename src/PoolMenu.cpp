@@ -87,6 +87,7 @@ CurrentOccupation::CurrentOccupation(Pool & pool) : pool(pool) {
 MenuResult CurrentOccupation::handle(){
 	DayOfWeek day = getCurrentDayOfWeek();
 	Time time = getCurrentTime();
+	Date date = getCurrentDate();
 	bool currentlesson = false; //condição para saber se está a ocorrer de momento uma aula na piscina
 	try{
 		Lesson lesson = pool.getNextLesson(day, time, currentlesson);
@@ -94,14 +95,21 @@ MenuResult CurrentOccupation::handle(){
 
 		if(currentlesson){
 			cout << lesson.getModality() << "ends in " << lesson.getTime().getTimeGap(time) << "minutes" << endl;
-			Date date = getCurrentDate();
 			GivenLesson givenlesson(lesson, date);
-			vector<GivenLesson>::iterator it;
-			it = find(pool.getGivenLessons().begin(), pool.getGivenLessons().end(), givenlesson); //ALGORITMO DE PESQUISA!!!
-			unsigned int numberCustomersLesson = it->getCustomers().size(); //número de pessoas que estão na aula atual
+			//vector<GivenLesson>::iterator it;
+			//it = find(pool.getGivenLessons().begin(), pool.getGivenLessons().end(), givenlesson); //ALGORITMO DE PESQUISA!!!!
+			//unsigned int numberCustomersLesson = it->getCustomers().size(); //número de pessoas que estão na aula atual
+			unsigned int numberCustomersLesson = 0;
+			for(const GivenLesson &x : pool.getGivenLessons()){
+				if(x == givenlesson){
+					numberCustomersLesson = x.getCustomers().size();
+					break;
+				}
+			}
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// somar a numberCustomersLesson o número de clientes que também estão agora a usar a piscina, mas em modo livre//
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			numberCustomersLesson += pool.CostumersFreeUse(date, time);
 			cout << "There are " << numberCustomersLesson << " people in the pool." << endl;
 			if(pool.getMaxCustomers()-numberCustomersLesson > 0){
 				cout << "Only " << pool.getMaxCustomers()-numberCustomersLesson << " more people can log in." << endl;
@@ -112,7 +120,7 @@ MenuResult CurrentOccupation::handle(){
 		}
 		else{
 			cout << "Next lesson ( " << lesson.getModality() << " ) starts in " << lesson.getTime().getTimeGap(time) << " minutes" << endl;
-			unsigned int numberCustomersFree = 0; //número de clientes que estão a usar a piscina em modo livre
+			unsigned int numberCustomersFree = pool.CostumersFreeUse(date, time); //número de clientes que estão a usar a piscina em modo livre
 			if(numberCustomersFree == 0){
 				cout << "No one is in the pool at the moment." << endl
 						<< pool.getMaxCustomers() << " people can log in." << endl;
@@ -131,7 +139,7 @@ MenuResult CurrentOccupation::handle(){
 		cout << "There's no more lessons today." << endl;
 		//dar o número de pessoas a usar a piscina em modo livre
 		//fazer return/ acabar com a função
-		unsigned int numberCustomersFree = 0; //número de clientes que estão a usar a piscina em modo livre
+		unsigned int numberCustomersFree = pool.CostumersFreeUse(date, time); //número de clientes que estão a usar a piscina em modo livre
 		if(numberCustomersFree == 0){
 			cout << "No one is in the pool at the moment." << endl
 					<< pool.getMaxCustomers() << " people can log in." << endl;

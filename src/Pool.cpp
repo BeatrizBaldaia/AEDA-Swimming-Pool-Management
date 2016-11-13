@@ -113,6 +113,7 @@ void Pool::writePoolInfo() {
 	poolInfoFile << name;
 	poolInfoFile << ";";
 	poolInfoFile << maxCustomers;
+	poolInfoFile.close();
 }
 
 void Pool::writeCustomers() {
@@ -135,20 +136,22 @@ void Pool::writeCustomers() {
 			customersFile << j->getDuration() << endl;
 		}
 	}
+	customersFile.close();
 }
 
 void Pool::writeTeachers() {
-	ofstream teachersFile(fileNames[1]);
+	ofstream teachersFile(fileNames[2]);
 	teachersFile << teachers.size() << endl;
 	for(Teacher * i : teachers) {
 		teachersFile << i->getID() << ";";
 		teachersFile << i->getName() << ";";
 		teachersFile << i->getBirthDate() << endl;
 	}
+	teachersFile.close();
 }
 
 void Pool::writeSchedule() {
-	ofstream scheduleFile(fileNames[1]);
+	ofstream scheduleFile(fileNames[3]);
 	scheduleFile << schedule.size() << endl;
 	for(const Lesson & i : schedule) {
 		scheduleFile << i.getTeacher()->getID() << ";";
@@ -158,18 +161,11 @@ void Pool::writeSchedule() {
 		scheduleFile << day << ";";
 		scheduleFile << i.getTime() << endl;
 	}
-}
-
-void Pool::write() {
-	writePoolInfo();
-	writeCustomers();
-	writeTeachers();
-	writeSchedule();
-	writeGivenLessons();
+	scheduleFile.close();
 }
 
 void Pool::writeGivenLessons() {
-	ofstream givenLessonsFile(fileNames[1]);
+	ofstream givenLessonsFile(fileNames[4]);
 	givenLessonsFile << givenLessons.size() << endl;
 	for(GivenLesson & i : givenLessons) {
 		givenLessonsFile << i.getID() << ";";
@@ -189,7 +185,29 @@ void Pool::writeGivenLessons() {
 		}
 		givenLessonsFile << endl;
 	}
+	givenLessonsFile.close();
 }
+
+void Pool::writeFreeUses(){
+	ofstream freeusesFile(fileNames[5]);
+	freeusesFile << freeuses.size() << endl;
+	for(PoolUse * i : freeuses) {
+		freeusesFile << i->getDate() << ";";
+		freeusesFile << i->getTime() << ";";
+		freeusesFile << i->getDuration() << endl;
+	}
+	freeusesFile.close();
+}
+
+void Pool::write() {
+	writePoolInfo();
+	writeCustomers();
+	writeTeachers();
+	writeSchedule();
+	writeGivenLessons();
+}
+
+
 
 vector<GivenLesson> Pool::getGivenLessons(){
 	return givenLessons;
@@ -221,4 +239,19 @@ Lesson Pool::getNextLesson(DayOfWeek day, Time time, bool & currentlesson) const
 	}
 
 	return next;
+}
+
+unsigned int Pool::CostumersFreeUse(Date date, Time time){
+	unsigned int result = 0;
+	for(PoolUse * x : freeuses){
+		if(x->getDate() == date){
+			if(x->getTime() < time){
+				if(x->getTime().getTimeGap(time) < x->getDuration()){ //pessoa ainda a usar a piscina em modo livre
+					result++;
+				}
+			}
+		}
+	}
+
+	return result;
 }

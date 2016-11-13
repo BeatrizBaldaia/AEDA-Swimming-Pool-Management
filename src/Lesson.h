@@ -38,7 +38,7 @@ public:
 	unsigned int getID() const;
 	Lesson getLesson() const;
 	Date getDate() const;
-	vector <Customer *> getCustomers();
+	vector <Customer *> getCustomers() const;
 	bool operator == (const GivenLesson &givenlesson) const;
 	static unsigned int lastID;
 private:

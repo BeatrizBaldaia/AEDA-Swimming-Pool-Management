@@ -24,6 +24,7 @@ public:
 	FreeSwimUse (Date d, Time t, unsigned int dur);
 	float getCost() const;
 	GivenLesson * getLesson() const;
+	unsigned int getDuration() const;
 private:
     static float cost30;
 };
@@ -33,6 +34,7 @@ public:
     LessonUse (Date d, Time t, GivenLesson *l); //duração sempre 1 hora
     float getCost() const;
     GivenLesson * getLesson() const;
+    unsigned int getDuration() const;
 private:
     GivenLesson * lesson;
 

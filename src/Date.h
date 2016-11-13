@@ -49,7 +49,6 @@ public:
 	bool operator > (const Time &time) const;
 	bool operator == (const Time &time) const;
 	unsigned int getTimeGap(const Time &time);
-	//TODO: operador que adiciona a Time a duração da aula para saber a hora a que esta acaba
 private:
 	unsigned int hour;
 	unsigned int minute;

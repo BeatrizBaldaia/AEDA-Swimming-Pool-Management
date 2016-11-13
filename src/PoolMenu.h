@@ -26,7 +26,7 @@ private:
 
 /* CURRENT OCCUPATION MENU */
 
-class CurrentOccupation{
+class CurrentOccupation : public MenuHandler{
 public:
 	CurrentOccupation(Pool & pool);
 	MenuResult handle();
