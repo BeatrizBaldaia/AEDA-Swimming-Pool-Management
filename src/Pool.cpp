@@ -191,7 +191,11 @@ void Pool::writeGivenLessons() {
 	}
 }
 
-Lesson Pool::getNextLesson(DayOfWeek day, Time time) const{ //Ia usar esta função para o menu PoolOccupation para obter a aula que estava a ocorrer ou a próxima aula que ia começar
+vector<GivenLesson> Pool::getGivenLessons(){
+	return givenLessons;
+}
+
+Lesson Pool::getNextLesson(DayOfWeek day, Time time, bool & currentlesson) const{ //Ia usar esta função para o menu PoolOccupation para obter a aula que estava a ocorrer ou a próxima aula que ia começar
 	unsigned int gap= 100000;
 	bool excecao = true;
 	Lesson next;
@@ -199,6 +203,7 @@ Lesson Pool::getNextLesson(DayOfWeek day, Time time) const{ //Ia usar esta funçã
 		if(x.getDayOfWeek() == day){
 			if(x.getTime() < time){
 				if(x.getTime().getTimeGap(time) < 60){ //aula que inda está a decorrer
+					currentlesson = true;
 					return x;
 				}
 			}

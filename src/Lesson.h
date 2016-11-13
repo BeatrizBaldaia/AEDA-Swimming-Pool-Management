@@ -22,6 +22,7 @@ public:
     DayOfWeek getDayOfWeek() const;
     Time getTime() const;
     Modality getModality() const;
+    bool operator == (const Lesson &lesson) const;
 
 private:
     Teacher * teacher;
@@ -38,6 +39,7 @@ public:
 	Lesson getLesson() const;
 	Date getDate() const;
 	vector <Customer *> getCustomers();
+	bool operator == (const GivenLesson &givenlesson) const;
 	static unsigned int lastID;
 private:
 	Lesson lesson;

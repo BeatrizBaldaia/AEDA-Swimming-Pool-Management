@@ -61,6 +61,9 @@ ostream & operator << (ostream & out, const Lesson & lesson){
 	return out;
 }
 
+bool Lesson::operator == (const Lesson &lesson) const{
+	return teacher == lesson.getTeacher() && modality == lesson.getModality() && lessonTime.first() == lesson.getDayOfWeek() && lessonTime.second() == lesson.getTime();
+}
 GivenLesson::GivenLesson(Lesson lesson, Date date) {
 	this->lesson = lesson;
 	this->date = date;
@@ -92,4 +95,8 @@ Date GivenLesson::getDate() const {
 
 vector<Customer*> GivenLesson::getCustomers() {
 	return customers;
+}
+
+bool GivenLesson::operator == (const GivenLesson &givenlesson) const{
+	return (lesson == givenlesson.getLesson() && date == givenlesson.getDate());
 }

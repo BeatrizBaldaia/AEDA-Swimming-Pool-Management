@@ -4,6 +4,8 @@
 #include "Menu.h"
 #include "Pool.h"
 
+/* POOL MENU */
+
 class PoolMenu : public Menu {
 public:
 	PoolMenu(Pool & pool);
@@ -11,6 +13,8 @@ public:
 private:
 	Pool & pool;
 };
+
+/* ADD CUSTOMER MENU */
 
 class AddCustomer : public MenuHandler {
 public:
@@ -20,6 +24,15 @@ private:
 	Pool & pool;
 };
 
+/* CURRENT OCCUPATION MENU */
+
+class CurrentOccupation{
+public:
+	CurrentOccupation(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
 
 
 #endif /* SRC_POOLMENU_H_ */
