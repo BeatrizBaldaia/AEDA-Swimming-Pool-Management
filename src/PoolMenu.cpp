@@ -109,7 +109,7 @@ MenuResult CurrentOccupation::handle(){
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// somar a numberCustomersLesson o número de clientes que também estão agora a usar a piscina, mas em modo livre//
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			numberCustomersLesson += pool.CostumersFreeUse(date, time);
+			numberCustomersLesson += pool.CustomersFreeUse(date, time);
 			cout << "There are " << numberCustomersLesson << " people in the pool." << endl;
 			if(pool.getMaxCustomers()-numberCustomersLesson > 0){
 				cout << "Only " << pool.getMaxCustomers()-numberCustomersLesson << " more people can log in." << endl;
@@ -120,7 +120,7 @@ MenuResult CurrentOccupation::handle(){
 		}
 		else{
 			cout << "Next lesson ( " << lesson.getModality() << " ) starts in " << lesson.getTime().getTimeGap(time) << " minutes" << endl;
-			unsigned int numberCustomersFree = pool.CostumersFreeUse(date, time); //número de clientes que estão a usar a piscina em modo livre
+			unsigned int numberCustomersFree = pool.CustomersFreeUse(date, time); //número de clientes que estão a usar a piscina em modo livre
 			if(numberCustomersFree == 0){
 				cout << "No one is in the pool at the moment." << endl
 						<< pool.getMaxCustomers() << " people can log in." << endl;
@@ -139,7 +139,7 @@ MenuResult CurrentOccupation::handle(){
 		cout << "There's no more lessons today." << endl;
 		//dar o número de pessoas a usar a piscina em modo livre
 		//fazer return/ acabar com a função
-		unsigned int numberCustomersFree = pool.CostumersFreeUse(date, time); //número de clientes que estão a usar a piscina em modo livre
+		unsigned int numberCustomersFree = pool.CustomersFreeUse(date, time); //número de clientes que estão a usar a piscina em modo livre
 		if(numberCustomersFree == 0){
 			cout << "No one is in the pool at the moment." << endl
 					<< pool.getMaxCustomers() << " people can log in." << endl;

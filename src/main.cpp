@@ -14,13 +14,18 @@ int main() {
 	Pool pool;
 
 	pool.setFileNames(fileNames);
-	pool.loadPoolInfo();
-	pool.loadCustomers();
-
+	pool.load();
+	Teacher * teacher = new Teacher("Mariana Santos", Date(20,04,1980));
+	pool.addTeacher(teacher);
+	Lesson lesson(LessonTime(MON, Time(10, 0)), HydroGym);
+	lesson.setTeacher(teacher);
+	pool.addLesson(lesson);
 	Customer * c = new Customer("João Silva", Date(10,12,2005));
 	pool.addCustomer(c);
-	pool.writePoolInfo();
-	pool.writeCustomers();
+	pool.attendLesson(lesson,c,Date(14,11,2016));
+	pool.attendLesson(lesson,pool.getCustomer(1),Date(14,11,2016));
+	pool.addFreeSwim(pool.getCustomer(3), Date(14,11,2016), Time(10, 10), 30);
+	pool.write();
 
 	return 0;
 

@@ -10,13 +10,14 @@ class Pool {
 public:
 	vector<Lesson> getLessonsByTeacher(string name);
 	vector<GivenLesson *> getGivenLessons();
+	GivenLesson * getGivenLesson(Lesson lesson, Date date);
 	void addLesson(Lesson lesson);
-	unsigned int CostumersInLesson(GivenLesson lesson);
-	unsigned int CostumersFreeUse(Date date, Time time);
+	unsigned int CustomersInLesson(GivenLesson lesson);
+	unsigned int CustomersFreeUse(Date date, Time time);
 	Lesson getLesson(DayOfWeek day, Time time) const; //usa exceção: try{...} catch(InvalidLesson x){cout << "There's no lesson on " << x.day << " at " << x.time;
-	vector<Customer *> getAllCostumer() const;
-	Customer * getCostumer(string name) const; //usa exceção: try{...} catch(NonExistentCustomer x){cout << "There's no such customer named " << x.name;
-	Customer * getCostumer (unsigned int ID) const; //usa exceção: try{...} catch(NonExistentCustomer x){cout << "There's no such customer with ID " << x.ID;
+	vector<Customer *> getAllCustomer();
+	Customer * getCustomer(string name); //usa exceção: try{...} catch(NonExistentCustomer x){cout << "There's no such customer named " << x.name;
+	Customer * getCustomer (unsigned int ID); //usa exceção: try{...} catch(NonExistentCustomer x){cout << "There's no such customer with ID " << x.ID;
 	void setName(string name);
 	void setMaxCustomers(unsigned int n);
 	string getName() const;
@@ -25,7 +26,12 @@ public:
 	void setFileNames(vector <string> v);
 	void addFreeUse(PoolUse * freeUse);
 
+	void attendLesson(Lesson lesson, Customer * customer, Date date);
+	void addFreeSwim(Customer * customer, Date date, Time time, unsigned int duration);
+
 	void addCustomer(Customer * c);
+	void addTeacher(Teacher * t);
+	Teacher * getTeacher(unsigned int ID);
 
 	void load();
 	void write();
@@ -41,13 +47,12 @@ public:
 	void writeTeachers();
 	void writeSchedule();
 	void writeGivenLessons();
-	void writeFreeUses();
 private:
 	vector <Customer *> customers;
 	vector <Teacher *> teachers; //Quando Pool é criado os vetores devem ser logo ordenados usando as funções sort;
 	vector <Lesson> schedule;     //Se o número de elementos do vetor for inferior ou igual a 20 usar INSERTION SORT senão usar QUICK SORT
 	vector <GivenLesson *> givenLessons;
-	vector <PoolUse *> freeuses; //sempre que alguem que usar a piscina em modo livre, o uso é guardado neste vetor; usar freeuses.insert(freeuses.begin(), PoolUse * objeto) e não freeuses.push_back(...) para termos sempre os objetos mais recentes no inicio
+	vector <PoolUse *> freeUses; //sempre que alguem que usar a piscina em modo livre, o uso é guardado neste vetor; usar freeuses.insert(freeuses.begin(), PoolUse * objeto) e não freeuses.push_back(...) para termos sempre os objetos mais recentes no inicio
 
 	vector <string> fileNames;
 	// 0 poolinfo

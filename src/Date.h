@@ -5,6 +5,10 @@
 
 using namespace std;
 
+enum DayOfWeek {
+	MON, TUE, WED, THU, FRI, SAT, SUN
+};
+
 class Date
 {
 public:
@@ -15,6 +19,7 @@ public:
 	unsigned int getDay() const;
 	unsigned int getMonth() const;
 	unsigned int getYear() const;
+	DayOfWeek getDayOfWeek() const;
 
 	void setDay(const unsigned int &day);
 	void setMonth(const unsigned int &month);
@@ -26,7 +31,6 @@ public:
 	bool operator < (const Date &date) const;
 	bool operator > (const Date &date) const;
 	bool operator == (const Date &date) const;
-
 
 	bool between(const Date &min, const Date &max);
 	
@@ -54,10 +58,6 @@ public:
 private:
 	unsigned int hour;
 	unsigned int minute;
-};
-
-enum DayOfWeek {
-	MON, TUE, WED, THU, FRI, SAT, SUN
 };
 
 bool isLeapYear(const unsigned int &year);

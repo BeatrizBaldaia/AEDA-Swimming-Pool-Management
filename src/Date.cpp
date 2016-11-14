@@ -244,19 +244,19 @@ istream & operator >> (istream & in, Date & date) {
 	return in;
 }
 
-DayOfWeek calcDayOfWeek(Date date) {
-	int d = date.getDay(), m = date.getMonth(), y = date.getYear();
+DayOfWeek Date::getDayOfWeek() const {
+	int y = year;
 	static int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
-	y -= m < 3;
-	int result = ( y + y/4 - y/100 + y/400 + t[m-1] + d) % 7;
+	y -= month < 3;
+	int result = ( y + y/4 - y/100 + y/400 + t[month-1] + day) % 7;
 	switch (result){
+	case 0: return SUN;
 	case 1: return MON;
 	case 2: return TUE;
 	case 3: return WED;
 	case 4: return THU;
 	case 5: return FRI;
 	case 6: return SAT;
-	case 7: return SUN;
 	}
 }
 

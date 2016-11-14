@@ -1,6 +1,7 @@
 #include "Pool.h"
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 
 vector<Lesson> Pool::getLessonsByTeacher(string name){
 	vector<Lesson> result;
@@ -25,7 +26,7 @@ void Pool::addLesson(Lesson lesson){
 	sort(teachers.begin(),teachers.end(),[](Teacher * a, Teacher * b){return a->getNumberLessons() < b->getNumberLessons();});
 }
 
-unsigned int Pool::CostumersInLesson(GivenLesson lesson){
+unsigned int Pool::CustomersInLesson(GivenLesson lesson){
 	return lesson.getCustomers().size();
 }
 
@@ -40,7 +41,7 @@ Lesson Pool::getLesson(DayOfWeek day, Time time) const{
 }
 
 
-vector<Customer *> Pool::getAllCostumer() const{
+vector<Customer *> Pool::getAllCustomer() {
 	vector<Customer *> result;
 	for(Customer * x : customers){
 		result.push_back(x);
@@ -50,7 +51,7 @@ vector<Customer *> Pool::getAllCostumer() const{
 	return result;
 }
 
-Customer * Pool::getCostumer(string name) const{
+Customer * Pool::getCustomer(string name) {
 	for(Customer * x : customers){
 		if(x->getName() == name){
 			return x;
@@ -61,7 +62,7 @@ Customer * Pool::getCostumer(string name) const{
 
 }
 
-Customer * Pool::getCostumer(unsigned int ID) const{
+Customer * Pool::getCustomer(unsigned int ID) {
 	for(Customer * x : customers){
 		if(x->getID() == ID){
 			return x;
@@ -164,6 +165,45 @@ void Pool::writeSchedule() {
 	scheduleFile.close();
 }
 
+void Pool::addTeacher(Teacher* t) {
+	teachers.push_back(t);
+}
+
+void Pool::attendLesson(Lesson lesson, Customer* customer, Date date) {
+	if(lesson.getDayOfWeek() != date.getDayOfWeek()) {
+		throw string("wtf dude. that ain't the same day, dumbass"); //TODO
+	}
+	GivenLesson * givenLesson;
+	try {
+		givenLesson = getGivenLesson(lesson, date);
+	} catch (string x) {
+		if(x == "given lesson not found") {
+			givenLesson = new GivenLesson(lesson, date);
+			givenLessons.push_back(givenLesson);
+		}
+	}
+	givenLesson->addCustomer(customer);
+	customer->attendLesson(givenLesson, date, lesson.getTime());
+}
+
+GivenLesson* Pool::getGivenLesson(Lesson lesson, Date date) {
+	if(lesson.getDayOfWeek() != date.getDayOfWeek()) {
+		throw string("wtf dude. that ain't the same day, dumbass"); //TODO
+	}
+	for(GivenLesson * x : givenLessons) {
+		if(x->getLesson() == lesson && x->getDate() == date) {
+			return x;
+		}
+	}
+	throw string("given lesson not found");
+}
+
+void Pool::addFreeSwim(Customer* customer, Date date, Time time, unsigned int duration) {
+	PoolUse * poolUse = new FreeSwimUse(date,time,duration);
+	customer->addUse(poolUse);
+	freeUses.push_back(poolUse);
+}
+
 void Pool::writeGivenLessons() {
 	ofstream givenLessonsFile(fileNames[4]);
 	givenLessonsFile << givenLessons.size() << endl;
@@ -225,62 +265,102 @@ void Pool::loadCustomers() {
 			customersFile >> duration;
 			PoolUse * p = new FreeSwimUse(useDate, useTime, duration);
 			c->addUse(p);
+			freeUses.push_back(p);
 		}
 		customers.push_back(c);
 	}
 }
 
 void Pool::loadTeachers() {
-	ifstream customersFile(fileNames[1]);
+	ifstream teachersFile(fileNames[2]);
 	unsigned int n;
-	customersFile >> n;
+	teachersFile >> n;
 	for(size_t i = 0; i < n; i++) {
 		unsigned int ID;
-		customersFile >> ID;
-		customersFile.ignore();
+		teachersFile >> ID;
+		teachersFile.ignore();
 		string name;
-		getline(customersFile, name, ';');
+		getline(teachersFile, name, ';');
 		Date birthDate;
-		customersFile >> birthDate;
-		customersFile.ignore();
-		Customer * c = new Customer(name, birthDate, ID);
-		unsigned int m;
-		customersFile >> m;
-		for(size_t j = 0; j < m; j++){
-			Date useDate;
-			customersFile >> useDate;
-			customersFile.ignore();
-			Time useTime;
-			customersFile >> useTime;
-			customersFile.ignore();
-			unsigned int duration;
-			customersFile >> duration;
-			PoolUse * p = new FreeSwimUse(useDate, useTime, duration);
-			c->addUse(p);
-		}
-		customers.push_back(c);
+		teachersFile >> birthDate;
+		teachersFile.ignore();
+		Teacher * t = new Teacher(name, birthDate, ID);
+		teachers.push_back(t);
 	}
 }
 
 void Pool::loadSchedule() {
+	ifstream scheduleFile(fileNames[3]);
+	unsigned int n;
+	scheduleFile >> n;
+	for(size_t i = 0; i < n; i++) {
+		unsigned int teacherID;
+		scheduleFile >> teacherID;
+		Teacher * t = getTeacher(teacherID);
+		scheduleFile.ignore();
+		unsigned int modValue;
+		scheduleFile >> modValue;
+		Modality mod = static_cast<Modality>(modValue);
+		scheduleFile.ignore();
+		unsigned int dowValue;
+		scheduleFile >> dowValue;
+		DayOfWeek dow = static_cast<DayOfWeek>(dowValue);
+		scheduleFile.ignore();
+		Time time;
+		scheduleFile >> time;
+		Lesson lesson(LessonTime(dow, time), mod);
+		lesson.setTeacher(t);
+		schedule.push_back(lesson);
+	}
 }
 
 void Pool::loadGivenLessons() {
+	ifstream givenLessonsFile(fileNames[4]);
+	unsigned int n;
+	givenLessonsFile >> n;
+	for(size_t i = 0; i < n; i++) {
+		unsigned int ID;
+		givenLessonsFile >> ID;
+		givenLessonsFile.ignore();
+		unsigned int teacherID;
+		givenLessonsFile >> teacherID;
+		Teacher * t = getTeacher(teacherID);
+		givenLessonsFile.ignore();
+		unsigned int modValue;
+		givenLessonsFile >> modValue;
+		Modality mod = static_cast<Modality>(modValue);
+		givenLessonsFile.ignore();
+		unsigned int dowValue;
+		givenLessonsFile >> dowValue;
+		DayOfWeek dow = static_cast<DayOfWeek>(dowValue);
+		givenLessonsFile.ignore();
+		Time time;
+		givenLessonsFile >> time;
+		Lesson lesson(LessonTime(dow, time), mod);
+		lesson.setTeacher(t);
+		givenLessonsFile.ignore();
+		Date date;
+		givenLessonsFile >> date;
+		givenLessonsFile.ignore();
+		GivenLesson * givenLesson = new GivenLesson(lesson,date,ID);
+		givenLessons.push_back(givenLesson);
+		t->setLesson();
+		string customersString;
+		getline(givenLessonsFile, customersString);
+		stringstream customersSS(customersString);
+		while(customersSS) {
+			unsigned int customerID;
+			customersSS >> customerID;
+			Customer * customer = getCustomer(customerID);
+			givenLesson->addCustomer(customer);
+			PoolUse * poolUse = new LessonUse(date, time, givenLesson);
+			customer->addUse(poolUse);
+		}
+	}
 }
 
 void Pool::addCustomer(Customer* c) {
 	customers.push_back(c);
-}
-
-void Pool::writeFreeUses(){
-	ofstream freeusesFile(fileNames[5]);
-	freeusesFile << freeuses.size() << endl;
-	for(PoolUse * i : freeuses) {
-		freeusesFile << i->getDate() << ";";
-		freeusesFile << i->getTime() << ";";
-		freeusesFile << i->getDuration() << endl;
-	}
-	freeusesFile.close();
 }
 
 void Pool::write() {
@@ -325,9 +405,9 @@ Lesson Pool::getNextLesson(DayOfWeek day, Time time, bool & currentlesson) const
 	return next;
 }
 
-unsigned int Pool::CostumersFreeUse(Date date, Time time){
+unsigned int Pool::CustomersFreeUse(Date date, Time time){
 	unsigned int result = 0;
-	for(PoolUse * x : freeuses){
+	for(PoolUse * x : freeUses){
 		if(x->getDate() == date){
 			if(x->getTime() < time){
 				if(x->getTime().getTimeGap(time) < x->getDuration()){ //pessoa ainda a usar a piscina em modo livre
@@ -341,5 +421,22 @@ unsigned int Pool::CostumersFreeUse(Date date, Time time){
 }
 
 void Pool::addFreeUse(PoolUse * freeUse){
-	freeuses.insert(freeuses.begin(), freeUse);
+	freeUses.insert(freeUses.begin(), freeUse);
+}
+
+Teacher* Pool::getTeacher(unsigned int ID) {
+	for(Teacher * x : teachers) {
+		if(x->getID() == ID) {
+			return x;
+		}
+	}
+	return NULL;
+}
+
+void Pool::load() {
+	loadPoolInfo();
+	loadCustomers();
+	loadTeachers();
+	loadSchedule();
+	loadGivenLessons();
 }
