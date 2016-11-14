@@ -43,6 +43,8 @@ public:
 	Time(unsigned int h, unsigned int m);
 	unsigned int getHour() const;
 	unsigned int getMinute() const;
+	void setHour(unsigned int h);
+	void setMinute(unsigned int m);
 	bool operator <= (const Time &time) const;
 	bool operator >= (const Time &time) const;
 	bool operator < (const Time &time) const;
@@ -65,5 +67,6 @@ ostream & operator << (ostream & out, const Time & t);
 ostream & operator << (ostream & out, const DayOfWeek & d);
 ostream & operator << (ostream & out, const Date & d);
 istream & operator >> (istream & in, Date & d);
+istream & operator >> (istream & in, Time & t);
 
 #endif

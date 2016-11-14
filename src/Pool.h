@@ -25,6 +25,8 @@ public:
 	void setFileNames(vector <string> v);
 	void addFreeUse(PoolUse * freeUse);
 
+	void addCustomer(Customer * c);
+
 	void load();
 	void write();
 

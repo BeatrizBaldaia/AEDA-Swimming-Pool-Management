@@ -2,9 +2,9 @@
 #include "Person.h"
 #include <stdio.h>      /* puts, printf */
 #include <time.h>       /* time_t, struct tm, time, localtime */
+//TODO ^^^ Não uses bibliotecas .h. Tenta usar as bibliotecas de cpp (por exemplo time.h é ctime)
 
-
-/* FUNÇÕES UTEIS */
+/* FUNÇÕES UTEIS */ //TODO \/\/\/ Passa o que trabalha sem Pool para o Date.
 
 Date getCurrentDate(){  //retorna dia, mês e ano atual
 	unsigned int day, month, year;

@@ -12,6 +12,7 @@ Date::Date(const unsigned int & day, const unsigned int & month, const unsigned 
 			this->day = day;
 			this->month = month;
 			this->year = year;
+			return;
 		}
 		throw InvalidDay;
 	}
@@ -350,6 +351,14 @@ bool Time::operator >(const Time& time) const {
 	return hour*60+minute > time.getHour()*60+time.getMinute();
 }
 
+void Time::setHour(unsigned int h) {
+	hour = h;
+}
+
+void Time::setMinute(unsigned int m) {
+	minute = m;
+}
+
 unsigned int Time::getTimeGap (const Time &time){
 	return abs(hour*60+minute - time.getHour()*60+time.getMinute());
 }
@@ -361,3 +370,12 @@ bool Time::operator ==(const Time& time) const {
 	return false;
 }
 
+istream& operator >>(istream& in, Time& t) {
+	unsigned int h, m;
+	in >> h;
+	in.ignore();
+	in >> m;
+	t.setHour(h);
+	t.setMinute(m);
+	return in;
+}

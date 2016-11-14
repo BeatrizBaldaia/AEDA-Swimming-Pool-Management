@@ -64,9 +64,10 @@ ostream & operator << (ostream & out, const Lesson & lesson){
 bool Lesson::operator == (const Lesson &lesson) const{
 	return teacher == lesson.getTeacher() && modality == lesson.getModality() && lessonTime.first == lesson.getDayOfWeek() && lessonTime.second == lesson.getTime();
 }
-GivenLesson::GivenLesson(Lesson lesson, Date date) {
+GivenLesson::GivenLesson(Lesson lesson, Date date) : ID(lastID+1) {
 	this->lesson = lesson;
 	this->date = date;
+	lastID++;
 }
 
 GivenLesson::GivenLesson(Lesson lesson, Date date, unsigned int ID) {

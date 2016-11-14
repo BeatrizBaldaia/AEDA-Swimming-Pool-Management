@@ -14,7 +14,15 @@ int main() {
 	Pool pool;
 
 	pool.setFileNames(fileNames);
-	pool.setMaxCustomers(60);
+	pool.loadPoolInfo();
+	pool.loadCustomers();
+
+	Customer * c = new Customer("João Silva", Date(10,12,2005));
+	pool.addCustomer(c);
+	pool.writePoolInfo();
+	pool.writeCustomers();
+
+	return 0;
 
 	//TODO: load and sort!
 	/*

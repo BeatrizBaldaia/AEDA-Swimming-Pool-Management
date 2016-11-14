@@ -5,7 +5,7 @@ unsigned int Person::lastID = 0;
 
 /* PERSON */
 
-Person::Person(string name, Date birthDate) : ID(lastID) {
+Person::Person(string name, Date birthDate) : ID(lastID+1) {
 	this->name = name;
 	this->birthDate = birthDate;
 	lastID++;

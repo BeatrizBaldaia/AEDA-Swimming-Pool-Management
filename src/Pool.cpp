@@ -188,6 +188,90 @@ void Pool::writeGivenLessons() {
 	givenLessonsFile.close();
 }
 
+void Pool::loadPoolInfo() {
+	ifstream poolInfoFile(fileNames[0]);
+	string name;
+	getline(poolInfoFile, name, ';');
+	setName(name);
+	unsigned int maxCustomers;
+	poolInfoFile >> maxCustomers;
+	setMaxCustomers(maxCustomers);
+}
+
+void Pool::loadCustomers() {
+	ifstream customersFile(fileNames[1]);
+	unsigned int n;
+	customersFile >> n;
+	for(size_t i = 0; i < n; i++) {
+		unsigned int ID;
+		customersFile >> ID;
+		customersFile.ignore();
+		string name;
+		getline(customersFile, name, ';');
+		Date birthDate;
+		customersFile >> birthDate;
+		customersFile.ignore();
+		Customer * c = new Customer(name, birthDate, ID);
+		unsigned int m;
+		customersFile >> m;
+		for(size_t j = 0; j < m; j++){
+			Date useDate;
+			customersFile >> useDate;
+			customersFile.ignore();
+			Time useTime;
+			customersFile >> useTime;
+			customersFile.ignore();
+			unsigned int duration;
+			customersFile >> duration;
+			PoolUse * p = new FreeSwimUse(useDate, useTime, duration);
+			c->addUse(p);
+		}
+		customers.push_back(c);
+	}
+}
+
+void Pool::loadTeachers() {
+	ifstream customersFile(fileNames[1]);
+	unsigned int n;
+	customersFile >> n;
+	for(size_t i = 0; i < n; i++) {
+		unsigned int ID;
+		customersFile >> ID;
+		customersFile.ignore();
+		string name;
+		getline(customersFile, name, ';');
+		Date birthDate;
+		customersFile >> birthDate;
+		customersFile.ignore();
+		Customer * c = new Customer(name, birthDate, ID);
+		unsigned int m;
+		customersFile >> m;
+		for(size_t j = 0; j < m; j++){
+			Date useDate;
+			customersFile >> useDate;
+			customersFile.ignore();
+			Time useTime;
+			customersFile >> useTime;
+			customersFile.ignore();
+			unsigned int duration;
+			customersFile >> duration;
+			PoolUse * p = new FreeSwimUse(useDate, useTime, duration);
+			c->addUse(p);
+		}
+		customers.push_back(c);
+	}
+}
+
+void Pool::loadSchedule() {
+}
+
+void Pool::loadGivenLessons() {
+}
+
+void Pool::addCustomer(Customer* c) {
+	customers.push_back(c);
+}
+
 void Pool::writeFreeUses(){
 	ofstream freeusesFile(fileNames[5]);
 	freeusesFile << freeuses.size() << endl;
