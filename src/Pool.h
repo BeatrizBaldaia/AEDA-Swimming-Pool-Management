@@ -24,6 +24,7 @@ public:
 	Lesson getNextLesson(DayOfWeek day, Time time, bool & currentlesson) const;
 	void setFileNames(vector <string> v);
 	void addFreeUse(PoolUse * freeUse);
+	void showCurrentOcupation();
 
 	void load();
 	void write();

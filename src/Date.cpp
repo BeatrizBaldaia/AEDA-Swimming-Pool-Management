@@ -1,6 +1,7 @@
 #include <sstream>
 #include <iostream>
 #include <cmath>
+#include <ctime>
 #include "Date.h"
 
 Date::Date(const unsigned int & day, const unsigned int & month, const unsigned int & year)
@@ -359,5 +360,41 @@ bool Time::operator ==(const Time& time) const {
 		return true;
 	}
 	return false;
+}
+Time Time::operator + (const Time &time) const {
+	unsigned int hour = this->hour + time.getHour();
+	if (this->minute + time.getMinute() >= 60)
+		hour++;
+	unsigned int minute = (this->minute + time.getMinute())%60;
+	Time newTime(hour, minute);
+	return newTime;
+}
+Time Time::operator + (unsigned int minutes)
+{
+	unsigned int hour = this->hour;
+	if (this->minute + minutes >= 60)
+		hour += (this->minute + minutes)/60;
+	unsigned int minute = (this->minute + minutes)%60;
+	Time newTime(hour, minute);
+	return newTime;
+}
+
+Moment getCurrentMoment()
+{
+	time_t t = time(0);
+	struct tm * now = localtime( & t );
+	Date momentDate(now->tm_mday,now->tm_mon + 1,now->tm_year + 1900);
+	Time momentTime(now->tm_hour,now->tm_min);
+	Moment thisMoment (momentDate, momentTime);
+	return thisMoment;
+}
+WeekMoment getCurrentWeekMoment()
+{
+	time_t t = time(0);
+	struct tm * now = localtime( & t );
+	DayOfWeek weekDay = static_cast<DayOfWeek>(now->tm_wday);
+	Time momentTime(now->tm_hour,now->tm_min);
+	WeekMoment thisWeekMoment (weekDay, momentTime);
+	return thisWeekMoment;
 }
 
