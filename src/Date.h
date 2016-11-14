@@ -48,8 +48,6 @@ public:
 	bool operator < (const Time &time) const;
 	bool operator > (const Time &time) const;
 	bool operator == (const Time &time) const;
-	Time operator + (const Time &time) const;
-	Time operator + (unsigned int minutes);
 	unsigned int getTimeGap(const Time &time);
 private:
 	unsigned int hour;
@@ -67,13 +65,5 @@ ostream & operator << (ostream & out, const Time & t);
 ostream & operator << (ostream & out, const DayOfWeek & d);
 ostream & operator << (ostream & out, const Date & d);
 istream & operator >> (istream & in, Date & d);
-
-
-//---------funções para obter a data atual---------------
-typedef pair <Date, Time> Moment;
-typedef pair <DayOfWeek, Time> WeekMoment;
-Moment getCurrentMoment();
-WeekMoment getCurrentWeekMoment();
-//-------------------------------------------------------
 
 #endif
