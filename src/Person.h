@@ -37,7 +37,7 @@ public:
 	void freeSwim(Time startTime, Date date, unsigned int duration); //adicionar uso em modo livre
 	void addUse(PoolUse * pooluse); //o mesmo que a função de cima...
 	bool attendedLesson(const GivenLesson * lesson);
-	int getEntryNumber() const;
+	int getEntryNumber() const; // frequência com que os clientes vão á piscina
 	vector <PoolUse *> getPoolUses();
 private:
 	vector <PoolUse *> uses;

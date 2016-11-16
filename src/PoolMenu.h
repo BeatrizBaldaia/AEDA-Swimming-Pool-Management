@@ -34,5 +34,36 @@ private:
 	Pool & pool;
 };
 
+/* CUSTOMERS  ATTENDANCE */
 
+class CustomerAttendance : public Menu{
+public:
+	CustomerAttendance(Pool & pool);
+private:
+	Pool & pool;
+};
+
+class CustomerAttendanceAll : public MenuHandler{
+public:
+	CustomerAttendanceAll(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class CustomerAttendanceName : public MenuHandler{
+public:
+	CustomerAttendanceName(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class CustomerAttendanceID : public MenuHandler{
+public:
+	CustomerAttendanceID(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
 #endif /* SRC_POOLMENU_H_ */

@@ -14,6 +14,8 @@ int main() {
 	Pool pool;
 
 	pool.setFileNames(fileNames);
+	/*
+	 *
 	pool.load();
 	Teacher * teacher = new Teacher("Mariana Santos", Date(20,04,1980));
 	pool.addTeacher(teacher);
@@ -26,8 +28,7 @@ int main() {
 	pool.attendLesson(lesson,pool.getCustomer(1),Date(14,11,2016));
 	pool.addFreeSwim(pool.getCustomer(3), Date(14,11,2016), Time(10, 10), 30);
 	pool.write();
-
-	return 0;
+	 */
 
 	//TODO: load and sort!
 	/*
@@ -45,16 +46,24 @@ int main() {
 	 Não esquecer que nós queremos sempre é saber o que está a ocorrer de momento, daí quando ordenamos por datas devemos ordenar sempre da mais recente para a mais passada
 
 	 */
-
-	PoolMenu menu(pool), manage(pool), viewInfo(pool);
+//                                                        TODO: Rafa, ajuda aqui.
+	CustomerAttendance attendance(pool);//                QUERO QUE O MENU "View Attendances"
+	CustomerAttendanceAll attendanceall(pool);//          SEJA COMO O MENU PRINCIPAL, OU SEJA,
+	PoolMenu menu(pool), manage(pool), viewInfo(pool);//  QUE TAMBÉM APRESENTE OPÇÕES DE OUTROS MENUS
 	AddCustomer addCustomer(pool);
 	CurrentOccupation occupation(pool);
+	CustomerAttendanceName attendancename(pool);
+	CustomerAttendanceID attendanceid(pool);
 
 	menu.entries.push_back(MenuEntry("Exit", Menu::exitHandler));
 	menu.entries.push_back(MenuEntry("Manage", manage));
 	menu.entries.push_back(MenuEntry("View information", viewInfo));
 	menu.entries.push_back(MenuEntry("See Current Occupation", occupation));
-
+	menu.entries.push_back(MenuEntry("View Attendances", attendanceall));
+	attendance.entries.push_back(MenuEntry("All Customer attendance", attendanceall));
+	attendance.entries.push_back(MenuEntry("Attendances of a specific Customer (by name)", attendancename));
+	attendance.entries.push_back(MenuEntry("Attendances of a specific Customer (by name)", attendancename));
+	attendance.entries.push_back(MenuEntry("Attendances of a specific Customer (by ID)", attendanceid));
 	manage.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 
 	viewInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));

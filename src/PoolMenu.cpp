@@ -2,6 +2,8 @@
 #include "Person.h"
 #include <stdio.h>      /* puts, printf */
 #include <time.h>       /* time_t, struct tm, time, localtime */
+#include <algorithm>    // std::unique, std::distance
+
 //TODO ^^^ Não uses bibliotecas .h. Tenta usar as bibliotecas de cpp (por exemplo time.h é ctime)
 
 /* FUNÇÕES UTEIS */ //TODO \/\/\/ Passa o que trabalha sem Pool para o Date.
@@ -158,3 +160,105 @@ MenuResult CurrentOccupation::handle(){
 	return EXIT;
 
 }
+
+/* CUSTOMERS  ATTENDANCE MENU */
+
+CustomerAttendance::CustomerAttendance(Pool & pool) : pool(pool){
+
+}
+
+CustomerAttendanceAll::CustomerAttendanceAll(Pool & pool) : pool(pool) {
+
+}
+
+MenuResult CustomerAttendanceAll::handle(){
+	cout << "All Customers' number of attendances:" << endl << endl;
+	for(Customer * x : pool.getAllCustomer()){
+		cout << "Customer n " << x->getID() << " - " << x->getName() <<  " : " << x->getEntryNumber() << endl;
+		return EXIT;
+	}
+	cout << "There are no customers." << endl;
+	return EXIT;
+}
+
+CustomerAttendanceName::CustomerAttendanceName(Pool & pool) : pool(pool) {
+
+}
+
+MenuResult CustomerAttendanceName::handle(){
+	string name;
+	bool again = true;
+	int answer;
+	string s;
+
+	cout << "See the number of attendances of a specific Customer.\n Enter the name: ";
+	while(again){
+		getline(cin, name);
+		///////////////////////////////////////////
+		///TIRAR ESPAÇOS A MAIS ENTRE OS NOMES////
+		string::iterator it;
+		it = unique (name.begin(), name.end(), [](char l, char r){  return isspace(l) && isspace(r) && l == r;}); ///remove os espaços a mais do nome, mas o tamanho da string nao se altera
+		name.resize(distance(name.begin(), it)); ///ajustar o tamanho da string
+		/////////////////////////////////////////
+		for(Customer * x : pool.getAllCustomer()){
+			if(x->getName() == name){
+				cout << "Customer n " << x->getID() << " - " << x->getName() <<  " : " << x->getEntryNumber() << endl;
+				return EXIT;
+			}
+		}
+		cout << "There is no such customer." << endl;
+		do{
+			cout << "Do you want to try again?" << endl << endl << "1- YES    2- NO" << endl;
+			getline(cin, s);
+			answer = stoi(s);
+			cout << endl;
+		}while(answer != 1 || answer != 2); ///inputs invalidos
+		if(answer == 2){
+			again = false; ///ciclo acaba
+		}
+		else{
+			cout << "Enter the name: "; ///again = true => repete
+		}
+	}
+	return EXIT;
+
+}
+
+CustomerAttendanceID::CustomerAttendanceID(Pool & pool) : pool(pool) {
+
+}
+
+MenuResult CustomerAttendanceID::handle(){
+	string id_string;
+	int id_int;
+	bool again = true;
+	int answer;
+	string s;
+
+	cout << "See the number of attendances of a specific Customer.\n Enter the ID: ";
+	while(again){
+		getline(cin, id_string);
+		id_int = stoi(id_string);
+		for(Customer * x : pool.getAllCustomer()){
+			if(x->getID() == id_int){
+				cout << "Customer n " << x->getID() << " - " << x->getName() <<  " : " << x->getEntryNumber() << endl;
+				return EXIT;
+			}
+		}
+		cout << "There is no such customer." << endl;
+		do{
+			cout << "Do you want to try again?" << endl << endl << "1- YES    2- NO" << endl;
+			getline(cin, s);
+			answer = stoi(s);
+			cout << endl;
+		}while(answer != 1 || answer != 2); ///inputs invalidos
+		if(answer == 2){
+			again = false; ///ciclo acaba
+		}
+		else{
+			cout << "Enter the ID: "; ///again = true => repete
+		}
+	}
+	return EXIT;
+}
+

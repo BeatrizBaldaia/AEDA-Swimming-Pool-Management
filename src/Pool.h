@@ -8,19 +8,19 @@
 
 class Pool {
 public:
-	vector<Lesson> getLessonsByTeacher(string name);
-	vector<GivenLesson *> getGivenLessons();
-	GivenLesson * getGivenLesson(Lesson lesson, Date date);
-	void addLesson(Lesson lesson);
-	unsigned int CustomersInLesson(GivenLesson lesson);
-	unsigned int CustomersFreeUse(Date date, Time time);
+	vector<Lesson> getLessonsByTeacher(string name); /// retorna vetor com as aulas dadas por um professor
+	vector<GivenLesson *> getGivenLessons(); /// dá o vetor givenLessons
+	GivenLesson * getGivenLesson(Lesson lesson, Date date); /// dá GivenLesson que tem uma certa Lesson e ocorreu num certo Date
+	void addLesson(Lesson lesson);/// adiciona aula ao vetor schedule e atribui a mesma um professor
+	unsigned int CustomersInLesson(GivenLesson lesson);/// dá o número de clientes numa certa aula
+	unsigned int CustomersFreeUse(Date date, Time time); /// dá o número de clientes a usar a piscina numa certa data e tempo
 	Lesson getLesson(DayOfWeek day, Time time) const; //usa exceção: try{...} catch(InvalidLesson x){cout << "There's no lesson on " << x.day << " at " << x.time;
-	vector<Customer *> getAllCustomer();
+	vector<Customer *> getAllCustomer(); /// retorna vetor customers
 	Customer * getCustomer(string name); //usa exceção: try{...} catch(NonExistentCustomer x){cout << "There's no such customer named " << x.name;
 	Customer * getCustomer (unsigned int ID); //usa exceção: try{...} catch(NonExistentCustomer x){cout << "There's no such customer with ID " << x.ID;
-	void setName(string name);
-	void setMaxCustomers(unsigned int n);
-	string getName() const;
+	void setName(string name); ///dá nome a piscina
+	void setMaxCustomers(unsigned int n); /// define o numero maximo de pessoas na piscina
+	string getName() const; ///dá nome da piscina
 	unsigned int getMaxCustomers() const;
 	Lesson getNextLesson(DayOfWeek day, Time time, bool & currentlesson) const;
 	void setFileNames(vector <string> v);

@@ -2,10 +2,11 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+#include <limits.h>
 
 vector<Lesson> Pool::getLessonsByTeacher(string name){
 	vector<Lesson> result;
-	for(Lesson & x : schedule){
+	for(const Lesson & x : schedule){
 		if(x.getTeacher()->getName() == name){
 			result.push_back(x);
 		}
@@ -205,7 +206,7 @@ void Pool::addFreeSwim(Customer* customer, Date date, Time time, unsigned int du
 }
 
 void Pool::writeGivenLessons() {
-	ofstream givenLessonsFile(fileNames[4]);
+	ofstream givenLessonsFile(fileNames[4]); //nº GivenLessons \n ID de GivenLessons;ID do professor;modalidade;dia da semana da GivenLesson; hora da aula;data da aula;ID dos clientes separados por um espaço
 	givenLessonsFile << givenLessons.size() << endl;
 	for(GivenLesson * i : givenLessons) {
 		givenLessonsFile << i->getID() << ";";
@@ -378,7 +379,7 @@ vector<GivenLesson *> Pool::getGivenLessons(){
 }
 
 Lesson Pool::getNextLesson(DayOfWeek day, Time time, bool & currentlesson) const{ //Ia usar esta função para o menu PoolOccupation para obter a aula que estava a ocorrer ou a próxima aula que ia começar
-	unsigned int gap= 100000;
+	unsigned int gap= UINT_MAX;
 	bool excecao = true;
 	Lesson next;
 	for(Lesson x : schedule){
