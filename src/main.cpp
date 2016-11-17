@@ -37,6 +37,7 @@ int main() {
 	pool.attendLesson(lesson, pool.getCustomer(1), Date(14, 11, 2016));
 	pool.addFreeSwim(pool.getCustomer(3), Date(14, 11, 2016), Time(10, 10), 30);
 */
+
 	CustomerMakeBill m(pool);
 	m.handle();
 

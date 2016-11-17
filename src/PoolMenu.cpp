@@ -7,6 +7,8 @@
 #include <cwchar>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <iomanip>
 #include <iterator>
 #include <string>
 #include <vector>
@@ -291,15 +293,20 @@ CustomerMakeBill::CustomerMakeBill(Pool & pool) :
 
 MenuResult CustomerMakeBill::handle() {
 	unsigned int customerID;
-	string monthStream;
+	string monthString;
 	unsigned int month;
 	unsigned int year;
 	cout << "Insert Customer ID: ";
 	cin >> customerID;
 	cout << "\n\nInsert month and year (ex. 02/1995): ";
-	cin >> monthStream;
-	month = 10*monthStream[0] + monthStream[1]; //TODO usar fstream ou string stream se quiserem, se não, apagar o comentário
-	year = 1000*monthStream[3] + 100*monthStream[4] + 10*monthStream[5] + monthStream[6];
+	cin >> monthString;
+	if (monthString.size() != 7 || monthString[2] != '/')
+		return EXIT;
+	stringstream monthStream(monthString);
+	getline(monthStream, monthString, '/');
+	month = stoi(monthString);
+	getline(monthStream, monthString);
+	year = stoi(monthString);
 	vector <GivenLesson *> customerGivenLessons; //vetor que nos dá as given lessons do cliente nesse mes
 	vector <PoolUse *> customerFreeSwimUses; //vetor que nos dá os usos da piscina (freeswimuses) do cliente nesse mes
 	Customer * c;
@@ -325,7 +332,7 @@ MenuResult CustomerMakeBill::handle() {
 			}
 		}
 	}
-	string billName = "Bill of " + c->getName() + " - " + monthStream + ".txt"; //TODO corrigir para poder ter vários recibos
+	string billName = "Bill of " + c->getName() + " - " + monthString + ".txt"; //TODO corrigir para poder ter vários recibos
 	ofstream bill;
 	bill.open("test.txt");
 	bill << "*          **          **          Super Cool Pool          **          **          *\n" <<
@@ -333,17 +340,20 @@ MenuResult CustomerMakeBill::handle() {
 			"Customer: " << c->getName() << endl;
 	bill << "ID: " << c->getID() << endl;
 	bill << "-------------------------------------------------------------------------------------\n" <<
-			"                                   Bill of " << monthStream << endl << endl << endl;
+			"                                   Bill of " << monthString << endl << endl << endl;
 	bill << "Lessons assisted: " << customerGivenLessons.size() << endl << endl;
 	for (GivenLesson * g : customerGivenLessons)
 	{
-		bill << "  -> " << g->getDate() << " -- " << g->getLesson().getModality() << " -- " << g->getLesson().getTime() << endl;
+		bill << g->getLesson().getModality() << " (" << g->getDate() << ").....................................€2.00" << endl;
 	}
-	bill << endl << "Pool usage (lessons not included): Pool used " << customerFreeSwimUses.size() << " times\n\n";
+	bill << endl << endl << "Free swimming usage: " << customerFreeSwimUses.size() << " times\n\n";
 	for (PoolUse * p : customerFreeSwimUses)
 	{
-		bill << "  -> " << p->getDate() << " -- Started at: " << p->getTime() << " and had the duration of " << p->getDuration() << " minutes\n";
+		if (p->getDuration() < 100)
+			bill << p->getDuration() << " minutes (" << p->getDate() << ")..........................................€" << fixed << setprecision(2) << p->getCost() << endl;
+		else
+			bill << p->getDuration() << " minutes (" << p->getDate() << ").........................................€" << fixed << setprecision(2) << p->getCost() << endl;
 	}
-	bill << "\n\nTotal cost to pay this month is: " << (c->getMonthCost(month,year) + 3*customerGivenLessons.size());
+	bill << "\n\n                            Total:   €" << fixed << setprecision(2) << c->getMonthCost(month,year) + 3*customerGivenLessons.size();
 	return EXIT;
 }

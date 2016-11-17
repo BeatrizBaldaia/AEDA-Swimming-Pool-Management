@@ -102,6 +102,7 @@ int Customer::getEntryNumber() const { //frequência com que os clientes vão á pi
 	return result;
 }
 
+
 /* TEACHER */
 
 Teacher::Teacher(string name, Date birthDate) :
