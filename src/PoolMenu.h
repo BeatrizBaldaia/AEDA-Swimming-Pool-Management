@@ -61,6 +61,14 @@ private:
 	Pool & pool;
 };
 
+class CustomerMakeCurrentBill: public MenuHandler {
+public:
+	CustomerMakeCurrentBill(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
 class CustomerMakeBill: public MenuHandler {
 public:
 	CustomerMakeBill(Pool & pool);

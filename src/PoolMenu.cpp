@@ -286,12 +286,14 @@ MenuResult CustomerAttendanceID::handle() {
 	return EXIT;
 }
 
-CustomerMakeBill::CustomerMakeBill(Pool & pool) :
+/* Customer Make Bill MENU */
+
+CustomerMakeCurrentBill::CustomerMakeCurrentBill(Pool & pool) :
 		pool(pool){
 
 }
 
-MenuResult CustomerMakeBill::handle() {
+MenuResult CustomerMakeCurrentBill::handle() {
 	unsigned int customerID;
 	unsigned int month = getCurrentDate().getMonth();
 	unsigned int year = getCurrentDate().getYear();
@@ -333,6 +335,81 @@ MenuResult CustomerMakeBill::handle() {
 	bill << "ID: " << c->getID() << endl;
 	bill << "-------------------------------------------------------------------------------------\n" <<
 			"                                   Bill of " << month << "/" << year << endl << endl << endl;
+	bill << "Lessons assisted: " << customerGivenLessons.size() << endl << endl;
+	for (GivenLesson * g : customerGivenLessons)
+	{
+		bill << g->getLesson().getModality() << " (" << g->getDate() << ").....................................€3.00" << endl;
+	}
+	bill << endl << endl << "Free swimming usage: " << customerFreeSwimUses.size() << " times\n\n";
+	for (PoolUse * p : customerFreeSwimUses)
+	{
+		if (p->getDuration() < 100)
+			bill << p->getDuration() << " minutes (" << p->getDate() << ")..........................................€" << fixed << setprecision(2) << p->getCost() << endl;
+		else
+			bill << p->getDuration() << " minutes (" << p->getDate() << ").........................................€" << fixed << setprecision(2) << p->getCost() << endl;
+	}
+	bill << "\n\n                            Total:   €" << fixed << setprecision(2) << c->getMonthCost(month,year) + 3*customerGivenLessons.size();
+	return EXIT;
+}
+
+
+
+CustomerMakeBill::CustomerMakeBill(Pool & pool) :
+		pool(pool){
+
+}
+
+MenuResult CustomerMakeBill::handle() {
+	unsigned int customerID;
+	string monthString;
+	unsigned int month;
+	unsigned int year;
+	cout << "Insert Customer ID: ";
+	cin >> customerID;
+	cout << "\n\nInsert month and year (ex. 02/1995): ";
+	cin >> monthString;
+	if (monthString.size() != 7 || monthString[2] != '/')
+		return EXIT;
+	stringstream monthStream(monthString);
+	monthStream >> month;
+	monthStream.ignore();
+	monthStream >> year;
+	vector <GivenLesson *> customerGivenLessons; //vetor que nos dá as given lessons do cliente nesse mes
+	vector <PoolUse *> customerFreeSwimUses; //vetor que nos dá os usos da piscina (freeswimuses) do cliente nesse mes
+	Customer * c;
+	try {
+		c = pool.getCustomer(customerID);
+	} catch (NonExistentCustomerID(ID)) {
+		printf("\nNon existing Customer");
+		return EXIT;
+	}
+	for(PoolUse * p : c->getPoolUses())
+	{
+		if(p->getDate().getMonth() == month && p->getDate().getYear() == year)
+			customerFreeSwimUses.push_back(p);
+	}
+	for(GivenLesson * g : pool.getGivenLessons())
+	{
+		if(g->getDate().getMonth() == month && g->getDate().getYear() == year)
+		{
+			for (Customer * k : g->getCustomers())
+			{
+				if(k->getID() == customerID)
+					customerGivenLessons.push_back(g);
+			}
+		}
+	}
+	string billName = "Bill of ";
+	billName += c->getName();
+	billName += ".txt";
+	ofstream bill;
+	bill.open(billName.c_str());
+	bill << "*          **          **          Super Cool Pool          **          **          *\n" <<
+			"-------------------------------------------------------------------------------------\n" <<
+			"Customer: " << c->getName() << endl;
+	bill << "ID: " << c->getID() << endl;
+	bill << "-------------------------------------------------------------------------------------\n" <<
+			"                                   Bill of " << monthString << endl << endl << endl;
 	bill << "Lessons assisted: " << customerGivenLessons.size() << endl << endl;
 	for (GivenLesson * g : customerGivenLessons)
 	{
