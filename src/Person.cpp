@@ -1,45 +1,49 @@
 #include "Person.h"
 
-unsigned int Person::lastID = 0;
+#include <iostream>
 
+#include "Lesson.h"
+
+unsigned int Person::lastID = 0;
 
 /* PERSON */
 
-Person::Person(string name, Date birthDate) : ID(lastID+1) {
+Person::Person(string name, Date birthDate) :
+		ID(lastID + 1) {
 	this->name = name;
 	this->birthDate = birthDate;
 	lastID++;
 }
 
-Person::Person(string name, Date birthDate, unsigned int ID) : ID(ID) {
+Person::Person(string name, Date birthDate, unsigned int ID) :
+		ID(ID) {
 	this->name = name;
 	this->birthDate = birthDate;
-	if(ID > lastID) {
+	if (ID > lastID) {
 		lastID = ID;
 	}
 }
 
-
-string Person::getName() const{
+string Person::getName() const {
 	return name;
 }
 
-unsigned int Person::getID() const{
+unsigned int Person::getID() const {
 	return ID;
 }
 
-Date Person::getBirthDate() const{
+Date Person::getBirthDate() const {
 	return birthDate;
 }
 
-void Person::setName(string name){
+void Person::setName(string name) {
 	this->name = name;
 }
 
-
 /* CUSTOMER */
 
-Customer::Customer(string name, Date birthDate) : Person(name, birthDate) {
+Customer::Customer(string name, Date birthDate) :
+		Person(name, birthDate) {
 
 }
 
@@ -48,10 +52,10 @@ Customer::Customer(string name, Date birthDate, unsigned int ID) :
 
 }
 
-float Customer::getMonthCost(unsigned int month) const{
+float Customer::getMonthCost(unsigned int month) const {
 	float sum = 0;
-	for(PoolUse * x : uses){
-		if(x->getDate().getMonth() == month){
+	for (PoolUse * x : uses) {
+		if (x->getDate().getMonth() == month) {
 			cout << endl;
 			sum += x->getCost();
 		}
@@ -59,37 +63,37 @@ float Customer::getMonthCost(unsigned int month) const{
 	return sum;
 }
 
-void Customer::attendLesson(GivenLesson * lesson, Date date, Time time){ //no menu de adicionar aula, nesta GivenLesson vamos ter de adicionar o cliente ao seu vetor de customers
-	PoolUse * addlesson = new LessonUse (date, time, lesson);
+void Customer::attendLesson(GivenLesson * lesson, Date date, Time time) { //no menu de adicionar aula, nesta GivenLesson vamos ter de adicionar o cliente ao seu vetor de customers
+	PoolUse * addlesson = new LessonUse(date, time, lesson);
 	uses.push_back(addlesson);
 }
 
-void Customer::addUse(PoolUse * pooluse){
+void Customer::addUse(PoolUse * pooluse) {
 	uses.push_back(pooluse);
 }
 
-void Customer::freeSwim(Time startTime, Date date, unsigned int duration){
+void Customer::freeSwim(Time startTime, Date date, unsigned int duration) {
 	PoolUse * x = new FreeSwimUse(date, startTime, duration);
 	uses.push_back(x);
 }
 
-bool Customer::attendedLesson(const GivenLesson * lesson){
-	for(PoolUse * x : uses){
-		if(x->getLesson() == lesson){
+bool Customer::attendedLesson(const GivenLesson * lesson) {
+	for (PoolUse * x : uses) {
+		if (x->getLesson() == lesson) {
 			return true;
 		}
 	}
 	return false;
 }
 
-int Customer::getEntryNumber() const{ //frequência com que os clientes vão á piscina
-	if(uses.size()==0){
+int Customer::getEntryNumber() const { //frequência com que os clientes vão á piscina
+	if (uses.size() == 0) {
 		return 0;
 	}
 	Date d = uses[0]->getDate();
 	int result = 1;
-	for(int i = 1; 1 < uses.size(); i++){
-		if(!(d == uses[i]->getDate())){
+	for (int i = 1; 1 < uses.size(); i++) {
+		if (!(d == uses[i]->getDate())) {
 			d = uses[i]->getDate();
 			result++;
 		}
@@ -100,7 +104,8 @@ int Customer::getEntryNumber() const{ //frequência com que os clientes vão á pis
 
 /* TEACHER */
 
-Teacher::Teacher(string name, Date birthDate) : Person(name, birthDate) {
+Teacher::Teacher(string name, Date birthDate) :
+		Person(name, birthDate) {
 	lessonsPerWeek = 0;
 }
 
@@ -109,23 +114,23 @@ Teacher::Teacher(string name, Date birthDate, unsigned int ID) :
 	lessonsPerWeek = 0;
 }
 
-float Teacher::getMonthCost(unsigned int month) const{
+float Teacher::getMonthCost(unsigned int month) const {
 	return 0;
 }
 
-int Teacher::getNumberLessons() const{
+int Teacher::getNumberLessons() const {
 	return lessonsPerWeek;
 }
 
-bool Teacher::operator < (const Teacher & t2) const{
+bool Teacher::operator <(const Teacher & t2) const {
 	return lessonsPerWeek < t2.getNumberLessons();
 }
 
-void Teacher::setLesson(){
+void Teacher::setLesson() {
 	lessonsPerWeek++;
 }
 
-int Teacher::getEntryNumber() const{
+int Teacher::getEntryNumber() const {
 	return 0;
 }
 

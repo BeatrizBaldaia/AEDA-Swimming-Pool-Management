@@ -2,7 +2,8 @@
 #define _POOLUSE_H_
 
 #include "Date.h"
-#include "Lesson.h"
+
+class GivenLesson;
 
 class PoolUse {
 public:
@@ -14,33 +15,32 @@ public:
 	virtual GivenLesson * getLesson() const = 0;
 
 protected:
-    Date date;
-    Time time;
-    unsigned int duration;
+	Date date;
+	Time time;
+	unsigned int duration;
 };
 
-class FreeSwimUse : public PoolUse {
+class FreeSwimUse: public PoolUse {
 public:
-	FreeSwimUse (Date d, Time t, unsigned int dur);
+	FreeSwimUse(Date d, Time t, unsigned int dur);
 	float getCost() const;
 	GivenLesson * getLesson() const;
 	unsigned int getDuration() const;
 private:
-    static float cost30;
+	static float cost30;
 };
 
-class LessonUse : public PoolUse {
+class LessonUse: public PoolUse {
 public:
-    LessonUse (Date d, Time t, GivenLesson *l); //duração sempre 1 hora
-    float getCost() const;
-    GivenLesson * getLesson() const;
-    unsigned int getDuration() const;
+	LessonUse(Date d, Time t, GivenLesson *l); //duração sempre 1 hora
+	float getCost() const;
+	GivenLesson * getLesson() const;
+	unsigned int getDuration() const;
 private:
-    GivenLesson * lesson;
+	GivenLesson * lesson;
 
-    static float lessonCost;
+	static float lessonCost;
 };
-
 
 #else
 class PoolUse;

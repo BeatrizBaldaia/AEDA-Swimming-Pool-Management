@@ -1,38 +1,41 @@
 #include "Lesson.h"
 
+#include <string>
+
 unsigned int GivenLesson::lastID = 0;
 
 unsigned int Lesson::duration = 60;
 
-Lesson::Lesson(LessonTime lessonTime, Modality modality) : lessonTime(lessonTime){
+Lesson::Lesson(LessonTime lessonTime, Modality modality) :
+		lessonTime(lessonTime) {
 	this->modality = modality;
 }
 
-Teacher * Lesson::getTeacher() const{
+Teacher * Lesson::getTeacher() const {
 	return teacher;
 }
 
-void Lesson::setTeacher(Teacher * teacher){
+void Lesson::setTeacher(Teacher * teacher) {
 	this->teacher = teacher;
 }
 
-DayOfWeek Lesson::getDayOfWeek() const{
+DayOfWeek Lesson::getDayOfWeek() const {
 	return lessonTime.first;
 }
 
-Time Lesson::getTime() const{
+Time Lesson::getTime() const {
 	return lessonTime.second;
 }
 
 Lesson::Lesson() {
 }
 
-Modality Lesson::getModality() const{
+Modality Lesson::getModality() const {
 	return modality;
 }
 
-ostream & operator << (ostream & out, const Modality & m){
-	switch (m){
+ostream & operator <<(ostream & out, const Modality & m) {
+	switch (m) {
 	case HydroGym:
 		out << "Hydro Gymnastic";
 		break;
@@ -42,7 +45,7 @@ ostream & operator << (ostream & out, const Modality & m){
 	case AquaticPolo:
 		out << "Water Polo";
 		break;
-	case  ArtisticSwimming:
+	case ArtisticSwimming:
 		out << "Synchronized Swimming";
 		break;
 	case CompetitiveSwimming:
@@ -56,15 +59,19 @@ ostream & operator << (ostream & out, const Modality & m){
 	return out;
 }
 
-ostream & operator << (ostream & out, const Lesson & lesson){
-	out << lesson.getDayOfWeek() << " - " << lesson.getModality() << " at " << lesson.getTime() << " - " << lesson.getTeacher()->getName();
+ostream & operator <<(ostream & out, const Lesson & lesson) {
+	out << lesson.getDayOfWeek() << " - " << lesson.getModality() << " at "
+			<< lesson.getTime() << " - " << lesson.getTeacher()->getName();
 	return out;
 }
 
-bool Lesson::operator == (const Lesson &lesson) const{
-	return teacher == lesson.getTeacher() && modality == lesson.getModality() && lessonTime.first == lesson.getDayOfWeek() && lessonTime.second == lesson.getTime();
+bool Lesson::operator ==(const Lesson &lesson) const {
+	return teacher == lesson.getTeacher() && modality == lesson.getModality()
+			&& lessonTime.first == lesson.getDayOfWeek()
+			&& lessonTime.second == lesson.getTime();
 }
-GivenLesson::GivenLesson(Lesson lesson, Date date) : ID(lastID+1) {
+GivenLesson::GivenLesson(Lesson lesson, Date date) :
+		ID(lastID + 1) {
 	this->lesson = lesson;
 	this->date = date;
 	lastID++;
@@ -73,7 +80,7 @@ GivenLesson::GivenLesson(Lesson lesson, Date date) : ID(lastID+1) {
 GivenLesson::GivenLesson(Lesson lesson, Date date, unsigned int ID) {
 	this->lesson = lesson;
 	this->date = date;
-	if(ID > lastID) {
+	if (ID > lastID) {
 		lastID = ID;
 	}
 }
@@ -94,10 +101,10 @@ Date GivenLesson::getDate() const {
 	return date;
 }
 
-vector<Customer*> GivenLesson::getCustomers() const{
+vector<Customer*> GivenLesson::getCustomers() const {
 	return customers;
 }
 
-bool GivenLesson::operator == (const GivenLesson &givenlesson) const{
+bool GivenLesson::operator ==(const GivenLesson &givenlesson) const {
 	return (lesson == givenlesson.getLesson() && date == givenlesson.getDate());
 }
