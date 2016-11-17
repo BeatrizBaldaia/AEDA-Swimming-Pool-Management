@@ -14,9 +14,9 @@ int main() {
 	Pool pool;
 
 	pool.setFileNames(fileNames);
-	/*
-	 *
+
 	pool.load();
+
 	Teacher * teacher = new Teacher("Mariana Santos", Date(20,04,1980));
 	pool.addTeacher(teacher);
 	Lesson lesson(LessonTime(MON, Time(10, 0)), HydroGym);
@@ -27,8 +27,7 @@ int main() {
 	pool.attendLesson(lesson,c,Date(14,11,2016));
 	pool.attendLesson(lesson,pool.getCustomer(1),Date(14,11,2016));
 	pool.addFreeSwim(pool.getCustomer(3), Date(14,11,2016), Time(10, 10), 30);
-	pool.write();
-	 */
+	//pool.write();
 
 	//TODO: load and sort!
 	/*
@@ -46,12 +45,14 @@ int main() {
 	 Não esquecer que nós queremos sempre é saber o que está a ocorrer de momento, daí quando ordenamos por datas devemos ordenar sempre da mais recente para a mais passada
 
 	 */
-//                                                        TODO: Rafa, ajuda aqui.
-	CustomerAttendance attendance(pool);//                QUERO QUE O MENU "View Attendances"
-	CustomerAttendanceAll attendanceall(pool);//          SEJA COMO O MENU PRINCIPAL, OU SEJA,
-	PoolMenu menu(pool), manage(pool), viewInfo(pool);//  QUE TAMBÉM APRESENTE OPÇÕES DE OUTROS MENUS
+
+	PoolMenu menu(pool), manage(pool), viewInfo(pool), attendance(pool);
+
 	AddCustomer addCustomer(pool);
+
 	CurrentOccupation occupation(pool);
+
+	CustomerAttendanceAll attendanceall(pool);
 	CustomerAttendanceName attendancename(pool);
 	CustomerAttendanceID attendanceid(pool);
 
@@ -59,11 +60,13 @@ int main() {
 	menu.entries.push_back(MenuEntry("Manage", manage));
 	menu.entries.push_back(MenuEntry("View information", viewInfo));
 	menu.entries.push_back(MenuEntry("See Current Occupation", occupation));
-	menu.entries.push_back(MenuEntry("View Attendances", attendanceall));
+	menu.entries.push_back(MenuEntry("View Attendances", attendance));
+
+	attendance.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	attendance.entries.push_back(MenuEntry("All Customer attendance", attendanceall));
 	attendance.entries.push_back(MenuEntry("Attendances of a specific Customer (by name)", attendancename));
-	attendance.entries.push_back(MenuEntry("Attendances of a specific Customer (by name)", attendancename));
 	attendance.entries.push_back(MenuEntry("Attendances of a specific Customer (by ID)", attendanceid));
+
 	manage.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 
 	viewInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));

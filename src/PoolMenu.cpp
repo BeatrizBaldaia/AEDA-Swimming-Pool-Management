@@ -163,10 +163,6 @@ MenuResult CurrentOccupation::handle(){
 
 /* CUSTOMERS  ATTENDANCE MENU */
 
-CustomerAttendance::CustomerAttendance(Pool & pool) : pool(pool){
-
-}
-
 CustomerAttendanceAll::CustomerAttendanceAll(Pool & pool) : pool(pool) {
 
 }

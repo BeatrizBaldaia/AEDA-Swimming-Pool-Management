@@ -36,13 +36,6 @@ private:
 
 /* CUSTOMERS  ATTENDANCE */
 
-class CustomerAttendance : public Menu{
-public:
-	CustomerAttendance(Pool & pool);
-private:
-	Pool & pool;
-};
-
 class CustomerAttendanceAll : public MenuHandler{
 public:
 	CustomerAttendanceAll(Pool & pool);

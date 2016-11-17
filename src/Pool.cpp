@@ -183,6 +183,11 @@ void Pool::attendLesson(Lesson lesson, Customer* customer, Date date) {
 			givenLessons.push_back(givenLesson);
 		}
 	}
+	for(Customer * i : givenLesson->getCustomers()) {
+		if(i == customer) {
+			throw string("already in");
+		}
+	}
 	givenLesson->addCustomer(customer);
 	customer->attendLesson(givenLesson, date, lesson.getTime());
 }
@@ -217,11 +222,11 @@ void Pool::writeGivenLessons() {
 		givenLessonsFile << day << ";";
 		givenLessonsFile << i->getLesson().getTime() << ";";
 		givenLessonsFile << i->getDate() << ";";
-		for(Customer * j : i->getCustomers()) {
-			if(j == i->getCustomers().back()) {
-				givenLessonsFile << j->getID();
+		for(size_t j = 0; j < i->getCustomers().size(); j++) {
+			if(j == i->getCustomers().size() - 1) {
+				givenLessonsFile << i->getCustomers()[j]->getID();
 			} else {
-				givenLessonsFile << j->getID() << " ";
+				givenLessonsFile << i->getCustomers()[j]->getID() << " ";
 			}
 		}
 		givenLessonsFile << endl;
