@@ -60,4 +60,12 @@ public:
 private:
 	Pool & pool;
 };
+
+class CustomerMakeBill: public MenuHandler {
+public:
+	CustomerMakeBill(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
 #endif /* SRC_POOLMENU_H_ */

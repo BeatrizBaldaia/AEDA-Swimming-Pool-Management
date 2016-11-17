@@ -33,7 +33,7 @@ public:
 	Customer(string name, Date birthDate);
 	Customer(string name, Date birthDate, unsigned int ID);
 
-	float getMonthCost(unsigned int month) const;
+	float getMonthCost(unsigned int month, unsigned int year) const;
 	int getEntryNumber() const; // frequência com que os clientes vão á piscina
 	vector<PoolUse *> getPoolUses();
 
