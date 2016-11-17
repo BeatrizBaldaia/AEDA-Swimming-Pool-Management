@@ -293,19 +293,10 @@ CustomerMakeBill::CustomerMakeBill(Pool & pool) :
 
 MenuResult CustomerMakeBill::handle() {
 	unsigned int customerID;
-	string monthString;
-	unsigned int month;
-	unsigned int year;
+	unsigned int month = getCurrentDate().getMonth();
+	unsigned int year = getCurrentDate().getYear();
 	cout << "Insert Customer ID: ";
 	cin >> customerID;
-	cout << "\n\nInsert month and year (ex. 02/1995): ";
-	cin >> monthString;
-	if (monthString.size() != 7 || monthString[2] != '/')
-		return EXIT;
-	stringstream monthStream(monthString);
-	monthStream >> month;
-	monthStream.ignore();
-	monthStream >> year;
 	vector <GivenLesson *> customerGivenLessons; //vetor que nos dá as given lessons do cliente nesse mes
 	vector <PoolUse *> customerFreeSwimUses; //vetor que nos dá os usos da piscina (freeswimuses) do cliente nesse mes
 	Customer * c;
@@ -341,7 +332,7 @@ MenuResult CustomerMakeBill::handle() {
 			"Customer: " << c->getName() << endl;
 	bill << "ID: " << c->getID() << endl;
 	bill << "-------------------------------------------------------------------------------------\n" <<
-			"                                   Bill of " << monthString << endl << endl << endl;
+			"                                   Bill of " << month << "/" << year << endl << endl << endl;
 	bill << "Lessons assisted: " << customerGivenLessons.size() << endl << endl;
 	for (GivenLesson * g : customerGivenLessons)
 	{
