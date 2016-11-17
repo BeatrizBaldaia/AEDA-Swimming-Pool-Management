@@ -300,6 +300,7 @@ MenuResult CustomerMakeBill::handle() {
 	cin >> customerID;
 	cout << "\n\nInsert month and year (ex. 02/1995): ";
 	cin >> monthString;
+	string monthStrStore = monthString;
 	if (monthString.size() != 7 || monthString[2] != '/')
 		return EXIT;
 	stringstream monthStream(monthString);
@@ -332,19 +333,21 @@ MenuResult CustomerMakeBill::handle() {
 			}
 		}
 	}
-	string billName = "Bill of " + c->getName() + " - " + monthString + ".txt"; //TODO corrigir para poder ter vários recibos
+	string billName = "Bill of ";
+	billName += c->getName();
+	billName += ".txt";
 	ofstream bill;
-	bill.open("test.txt");
+	bill.open(billName.c_str());
 	bill << "*          **          **          Super Cool Pool          **          **          *\n" <<
 			"-------------------------------------------------------------------------------------\n" <<
 			"Customer: " << c->getName() << endl;
 	bill << "ID: " << c->getID() << endl;
 	bill << "-------------------------------------------------------------------------------------\n" <<
-			"                                   Bill of " << monthString << endl << endl << endl;
+			"                                   Bill of " << monthStrStore << endl << endl << endl;
 	bill << "Lessons assisted: " << customerGivenLessons.size() << endl << endl;
 	for (GivenLesson * g : customerGivenLessons)
 	{
-		bill << g->getLesson().getModality() << " (" << g->getDate() << ").....................................€2.00" << endl;
+		bill << g->getLesson().getModality() << " (" << g->getDate() << ").....................................€3.00" << endl;
 	}
 	bill << endl << endl << "Free swimming usage: " << customerFreeSwimUses.size() << " times\n\n";
 	for (PoolUse * p : customerFreeSwimUses)

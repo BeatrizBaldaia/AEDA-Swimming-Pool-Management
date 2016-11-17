@@ -54,6 +54,7 @@ FreeSwimUse::FreeSwimUse(Date d, Time t, unsigned int dur) :
 
 float FreeSwimUse::getCost() const {
 	float cost = (duration % 30) != 0 ? duration / 30 + 1 : duration / 30;
+	cost *= cost30;
 	return cost;
 }
 
