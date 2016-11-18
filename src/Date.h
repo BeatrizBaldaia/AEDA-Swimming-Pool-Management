@@ -35,9 +35,6 @@ public:
 
 	bool between(const Date &min, const Date &max);
 
-	enum exception {
-		InvalidMonth, InvalidDay
-	};
 private:
 	unsigned int day;
 	unsigned int month;
@@ -75,5 +72,15 @@ ostream & operator <<(ostream & out, const DayOfWeek & d);
 ostream & operator <<(ostream & out, const Date & d);
 istream & operator >>(istream & in, Date & d);
 istream & operator >>(istream & in, Time & t);
+
+class InvalidDay{
+public:
+	InvalidDay();
+};
+
+class InvalidMonth{
+public:
+	InvalidMonth();
+};
 
 #endif

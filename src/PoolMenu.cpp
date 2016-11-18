@@ -76,18 +76,38 @@ PoolMenu::PoolMenu(Pool & pool) :
 
 /* ADD CUSTOMER MENU */
 
-AddCustomer::AddCustomer(Pool & pool) :
-		pool(pool) {
+AddCustomer::AddCustomer(Pool & pool) : pool(pool) {
 
 }
 
 MenuResult AddCustomer::handle() {
+	bool again = true;
 	string name;
 	cout << "Insert the customer's name: ";
 	getline(cin, name); //POSSIVELMENTE SUBSTITUIR POR UM getName que verifique o formato do nome.
-	cout << name;
-	cout << "Insert the customer's birthdate: ";
-	pool.write();
+	///////////////////////////////////////////
+	///TIRAR ESPAÇOS A MAIS ENTRE OS NOMES////
+	string::iterator it;
+	it =unique(name.begin(), name.end(),[](char l, char r) {return isspace(l) && isspace(r) && l == r;}); ///remove os espaços a mais do nome, mas o tamanho da string nao se altera
+	name.resize(distance(name.begin(), it)); ///ajustar o tamanho da string
+	/////////////////////////////////////////
+	while(again){
+		try{
+			again = false;
+			string Bdate;
+
+			cout << "Insert the customer's birthdate (ex. 01/01/1999) : ";
+			getline(cin, Bdate);
+
+			Date date(Bdate);
+			Customer * x = new Customer (name, date);
+			pool.addCustomer(x);
+		}catch(...){ ///apanha qualquer tipo de exceção
+			cout << "Invalid Date. Please enter again.\n";
+			again=true;
+		}
+	}
+
 	return EXIT;
 
 }
@@ -331,7 +351,7 @@ MenuResult CustomerMakeCurrentBill::handle() {
 	Customer * c;
 	try {
 		c = pool.getCustomer(customerID);
-	} catch (NonExistentCustomerID(ID)) {
+	} catch (NonExistentCustomerID x) {
 		printf("\nNon existing Customer");
 		return EXIT;
 	}
@@ -406,7 +426,7 @@ MenuResult CustomerMakeBill::handle() {
 	Customer * c;
 	try {
 		c = pool.getCustomer(customerID);
-	} catch (NonExistentCustomerID(ID)) {
+	} catch (NonExistentCustomerID x) {
 		printf("\nNon existing Customer");
 		return EXIT;
 	}

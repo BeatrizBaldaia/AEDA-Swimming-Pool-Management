@@ -12,10 +12,10 @@ Date::Date(const unsigned int & day, const unsigned int & month,
 			this->year = year;
 			return;
 		}
-		throw InvalidDay;
+		throw InvalidDay();
 	}
 
-	throw InvalidMonth;
+	throw InvalidMonth();
 }
 
 Date::Date() {
@@ -23,13 +23,31 @@ Date::Date() {
 }
 
 Date::Date(string & input) {
-	stringstream date;
+	string aux;
+	unsigned int d, m, y;
+	size_t found_not = input.find_first_not_of("0123456789");///procurar o 1º elemento que nao é um número que separa o dia do mÊs
+	aux = input.substr(0, found_not);
+	d= stoi(aux);
+	size_t found = input.find_first_of("0123456789",found_not+1); ///procura numero; primeiro digito para o mês
+	input = input.substr(found, input.size()-found); ///para ficar so com o resto da string; elimina a parte do dia
+	found_not = input.find_first_not_of("0123456789");///procura elemento que nao é digito e separa o mês do ano
+	aux = input.substr(0, found_not);
+	m = stoi(aux);
+	found = input.find_first_of("0123456789",found_not+1);///posição do primeiro digito para o ano
+	input = input.substr(found, input.size()-found);
+	found_not = input.find_first_not_of("0123456789");///posição até a onde vamos extrair o velor para o ano
+	aux = input.substr(0, found_not);
+	y = stoi(aux);
+
+	Date(d,m,y);
+
+	/*stringstream date;
 	date.str(input);
 	date >> day;
 	date.ignore();
 	date >> month;
 	date.ignore();
-	date >> year;
+	date >> year;*/
 }
 
 unsigned int Date::getDay() const {
@@ -332,4 +350,12 @@ istream& operator >>(istream& in, Time& t) {
 	t.setHour(h);
 	t.setMinute(m);
 	return in;
+}
+
+InvalidDay::InvalidDay(){
+
+}
+
+InvalidMonth::InvalidMonth(){
+
 }
