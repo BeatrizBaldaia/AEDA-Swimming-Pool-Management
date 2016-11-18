@@ -171,6 +171,15 @@ void Pool::writeSchedule() {
 
 void Pool::addTeacher(Teacher* t) {
 	teachers.push_back(t);
+	unsigned int numberOfTeachers = teachers.size();
+	unsigned int counter = 0;
+	for (Lesson l : schedule)
+	{
+		l.setTeacher(teachers[counter]);
+		counter++;
+		if (counter == numberOfTeachers)
+			counter = 0;
+	}
 }
 
 void Pool::attendLesson(Lesson lesson, Customer* customer, Date date) {
@@ -212,6 +221,16 @@ void Pool::addFreeSwim(Customer* customer, Date date, Time time,
 	PoolUse * poolUse = new FreeSwimUse(date, time, duration);
 	customer->addUse(poolUse);
 	freeUses.push_back(poolUse);
+}
+
+void Pool::removeCustomer(unsigned int ID) {
+	for (int i = 0; i < customers.size(); i++)
+	{
+		if(customers[i]->getID() == ID) {
+			customers.erase(customers.begin() + i);
+			break;
+		}
+	}
 }
 
 void Pool::writeGivenLessons() {

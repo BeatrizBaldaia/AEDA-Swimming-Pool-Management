@@ -105,6 +105,14 @@ vector<Customer*> GivenLesson::getCustomers() const {
 	return customers;
 }
 
+void GivenLesson::removeCustomer(unsigned int ID) {
+	for(int i = 0; i < customers.size(); i++)
+	{
+		if(customers[i]->getID() == ID)
+			customers.erase(customers.begin() + i);
+	}
+}
+
 bool GivenLesson::operator ==(const GivenLesson &givenlesson) const {
 	return (lesson == givenlesson.getLesson() && date == givenlesson.getDate());
 }

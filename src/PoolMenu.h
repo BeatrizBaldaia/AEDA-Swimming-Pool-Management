@@ -25,6 +25,27 @@ private:
 	Pool & pool;
 };
 
+/* REMOVE CUSTOMER MENU */
+
+class RemoveCustomer: public MenuHandler {
+public:
+	RemoveCustomer(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+/* ADD TEACHER MENU */
+
+class AddTeacher: public MenuHandler {
+public:
+	AddTeacher(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+
 /* CURRENT OCCUPATION MENU */
 
 class CurrentOccupation: public MenuHandler {

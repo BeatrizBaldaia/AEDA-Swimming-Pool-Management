@@ -57,6 +57,7 @@ void Menu::invalidOption(string opt) {
 }
 
 void Menu::printMenu() const {
+	cout << endl;
 	for (size_t i = 1; i < entries.size(); i++) {
 		cout << i << ". " << entries[i].first << endl;
 	}

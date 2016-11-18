@@ -45,6 +45,7 @@ public:
 	unsigned int getID() const;
 	Lesson getLesson() const;
 	Date getDate() const;
+	void removeCustomer(unsigned int ID);
 	vector<Customer *> getCustomers() const;
 	bool operator ==(const GivenLesson &givenlesson) const;
 	static unsigned int lastID;

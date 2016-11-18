@@ -87,8 +87,35 @@ MenuResult AddCustomer::handle() {
 	getline(cin, name); //POSSIVELMENTE SUBSTITUIR POR UM getName que verifique o formato do nome.
 	cout << name;
 	cout << "Insert the customer's birthdate: ";
-
+	pool.write();
 	return EXIT;
+
+}
+
+/* REMOVE CUSTOMER MENU */
+
+RemoveCustomer::RemoveCustomer(Pool & pool) :
+	pool(pool){
+}
+
+MenuResult RemoveCustomer::handle() {
+	unsigned int ID;
+	cout << "Insert customer ID:";
+	cin >> ID;
+	Customer * c;
+	try {
+		c = pool.getCustomer(ID);
+	} catch (NonExistentCustomerID) {
+		cout << "\n\nCustomer doesn't belong to Pool or was already deleted";
+		return EXIT;
+	}
+	for (GivenLesson * g : pool.getGivenLessons())
+	{
+		g->removeCustomer(ID);
+	}
+	pool.removeCustomer(ID);
+	cout << c->getName() << " removed!\n\n";
+	pool.write();
 
 }
 
@@ -424,5 +451,26 @@ MenuResult CustomerMakeBill::handle() {
 			bill << p->getDuration() << " minutes (" << p->getDate() << ").........................................€" << fixed << setprecision(2) << p->getCost() << endl;
 	}
 	bill << "\n\n                            Total:   €" << fixed << setprecision(2) << c->getMonthCost(month,year) + 3*customerGivenLessons.size();
+	return EXIT;
+}
+
+/* ADD TEACHER MENU */
+
+AddTeacher::AddTeacher(Pool& pool) :
+	pool(pool){
+}
+
+MenuResult AddTeacher::handle() {
+	string teacherName;
+	Date teacherBirthDate;
+	cout << "\nInsert Teacher's name: ";
+	cin.ignore();
+	getline(cin, teacherName);
+	cout << "\n\nInsert Teacher's birthdate: ";
+	cin >> teacherBirthDate;
+	Teacher t(teacherName,teacherBirthDate);
+	pool.addTeacher(&t);
+	cout << teacherName << " created!\n";
+	pool.write();
 	return EXIT;
 }

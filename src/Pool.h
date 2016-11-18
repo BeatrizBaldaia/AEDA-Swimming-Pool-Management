@@ -34,6 +34,8 @@ public:
 	void addFreeSwim(Customer * customer, Date date, Time time,
 			unsigned int duration);
 
+	void removeCustomer(unsigned int ID);
+
 	void addCustomer(Customer * c);
 	void addTeacher(Teacher * t);
 	Teacher * getTeacher(unsigned int ID);
