@@ -426,8 +426,7 @@ MenuResult CustomerMakeBill::handle() {
 					<< setprecision(2) << p->getCost() << endl;
 	}
 	bill << "\n\n                            Total:   €" << fixed
-			<< setprecision(2)
-			<< c->getMonthCost(month, year) + 3 * customerGivenLessons.size();
+			<< setprecision(2) << c->getMonthCost(month, year);
 	return CONTINUE;
 }
 
@@ -669,5 +668,81 @@ MenuResult ViewTeacherGivenLessons::handle() {
 				<< i->getCustomers().size() << " customers\n\n";
 	}
 
+	return CONTINUE;
+}
+
+ViewTeachers::ViewTeachers(Pool& pool, OrderBy orderBy) :
+		pool(pool), orderBy(orderBy) {
+}
+
+MenuResult ViewTeachers::handle() {
+	cout << endl;
+	vector<Teacher *> teachers = pool.getTeachers();
+	switch (orderBy) {
+	case (ID):
+		sort(teachers.begin(), teachers.end(),
+				[](Teacher * a, Teacher * b) {return a->getID() < b->getID();});
+		break;
+	case (NAME):
+		sort(teachers.begin(), teachers.end(),
+				[](Teacher * a, Teacher * b) {return a->getName() < b->getName();});
+		break;
+	case (GIVENLESSONS):
+		sort(teachers.begin(), teachers.end(),
+				[this](Teacher * a, Teacher * b) {return pool.getGivenLessons(a->getID()).size() < pool.getGivenLessons(b->getID()).size();});
+		break;
+	case (ASSLESSONS):
+		sort(teachers.begin(), teachers.end(),
+				[this](Teacher * a, Teacher * b) {return pool.getLessons(a->getID()).size() < pool.getLessons(b->getID()).size();});
+		break;
+	}
+	for (Teacher * t : teachers) {
+		cout << "ID: " << t->getID() << "\nName: " << t->getName()
+				<< "\nBirthdate: " << t->getBirthDate()
+				<< "\nAssigned lessons: " << pool.getLessons(t->getID()).size()
+				<< "\nGiven lessons: "
+				<< pool.getGivenLessons(t->getID()).size() << endl << endl;
+	}
+	return CONTINUE;
+}
+
+FreeSwimming::FreeSwimming(Pool& pool) :
+		pool(pool) {
+}
+
+MenuResult FreeSwimming::handle() {
+
+}
+
+
+
+ViewCustomers::ViewCustomers(Pool& pool, OrderBy orderBy) :
+		pool(pool), orderBy(orderBy) {
+}
+
+MenuResult ViewCustomers::handle() {
+	cout << endl;
+	vector<Customer *> customers = pool.getCustomers();
+	switch (orderBy) {
+	case (ID):
+		sort(customers.begin(), customers.end(),
+				[](Customer * a, Customer * b) {return a->getID() < b->getID();});
+		break;
+	case (NAME):
+		sort(customers.begin(), customers.end(),
+				[](Customer * a, Customer * b) {return a->getName() < b->getName();});
+		break;
+	case (NUMUSES):
+		sort(customers.begin(), customers.end(),
+				[this](Customer * a, Customer * b) {return a->getPoolUses().size() < b->getPoolUses().size();});
+		break;
+	}
+	for (Customer *c : customers) {
+		cout << "ID: " << c->getID() << "\nName: " << c->getName()
+				<< "\nBirthdate: " << c->getBirthDate() << "\nPool uses: "
+				<< c->getPoolUses().size() << "\nCost: "
+				<< c->getMonthCost(getCurrentDate().getMonth(),
+						getCurrentDate().getYear()) << endl;
+	}
 	return CONTINUE;
 }

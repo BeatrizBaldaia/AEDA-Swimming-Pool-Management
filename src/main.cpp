@@ -86,7 +86,15 @@ int main() {
 	CustomerAttendanceID attendanceid(pool);
 
 	PoolMenu viewTeachers(pool);
+	ViewTeachers viewTeachersByID(pool, ID);
+	ViewTeachers viewTeachersByName(pool, NAME);
+	ViewTeachers viewTeachersByGivenLessons(pool, GIVENLESSONS);
+	ViewTeachers viewTeachersByLessons(pool, ASSLESSONS);
+
 	PoolMenu viewCustomers(pool);
+	ViewCustomers viewCustomersByID(pool, ID);
+	ViewCustomers viewCustomersByName(pool, NAME);
+	ViewCustomers viewCustomersByUses(pool, NUMUSES);
 
 	ViewTeacherSchedule viewTeacherSchedule(pool);
 	ViewTeacherGivenLessons viewTeacherGivenLessons(pool);
@@ -102,17 +110,14 @@ int main() {
 	manage.entries.push_back(MenuEntry("Manage customers", manageCustomers));
 	manage.entries.push_back(MenuEntry("Manage teachers", manageTeachers));
 	manage.entries.push_back(MenuEntry("Manage schedule", manageSchedule));
-	manage.entries.push_back(MenuEntry("Use pool", usePool));
 
 	manageCustomers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	manageCustomers.entries.push_back(MenuEntry("Add customer", addCustomer));
-	manageCustomers.entries.push_back(
-			MenuEntry("Remove customer", removeCustomer));
+	manageCustomers.entries.push_back(MenuEntry("Remove customer", removeCustomer));
 
 	manageTeachers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	manageTeachers.entries.push_back(MenuEntry("Add teacher", addTeacher));
-	manageTeachers.entries.push_back(
-			MenuEntry("Remove teacher", removeTeacher));
+	manageTeachers.entries.push_back(MenuEntry("Remove teacher", removeTeacher));
 
 	manageSchedule.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	manageSchedule.entries.push_back(MenuEntry("Add lesson", addLesson));
@@ -125,29 +130,38 @@ int main() {
 	/*---------------------------*/
 
 	viewAttendance.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	viewAttendance.entries.push_back(
-			MenuEntry("All customers' attendance", attendanceall));
-	viewAttendance.entries.push_back(
-			MenuEntry("Attendances of a specific customer (by name)",
-					attendancename));
-	viewAttendance.entries.push_back(
-			MenuEntry("Attendances of a specific customer (by ID)",
-					attendanceid));
+	viewAttendance.entries.push_back(MenuEntry("All customers' attendance", attendanceall));
+	viewAttendance.entries.push_back(MenuEntry("Attendances of a specific customer (by name)", attendancename));
+	viewAttendance.entries.push_back(MenuEntry("Attendances of a specific customer (by ID)", attendanceid));
 
 	/*-----------------------------*/
 
 	viewInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	viewInfo.entries.push_back(MenuEntry("View attendances", viewAttendance));
-	viewInfo.entries.push_back(
-			MenuEntry("View current occupation", occupation));
+	viewInfo.entries.push_back(MenuEntry("View current occupation", occupation));
 	viewInfo.entries.push_back(MenuEntry("View schedule", viewSchedule));
 	viewInfo.entries.push_back(MenuEntry("View teachers", viewTeachers));
 	viewInfo.entries.push_back(MenuEntry("View customers", viewCustomers));
-	viewInfo.entries.push_back(MenuEntry("View teacher info", viewTeacherInfo));
 
 	viewTeacherInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	viewTeacherInfo.entries.push_back(MenuEntry("View teacher's schedule", viewTeacherSchedule));
 	viewTeacherInfo.entries.push_back(MenuEntry("View teacher's given lessons", viewTeacherGivenLessons));
+
+	viewTeachers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
+	viewTeachers.entries.push_back(MenuEntry("View teacher info", viewTeacherInfo));
+	viewTeachers.entries.push_back(MenuEntry("View teachers by ID", viewTeachersByID));
+	viewTeachers.entries.push_back(MenuEntry("View teachers by name", viewTeachersByName));
+	viewTeachers.entries.push_back(MenuEntry("View teachers by lessons given", viewTeachersByGivenLessons));
+	viewTeachers.entries.push_back(MenuEntry("View teachers by number of lessons per week", viewTeachersByLessons));
+
+	viewCustomers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
+	viewCustomers.entries.push_back(MenuEntry("View customer info", viewTeacherInfo));
+	viewCustomers.entries.push_back(MenuEntry("View customers by ID", viewCustomersByID));
+	viewCustomers.entries.push_back(MenuEntry("View customers by name", viewCustomersByName));
+	viewCustomers.entries.push_back(MenuEntry("View customers by number of uses", viewCustomersByUses));
+
+
+
 
 	menu.handle();
 

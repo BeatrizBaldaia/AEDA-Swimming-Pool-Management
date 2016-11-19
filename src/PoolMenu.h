@@ -3,6 +3,11 @@
 
 #include "Menu.h"
 
+
+enum OrderBy {
+ID, NAME, NUMUSES, GIVENLESSONS, ASSLESSONS
+};
+
 class Pool;
 
 /* POOL MENU */
@@ -160,4 +165,32 @@ public:
 private:
 	Pool & pool;
 };
+
+class ViewTeachers: public MenuHandler {
+public:
+	ViewTeachers(Pool & pool, OrderBy orderBy);
+	MenuResult handle();
+private:
+	Pool & pool;
+	OrderBy orderBy;
+};
+
+class ViewCustomers: public MenuHandler {
+public:
+	ViewCustomers(Pool & pool, OrderBy orderBy);
+	MenuResult handle();
+private:
+	Pool & pool;
+	OrderBy orderBy;
+};
+
+class FreeSwimming: public MenuHandler {
+public:
+	FreeSwimming(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
 #endif /* SRC_POOLMENU_H_ */
+
