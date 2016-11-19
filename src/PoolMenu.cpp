@@ -633,7 +633,7 @@ MenuResult AddLesson::handle() {
 	cout << "\n\n0 - HydroGym\n1 - Zumba\n2 - AquaticPolo\n3 - ArtisticSwimming\n4 - CompetitiveSwimming\n5 - Learning\n";
 	cout << "\nChoose lesson's modality: ";
 	cin >> modalityOpt;
-	modality = modalityOpt;
+	modality = static_cast<Modality>(modalityOpt);
 	LessonTime lessonTime;
 	lessonTime.first = dayOfWeek;
 	lessonTime.second = time;
