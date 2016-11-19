@@ -45,6 +45,46 @@ private:
 	Pool & pool;
 };
 
+/* REMOVE TEACHER MENU */
+
+class RemoveTeacher: public MenuHandler {
+public:
+	RemoveTeacher(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+/* ATTEND LESSON */
+
+class AttendLesson: public MenuHandler {
+public:
+	AttendLesson(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+/* ADD LESSON */
+
+class AddLesson: public MenuHandler {
+public:
+	AddLesson(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+/* REMOVE LESSON */
+
+class RemoveLesson: public MenuHandler {
+public:
+	RemoveLesson(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
 /* CURRENT OCCUPATION MENU */
 
 class CurrentOccupation: public MenuHandler {

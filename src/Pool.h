@@ -29,6 +29,7 @@ public:
 	void setMaxCustomers(unsigned int n); /// define o numero maximo de pessoas na piscina
 	string getName() const; ///dá nome da piscina
 	vector<Lesson> getSchedule() const;
+	vector<Teacher *> getTeachers() const;
 
 	void setFileNames(vector<string> v);
 	void addFreeUse(PoolUse * freeUse);
@@ -38,6 +39,7 @@ public:
 			unsigned int duration);
 
 	void removeCustomer(unsigned int ID);
+	void removeTeacher(unsigned int ID);
 
 	void addCustomer(Customer * c);
 	void addTeacher(Teacher * t);

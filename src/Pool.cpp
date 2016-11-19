@@ -226,6 +226,15 @@ void Pool::removeCustomer(unsigned int ID) {
 	}
 }
 
+void Pool::removeTeacher(unsigned int ID) {
+	for(int i = 0; i < teachers.size(); i++) {
+		if(teachers[i]->getID() == ID) {
+			teachers.erase(teachers.begin() + i);
+			break;
+		}
+	}
+}
+
 vector<GivenLesson*> Pool::getGivenLessons(unsigned int ID) {
 	vector<GivenLesson*> result;
 	for (GivenLesson* i : givenLessons) {
@@ -249,6 +258,10 @@ vector<Lesson> Pool::getLessons(Date date, Time time) {
 
 vector<Lesson> Pool::getSchedule() const {
 	return schedule;
+}
+
+vector<Teacher*> Pool::getTeachers() const {
+	return teachers;
 }
 
 void Pool::writeGivenLessons() {
@@ -493,3 +506,5 @@ NonExistentGivenLesson::NonExistentGivenLesson(Lesson lesson, Date date) {
 	this->lesson = lesson;
 	this->date = date;
 }
+
+

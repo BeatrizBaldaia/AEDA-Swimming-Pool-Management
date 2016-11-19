@@ -58,11 +58,13 @@ int main() {
 
 	manage(pool),
 
-	viewInfo(pool), attendance(pool),
+	viewInfo(pool), viewAttendance(pool),
 
 	manageCustomers(pool), manageTeachers(pool), manageSchedule(pool),
 
-	usePool(pool);
+	usePool(pool),
+
+	viewTeacherInfo(pool);
 
 	ViewSchedule viewSchedule(pool);
 
@@ -70,19 +72,25 @@ int main() {
 	RemoveCustomer removeCustomer(pool);
 
 	AddTeacher addTeacher(pool);
-	PoolMenu removeTeacher(pool);
+	RemoveTeacher removeTeacher(pool);
 
-	PoolMenu addLesson(pool);
-	PoolMenu removeLesson(pool);
+	AddLesson addLesson(pool);
+	RemoveLesson removeLesson(pool);
 
 	PoolMenu freeSwimming(pool);
-	PoolMenu attendLesson(pool);
+	AttendLesson attendLesson(pool);
 
 	CurrentOccupation occupation(pool);
 
 	CustomerAttendanceAll attendanceall(pool);
 	CustomerAttendanceName attendancename(pool);
 	CustomerAttendanceID attendanceid(pool);
+
+	PoolMenu viewTeachers(pool);
+	PoolMenu viewCustomers(pool);
+
+	PoolMenu viewTeacherSchedule(pool);
+	PoolMenu viewTeacherGivenLessons(pool);
 
 	/* MAIN MENU */
 	menu.entries.push_back(MenuEntry("Exit", Menu::exitHandler));
@@ -117,21 +125,30 @@ int main() {
 
 	/*---------------------------*/
 
-	attendance.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	attendance.entries.push_back(
+	viewAttendance.entries.push_back(MenuEntry("Back", Menu::exitHandler));
+	viewAttendance.entries.push_back(
 			MenuEntry("All customers' attendance", attendanceall));
-	attendance.entries.push_back(
+	viewAttendance.entries.push_back(
 			MenuEntry("Attendances of a specific customer (by name)",
 					attendancename));
-	attendance.entries.push_back(
+	viewAttendance.entries.push_back(
 			MenuEntry("Attendances of a specific customer (by ID)",
 					attendanceid));
 
+	/*-----------------------------*/
+
 	viewInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	viewInfo.entries.push_back(MenuEntry("View attendances", attendance));
+	viewInfo.entries.push_back(MenuEntry("View attendances", viewAttendance));
 	viewInfo.entries.push_back(
 			MenuEntry("View current occupation", occupation));
 	viewInfo.entries.push_back(MenuEntry("View schedule", viewSchedule));
+	viewInfo.entries.push_back(MenuEntry("View teachers", viewTeachers));
+	viewInfo.entries.push_back(MenuEntry("View customers", viewCustomers));
+	viewInfo.entries.push_back(MenuEntry("View teacher info", viewTeacherInfo));
+
+	viewTeacherInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));
+	viewTeacherInfo.entries.push_back(MenuEntry("View teacher schedule", viewTeacherSchedule));
+	viewTeacherInfo.entries.push_back(MenuEntry("View teacher's given lessons", viewTeacherGivenLessons));
 
 	menu.handle();
 

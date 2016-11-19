@@ -505,6 +505,30 @@ MenuResult AddTeacher::handle() {
 	return CONTINUE;
 }
 
+/* REMOVE TEACHER MENU */
+
+RemoveTeacher::RemoveTeacher(Pool& pool) :
+	pool(pool){
+
+}
+
+MenuResult RemoveTeacher::handle() {
+	unsigned int ID;
+	cout << "\nInsert Teacher's ID: ";
+	cin >> ID;
+	int counter = 0;
+	pool.removeTeacher(ID);
+	for(Lesson & l : pool.getSchedule())
+	{
+		l.setTeacher(pool.getTeachers()[counter]);
+		counter ++;
+		if (counter == pool.getTeachers().size())
+			counter = 0;
+	}
+	pool.write();
+	return CONTINUE;
+}
+
 ViewTeachersLessons::ViewTeachersLessons(Pool& pool) :
 		pool(pool) {
 
@@ -537,5 +561,108 @@ MenuResult ViewSchedule::handle() {
 				<< i.getTeacher()->getName() << endl;
 
 	}
+	return CONTINUE;
+}
+
+AttendLesson::AttendLesson(Pool& pool) :
+	pool(pool){
+
+}
+
+MenuResult AttendLesson::handle() {
+	vector<Lesson &> lessons = pool.getLessons(getCurrentDate(),
+			getCurrentTime());
+	unsigned int choice;
+	unsigned int customerID;
+	cout << "\nInsert customer's ID: ";
+	cin >> customerID;
+	Customer * c = pool.getCustomer(customerID);
+	if (lessons.size() == 0) {
+		cout << "\nNo more lessons scheduled for today.\n";
+		return CONTINUE;
+	}
+	cout << endl;
+	for (int i = 0; i < lessons.size(); i++) {
+		cout << i + 1 << " - " << lessons[i].getTime() << " ("
+				<< lessons[i].getModality() << ")\n";
+	}
+	cout << "\n0 - Cancel";
+	cout << "\nChoose one class to attend today: ";
+	cin >> choice;
+	if (choice == 0)
+		return CONTINUE;
+	int noGivenLessonFlag = 0;
+	for (GivenLesson * g : pool.getGivenLessons()) {
+		if (g->getDate() == getCurrentDate() && g->getLesson() == lessons[choice - 1]) {
+			g->addCustomer(c);
+			return CONTINUE;
+		}
+	}
+	return CONTINUE;
+
+}
+
+AddLesson::AddLesson(Pool& pool) :
+	pool(pool){
+}
+
+MenuResult AddLesson::handle() {
+	DayOfWeek dayOfWeek;
+	string weekDay;
+	unsigned int modalityOpt;
+	Modality modality;
+	Time time;
+	cout << "\nInsert day of week: ";
+	cin >> weekDay;
+	if(weekDay == "Monday")
+		dayOfWeek = MON;
+	else if (weekDay == "Tuesday")
+		dayOfWeek = TUE;
+	else if (weekDay == "Wednesday")
+			dayOfWeek = WED;
+	else if (weekDay == "Thursday")
+			dayOfWeek = THU;
+	else if (weekDay == "Friday")
+			dayOfWeek = FRI;
+	else if (weekDay == "Saturday")
+			dayOfWeek = SAT;
+	else if (weekDay == "Sunday")
+			dayOfWeek = SUN;
+	cout << "\nInsert lesson's time: ";
+	cin >> time;
+	cout << "\n\n0 - HydroGym\n1 - Zumba\n2 - AquaticPolo\n3 - ArtisticSwimming\n4 - CompetitiveSwimming\n5 - Learning\n";
+	cout << "\nChoose lesson's modality: ";
+	cin >> modalityOpt;
+	modality = modalityOpt;
+	LessonTime lessonTime;
+	lessonTime.first = dayOfWeek;
+	lessonTime.second = time;
+	Lesson l(lessonTime, modality);
+	pool.addLesson(l); //criar excepção de já existir uma aula a esta hora
+	return CONTINUE;
+}
+
+RemoveLesson::RemoveLesson(Pool& pool) :
+	pool(pool){
+
+}
+
+MenuResult RemoveLesson::handle() {
+	unsigned int choice;
+	cout << endl;
+	int indice = 0;
+	for (Lesson & i : pool.getSchedule())
+	{
+		indice++;
+		cout << indice << " - " << i.getModality() << endl << i.getDayOfWeek() << " - " << i.getTime() << endl;
+	}
+	cout << "\n0 - Cancel\n";
+	cout << "Choose lesson to be deleted: ";
+	cin >> choice;
+	if (choice == 0)
+	{
+		return CONTINUE;
+	}
+	pool.getSchedule().erase(pool.getSchedule().begin() + choice);
 	return CONTINUE;
 }
