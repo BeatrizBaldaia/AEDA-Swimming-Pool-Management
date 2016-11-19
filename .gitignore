@@ -28,3 +28,9 @@
 *.out
 *.app
 /Debug/
+
+.metadata
+local.properties
+.settings/
+.loadpath
+.recommenders
