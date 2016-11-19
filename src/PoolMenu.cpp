@@ -76,7 +76,8 @@ PoolMenu::PoolMenu(Pool & pool) :
 
 /* ADD CUSTOMER MENU */
 
-AddCustomer::AddCustomer(Pool & pool) : pool(pool) {
+AddCustomer::AddCustomer(Pool & pool) :
+		pool(pool) {
 
 }
 
@@ -88,11 +89,13 @@ MenuResult AddCustomer::handle() {
 	///////////////////////////////////////////
 	///TIRAR ESPAÇOS A MAIS ENTRE OS NOMES////
 	string::iterator it;
-	it =unique(name.begin(), name.end(),[](char l, char r) {return isspace(l) && isspace(r) && l == r;}); ///remove os espaços a mais do nome, mas o tamanho da string nao se altera
+	it =
+			unique(name.begin(), name.end(),
+					[](char l, char r) {return isspace(l) && isspace(r) && l == r;}); ///remove os espaços a mais do nome, mas o tamanho da string nao se altera
 	name.resize(distance(name.begin(), it)); ///ajustar o tamanho da string
 	/////////////////////////////////////////
-	while(again){
-		try{
+	while (again) {
+		try {
 			again = false;
 			string Bdate;
 
@@ -100,22 +103,22 @@ MenuResult AddCustomer::handle() {
 			getline(cin, Bdate);
 
 			Date date(Bdate);
-			Customer * x = new Customer (name, date);
+			Customer * x = new Customer(name, date);
 			pool.addCustomer(x);
-		}catch(...){ ///apanha qualquer tipo de exceção
+		} catch (...) { ///apanha qualquer tipo de exceção
 			cout << "Invalid Date. Please enter again.\n";
-			again=true;
+			again = true;
 		}
 	}
 
-	return EXIT;
+	return CONTINUE;
 
 }
 
 /* REMOVE CUSTOMER MENU */
 
 RemoveCustomer::RemoveCustomer(Pool & pool) :
-	pool(pool){
+		pool(pool) {
 }
 
 MenuResult RemoveCustomer::handle() {
@@ -125,18 +128,17 @@ MenuResult RemoveCustomer::handle() {
 	Customer * c;
 	try {
 		c = pool.getCustomer(ID);
-	} catch (NonExistentCustomerID) {
+	} catch (NonExistentCustomerID &x) {
 		cout << "\n\nCustomer doesn't belong to Pool or was already deleted";
-		return EXIT;
+		return CONTINUE;
 	}
-	for (GivenLesson * g : pool.getGivenLessons())
-	{
+	for (GivenLesson * g : pool.getGivenLessons()) {
 		g->removeCustomer(ID);
 	}
 	pool.removeCustomer(ID);
 	cout << c->getName() << " removed!\n\n";
 	pool.write();
-
+	return CONTINUE;
 }
 
 /* CURRENT OCCUPATION MENU */
@@ -202,7 +204,7 @@ MenuResult CurrentOccupation::handle() {
 				}
 			}
 		}
-	} catch (NoMoreLessonsInDay x) {
+	} catch (NoMoreLessonsInDay &x) {
 		cout << "There's no more lessons today." << endl;
 		//dar o número de pessoas a usar a piscina em modo livre
 		//fazer return/ acabar com a função
@@ -222,7 +224,7 @@ MenuResult CurrentOccupation::handle() {
 		}
 	}
 
-	return EXIT;
+	return CONTINUE;
 
 }
 
@@ -235,13 +237,12 @@ CustomerAttendanceAll::CustomerAttendanceAll(Pool & pool) :
 
 MenuResult CustomerAttendanceAll::handle() {
 	cout << "All Customers' number of attendances:" << endl << endl;
-	for (Customer * x : pool.getAllCustomer()) {
+	for (Customer * x : pool.getCustomers()) {
 		cout << "Customer n " << x->getID() << " - " << x->getName() << " : "
 				<< x->getEntryNumber() << endl;
-		return EXIT;
 	}
 	cout << "There are no customers." << endl;
-	return EXIT;
+	return CONTINUE;
 }
 
 CustomerAttendanceName::CustomerAttendanceName(Pool & pool) :
@@ -267,11 +268,11 @@ MenuResult CustomerAttendanceName::handle() {
 						[](char l, char r) {return isspace(l) && isspace(r) && l == r;}); ///remove os espaços a mais do nome, mas o tamanho da string nao se altera
 		name.resize(distance(name.begin(), it)); ///ajustar o tamanho da string
 		/////////////////////////////////////////
-		for (Customer * x : pool.getAllCustomer()) {
+		for (Customer * x : pool.getCustomers()) {
 			if (x->getName() == name) {
 				cout << "Customer n " << x->getID() << " - " << x->getName()
 						<< " : " << x->getEntryNumber() << endl;
-				return EXIT;
+				return CONTINUE;
 			}
 		}
 		cout << "There is no such customer." << endl;
@@ -288,7 +289,7 @@ MenuResult CustomerAttendanceName::handle() {
 			cout << "Enter the name: "; ///again = true => repete
 		}
 	}
-	return EXIT;
+	return CONTINUE;
 
 }
 
@@ -309,11 +310,11 @@ MenuResult CustomerAttendanceID::handle() {
 	while (again) {
 		getline(cin, id_string);
 		id_int = stoi(id_string);
-		for (Customer * x : pool.getAllCustomer()) {
+		for (Customer * x : pool.getCustomers()) {
 			if (x->getID() == id_int) {
 				cout << "Customer n " << x->getID() << " - " << x->getName()
 						<< " : " << x->getEntryNumber() << endl;
-				return EXIT;
+				return CONTINUE;
 			}
 		}
 		cout << "There is no such customer." << endl;
@@ -330,13 +331,13 @@ MenuResult CustomerAttendanceID::handle() {
 			cout << "Enter the ID: "; ///again = true => repete
 		}
 	}
-	return EXIT;
+	return CONTINUE;
 }
 
 /* Customer Make Bill MENU */
 
 CustomerMakeCurrentBill::CustomerMakeCurrentBill(Pool & pool) :
-		pool(pool){
+		pool(pool) {
 
 }
 
@@ -346,27 +347,24 @@ MenuResult CustomerMakeCurrentBill::handle() {
 	unsigned int year = getCurrentDate().getYear();
 	cout << "Insert Customer ID: ";
 	cin >> customerID;
-	vector <GivenLesson *> customerGivenLessons; //vetor que nos dá as given lessons do cliente nesse mes
-	vector <PoolUse *> customerFreeSwimUses; //vetor que nos dá os usos da piscina (freeswimuses) do cliente nesse mes
+	vector<GivenLesson *> customerGivenLessons; //vetor que nos dá as given lessons do cliente nesse mes
+	vector<PoolUse *> customerFreeSwimUses; //vetor que nos dá os usos da piscina (freeswimuses) do cliente nesse mes
 	Customer * c;
 	try {
 		c = pool.getCustomer(customerID);
-	} catch (NonExistentCustomerID x) {
+	} catch (NonExistentCustomerID &x) {
 		printf("\nNon existing Customer");
-		return EXIT;
+		return CONTINUE;
 	}
-	for(PoolUse * p : c->getPoolUses())
-	{
-		if(p->getDate().getMonth() == month && p->getDate().getYear() == year)
+	for (PoolUse * p : c->getPoolUses()) {
+		if (p->getDate().getMonth() == month && p->getDate().getYear() == year)
 			customerFreeSwimUses.push_back(p);
 	}
-	for(GivenLesson * g : pool.getGivenLessons())
-	{
-		if(g->getDate().getMonth() == month && g->getDate().getYear() == year)
-		{
-			for (Customer * k : g->getCustomers())
-			{
-				if(k->getID() == customerID)
+	for (GivenLesson * g : pool.getGivenLessons()) {
+		if (g->getDate().getMonth() == month
+				&& g->getDate().getYear() == year) {
+			for (Customer * k : g->getCustomers()) {
+				if (k->getID() == customerID)
 					customerGivenLessons.push_back(g);
 			}
 		}
@@ -376,33 +374,40 @@ MenuResult CustomerMakeCurrentBill::handle() {
 	billName += ".txt";
 	ofstream bill;
 	bill.open(billName.c_str());
-	bill << "*          **          **          Super Cool Pool          **          **          *\n" <<
-			"-------------------------------------------------------------------------------------\n" <<
-			"Customer: " << c->getName() << endl;
+	bill
+			<< "*          **          **          Super Cool Pool          **          **          *\n"
+			<< "-------------------------------------------------------------------------------------\n"
+			<< "Customer: " << c->getName() << endl;
 	bill << "ID: " << c->getID() << endl;
-	bill << "-------------------------------------------------------------------------------------\n" <<
-			"                                   Bill of " << month << "/" << year << endl << endl << endl;
+	bill
+			<< "-------------------------------------------------------------------------------------\n"
+			<< "                                   Bill of " << month << "/"
+			<< year << endl << endl << endl;
 	bill << "Lessons assisted: " << customerGivenLessons.size() << endl << endl;
-	for (GivenLesson * g : customerGivenLessons)
-	{
-		bill << g->getLesson().getModality() << " (" << g->getDate() << ").....................................€3.00" << endl;
+	for (GivenLesson * g : customerGivenLessons) {
+		bill << g->getLesson().getModality() << " (" << g->getDate()
+				<< ").....................................€3.00" << endl;
 	}
-	bill << endl << endl << "Free swimming usage: " << customerFreeSwimUses.size() << " times\n\n";
-	for (PoolUse * p : customerFreeSwimUses)
-	{
+	bill << endl << endl << "Free swimming usage: "
+			<< customerFreeSwimUses.size() << " times\n\n";
+	for (PoolUse * p : customerFreeSwimUses) {
 		if (p->getDuration() < 100)
-			bill << p->getDuration() << " minutes (" << p->getDate() << ")..........................................€" << fixed << setprecision(2) << p->getCost() << endl;
+			bill << p->getDuration() << " minutes (" << p->getDate()
+					<< ")..........................................€" << fixed
+					<< setprecision(2) << p->getCost() << endl;
 		else
-			bill << p->getDuration() << " minutes (" << p->getDate() << ").........................................€" << fixed << setprecision(2) << p->getCost() << endl;
+			bill << p->getDuration() << " minutes (" << p->getDate()
+					<< ").........................................€" << fixed
+					<< setprecision(2) << p->getCost() << endl;
 	}
-	bill << "\n\n                            Total:   €" << fixed << setprecision(2) << c->getMonthCost(month,year) + 3*customerGivenLessons.size();
-	return EXIT;
+	bill << "\n\n                            Total:   €" << fixed
+			<< setprecision(2)
+			<< c->getMonthCost(month, year) + 3 * customerGivenLessons.size();
+	return CONTINUE;
 }
 
-
-
 CustomerMakeBill::CustomerMakeBill(Pool & pool) :
-		pool(pool){
+		pool(pool) {
 
 }
 
@@ -416,32 +421,29 @@ MenuResult CustomerMakeBill::handle() {
 	cout << "\n\nInsert month and year (ex. 02/1995): ";
 	cin >> monthString;
 	if (monthString.size() != 7 || monthString[2] != '/')
-		return EXIT;
+		return CONTINUE;
 	stringstream monthStream(monthString);
 	monthStream >> month;
 	monthStream.ignore();
 	monthStream >> year;
-	vector <GivenLesson *> customerGivenLessons; //vetor que nos dá as given lessons do cliente nesse mes
-	vector <PoolUse *> customerFreeSwimUses; //vetor que nos dá os usos da piscina (freeswimuses) do cliente nesse mes
+	vector<GivenLesson *> customerGivenLessons; //vetor que nos dá as given lessons do cliente nesse mes
+	vector<PoolUse *> customerFreeSwimUses; //vetor que nos dá os usos da piscina (freeswimuses) do cliente nesse mes
 	Customer * c;
 	try {
 		c = pool.getCustomer(customerID);
-	} catch (NonExistentCustomerID x) {
+	} catch (NonExistentCustomerID &x) {
 		printf("\nNon existing Customer");
-		return EXIT;
+		return CONTINUE;
 	}
-	for(PoolUse * p : c->getPoolUses())
-	{
-		if(p->getDate().getMonth() == month && p->getDate().getYear() == year)
+	for (PoolUse * p : c->getPoolUses()) {
+		if (p->getDate().getMonth() == month && p->getDate().getYear() == year)
 			customerFreeSwimUses.push_back(p);
 	}
-	for(GivenLesson * g : pool.getGivenLessons())
-	{
-		if(g->getDate().getMonth() == month && g->getDate().getYear() == year)
-		{
-			for (Customer * k : g->getCustomers())
-			{
-				if(k->getID() == customerID)
+	for (GivenLesson * g : pool.getGivenLessons()) {
+		if (g->getDate().getMonth() == month
+				&& g->getDate().getYear() == year) {
+			for (Customer * k : g->getCustomers()) {
+				if (k->getID() == customerID)
 					customerGivenLessons.push_back(g);
 			}
 		}
@@ -451,46 +453,89 @@ MenuResult CustomerMakeBill::handle() {
 	billName += ".txt";
 	ofstream bill;
 	bill.open(billName.c_str());
-	bill << "*          **          **          Super Cool Pool          **          **          *\n" <<
-			"-------------------------------------------------------------------------------------\n" <<
-			"Customer: " << c->getName() << endl;
+	bill
+			<< "*          **          **          Super Cool Pool          **          **          *\n"
+			<< "-------------------------------------------------------------------------------------\n"
+			<< "Customer: " << c->getName() << endl;
 	bill << "ID: " << c->getID() << endl;
-	bill << "-------------------------------------------------------------------------------------\n" <<
-			"                                   Bill of " << monthString << endl << endl << endl;
+	bill
+			<< "-------------------------------------------------------------------------------------\n"
+			<< "                                   Bill of " << monthString
+			<< endl << endl << endl;
 	bill << "Lessons assisted: " << customerGivenLessons.size() << endl << endl;
-	for (GivenLesson * g : customerGivenLessons)
-	{
-		bill << g->getLesson().getModality() << " (" << g->getDate() << ").....................................€3.00" << endl;
+	for (GivenLesson * g : customerGivenLessons) {
+		bill << g->getLesson().getModality() << " (" << g->getDate()
+				<< ").....................................€3.00" << endl;
 	}
-	bill << endl << endl << "Free swimming usage: " << customerFreeSwimUses.size() << " times\n\n";
-	for (PoolUse * p : customerFreeSwimUses)
-	{
+	bill << endl << endl << "Free swimming usage: "
+			<< customerFreeSwimUses.size() << " times\n\n";
+	for (PoolUse * p : customerFreeSwimUses) {
 		if (p->getDuration() < 100)
-			bill << p->getDuration() << " minutes (" << p->getDate() << ")..........................................€" << fixed << setprecision(2) << p->getCost() << endl;
+			bill << p->getDuration() << " minutes (" << p->getDate()
+					<< ")..........................................€" << fixed
+					<< setprecision(2) << p->getCost() << endl;
 		else
-			bill << p->getDuration() << " minutes (" << p->getDate() << ").........................................€" << fixed << setprecision(2) << p->getCost() << endl;
+			bill << p->getDuration() << " minutes (" << p->getDate()
+					<< ").........................................€" << fixed
+					<< setprecision(2) << p->getCost() << endl;
 	}
-	bill << "\n\n                            Total:   €" << fixed << setprecision(2) << c->getMonthCost(month,year) + 3*customerGivenLessons.size();
-	return EXIT;
+	bill << "\n\n                            Total:   €" << fixed
+			<< setprecision(2)
+			<< c->getMonthCost(month, year) + 3 * customerGivenLessons.size();
+	return CONTINUE;
 }
 
 /* ADD TEACHER MENU */
 
 AddTeacher::AddTeacher(Pool& pool) :
-	pool(pool){
+		pool(pool) {
 }
 
 MenuResult AddTeacher::handle() {
 	string teacherName;
 	Date teacherBirthDate;
 	cout << "\nInsert Teacher's name: ";
-	cin.ignore();
 	getline(cin, teacherName);
-	cout << "\n\nInsert Teacher's birthdate: ";
+	cout << "\nInsert Teacher's birthdate: ";
 	cin >> teacherBirthDate;
-	Teacher t(teacherName,teacherBirthDate);
+	Teacher t(teacherName, teacherBirthDate);
 	pool.addTeacher(&t);
-	cout << teacherName << " created!\n";
+	cout << endl << teacherName << " created!\n";
 	pool.write();
-	return EXIT;
+	return CONTINUE;
+}
+
+ViewTeachersLessons::ViewTeachersLessons(Pool& pool) :
+		pool(pool) {
+
+}
+
+MenuResult ViewTeachersLessons::handle() {
+}
+
+ViewSchedule::ViewSchedule(Pool& pool) :
+		pool(pool) {
+
+}
+
+MenuResult ViewSchedule::handle() {
+	if (pool.getSchedule().size() == 0) {
+		cout << "\nThere are no lessons scheduled.\n";
+		return CONTINUE;
+	}
+
+	DayOfWeek d = pool.getSchedule()[0].getDayOfWeek();
+
+	cout << "\n" << d << ":\n";
+
+	for (const Lesson & i : pool.getSchedule()) {
+		if (i.getDayOfWeek() != d) {
+			d = i.getDayOfWeek();
+			cout << "\n" << d << ":\n";
+		}
+		cout << i.getTime() << " - " << i.getModality() << endl
+				<< i.getTeacher()->getName() << endl;
+
+	}
+	return CONTINUE;
 }

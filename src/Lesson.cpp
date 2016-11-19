@@ -106,9 +106,8 @@ vector<Customer*> GivenLesson::getCustomers() const {
 }
 
 void GivenLesson::removeCustomer(unsigned int ID) {
-	for(int i = 0; i < customers.size(); i++)
-	{
-		if(customers[i]->getID() == ID)
+	for (int i = 0; i < customers.size(); i++) {
+		if (customers[i]->getID() == ID)
 			customers.erase(customers.begin() + i);
 	}
 }

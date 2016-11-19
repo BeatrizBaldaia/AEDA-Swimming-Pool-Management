@@ -55,7 +55,8 @@ Customer::Customer(string name, Date birthDate, unsigned int ID) :
 float Customer::getMonthCost(unsigned int month, unsigned int year) const {
 	float sum = 0;
 	for (PoolUse * x : uses) {
-		if (x->getDate().getMonth() == month && x->getDate().getYear() == year) {
+		if (x->getDate().getMonth() == month
+				&& x->getDate().getYear() == year) {
 			cout << endl;
 			sum += x->getCost();
 		}
@@ -87,21 +88,21 @@ bool Customer::attendedLesson(const GivenLesson * lesson) {
 }
 
 int Customer::getEntryNumber() const { //frequência com que os clientes vão á piscina
-	if (uses.size() == 0) {
-		return 0;
-	}
-	Date d = uses[0]->getDate();
-	int result = 1;
-	for (int i = 1; 1 < uses.size(); i++) {
-		if (!(d == uses[i]->getDate())) {
-			d = uses[i]->getDate();
-			result++;
-		}
-	}
-
-	return result;
+//	if (uses.size() == 0) {
+//		return 0;
+//	}
+//	Date d = uses[0]->getDate();
+//	int result = 1;
+//	for (int i = 1; 1 < uses.size(); i++) {
+//		if (d == uses[i]->getDate()) {
+//			d = uses[i]->getDate();
+//			result++;
+//		}
+//	}
+//
+//	return result;
+	return uses.size();
 }
-
 
 /* TEACHER */
 

@@ -45,7 +45,6 @@ private:
 	Pool & pool;
 };
 
-
 /* CURRENT OCCUPATION MENU */
 
 class CurrentOccupation: public MenuHandler {
@@ -84,15 +83,31 @@ private:
 
 class CustomerMakeCurrentBill: public MenuHandler {
 public:
-	CustomerMakeCurrentBill(Pool & pool);
+	CustomerMakeCurrentBill(Pool& pool);
 	MenuResult handle();
 private:
-	Pool & pool;
+	Pool& pool;
 };
 
 class CustomerMakeBill: public MenuHandler {
 public:
 	CustomerMakeBill(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class ViewTeachersLessons: public MenuHandler {
+public:
+	ViewTeachersLessons(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class ViewSchedule: public MenuHandler {
+public:
+	ViewSchedule(Pool & pool);
 	MenuResult handle();
 private:
 	Pool & pool;

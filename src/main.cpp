@@ -25,8 +25,7 @@ int main() {
 
 	pool.load();
 
-	/*
-	Teacher * teacher = new Teacher("Mariana Santos", Date(20, 04, 1980));
+	/*Teacher * teacher = new Teacher("Mariana Santos", Date(20, 04, 1980));
 	pool.addTeacher(teacher);
 	Lesson lesson(LessonTime(MON, Time(10, 0)), HydroGym);
 	lesson.setTeacher(teacher);
@@ -36,12 +35,7 @@ int main() {
 	pool.attendLesson(lesson, c, Date(14, 11, 2016));
 	pool.attendLesson(lesson, pool.getCustomer(1), Date(14, 11, 2016));
 	pool.addFreeSwim(pool.getCustomer(3), Date(14, 11, 2016), Time(10, 10), 30);
-*/
-
-	//CustomerMakeBill m(pool);
-	//m.handle();
-
-	//pool.write();
+	pool.write();*/
 
 	//TODO: load and sort!
 	/*
@@ -60,9 +54,17 @@ int main() {
 
 	 */
 
-	PoolMenu menu(pool), manage(pool), viewInfo(pool), attendance(pool),
-			manageCustomers(pool), manageTeachers(pool), manageSchedule(pool),
-			usePool(pool);
+	PoolMenu menu(pool),
+
+	manage(pool),
+
+	viewInfo(pool), attendance(pool),
+
+	manageCustomers(pool), manageTeachers(pool), manageSchedule(pool),
+
+	usePool(pool);
+
+	ViewSchedule viewSchedule(pool);
 
 	AddCustomer addCustomer(pool);
 	RemoveCustomer removeCustomer(pool);
@@ -73,7 +75,7 @@ int main() {
 	PoolMenu addLesson(pool);
 	PoolMenu removeLesson(pool);
 
-	PoolMenu usePoolNow(pool);
+	PoolMenu freeSwimming(pool);
 	PoolMenu attendLesson(pool);
 
 	CurrentOccupation occupation(pool);
@@ -86,49 +88,50 @@ int main() {
 	menu.entries.push_back(MenuEntry("Exit", Menu::exitHandler));
 	menu.entries.push_back(MenuEntry("Manage", manage));
 	menu.entries.push_back(MenuEntry("View information", viewInfo));
-	menu.entries.push_back(MenuEntry("See Current Occupation", occupation));
-	menu.entries.push_back(MenuEntry("View Attendances", attendance));
-
 
 	/* MANAGE OPTION and DERIVATES*/
 
 	manage.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	manage.entries.push_back(MenuEntry("Manage Customers", manageCustomers));
-	manage.entries.push_back(MenuEntry("Manage Teachers", manageTeachers));
-	manage.entries.push_back(MenuEntry("Manage Schedule", manageSchedule));
-	manage.entries.push_back(MenuEntry("Use Pool", usePool));
+	manage.entries.push_back(MenuEntry("Manage customers", manageCustomers));
+	manage.entries.push_back(MenuEntry("Manage teachers", manageTeachers));
+	manage.entries.push_back(MenuEntry("Manage schedule", manageSchedule));
+	manage.entries.push_back(MenuEntry("Use pool", usePool));
 
 	manageCustomers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	manageCustomers.entries.push_back(MenuEntry("Add Customer", addCustomer));
-	manageCustomers.entries.push_back(MenuEntry("Remove Customer", removeCustomer));
+	manageCustomers.entries.push_back(MenuEntry("Add customer", addCustomer));
+	manageCustomers.entries.push_back(
+			MenuEntry("Remove customer", removeCustomer));
 
 	manageTeachers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	manageTeachers.entries.push_back(MenuEntry("Add Teacher", addTeacher));
-	manageTeachers.entries.push_back(MenuEntry("Remove Teacher", removeTeacher));
+	manageTeachers.entries.push_back(MenuEntry("Add teacher", addTeacher));
+	manageTeachers.entries.push_back(
+			MenuEntry("Remove teacher", removeTeacher));
 
 	manageSchedule.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	manageSchedule.entries.push_back(MenuEntry("Add Lesson", addLesson));
-	manageSchedule.entries.push_back(MenuEntry("Remove Lesson", removeLesson));
+	manageSchedule.entries.push_back(MenuEntry("Add lesson", addLesson));
+	manageSchedule.entries.push_back(MenuEntry("Remove lesson", removeLesson));
 
 	usePool.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	usePool.entries.push_back(MenuEntry("Use Pool", usePoolNow));
-	usePool.entries.push_back(MenuEntry("Attend Lesson", attendLesson));
+	usePool.entries.push_back(MenuEntry("Free swimming", freeSwimming));
+	usePool.entries.push_back(MenuEntry("Attend lesson", attendLesson));
 
 	/*---------------------------*/
 
-
 	attendance.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	attendance.entries.push_back(
-			MenuEntry("All Customer attendance", attendanceall));
+			MenuEntry("All customers' attendance", attendanceall));
 	attendance.entries.push_back(
-			MenuEntry("Attendances of a specific Customer (by name)",
+			MenuEntry("Attendances of a specific customer (by name)",
 					attendancename));
 	attendance.entries.push_back(
-			MenuEntry("Attendances of a specific Customer (by ID)",
+			MenuEntry("Attendances of a specific customer (by ID)",
 					attendanceid));
 
-
 	viewInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));
+	viewInfo.entries.push_back(MenuEntry("View attendances", attendance));
+	viewInfo.entries.push_back(
+			MenuEntry("View current occupation", occupation));
+	viewInfo.entries.push_back(MenuEntry("View schedule", viewSchedule));
 
 	menu.handle();
 

@@ -58,6 +58,9 @@ public:
 	bool operator >(const Time &time) const;
 	bool operator ==(const Time &time) const;
 
+	Time & operator +(const Time &time) const;
+	Time & operator +(unsigned int minutes) const;
+
 	unsigned int getTimeGap(const Time &time);
 private:
 	unsigned int hour;
@@ -73,12 +76,12 @@ ostream & operator <<(ostream & out, const Date & d);
 istream & operator >>(istream & in, Date & d);
 istream & operator >>(istream & in, Time & t);
 
-class InvalidDay{
+class InvalidDay {
 public:
 	InvalidDay();
 };
 
-class InvalidMonth{
+class InvalidMonth {
 public:
 	InvalidMonth();
 };

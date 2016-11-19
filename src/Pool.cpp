@@ -6,10 +6,10 @@
 #include <sstream>
 #include <utility>
 
-vector<Lesson> Pool::getLessonsByTeacher(string name) {
+vector<Lesson> Pool::getLessons(unsigned int ID) {
 	vector<Lesson> result;
 	for (const Lesson & x : schedule) {
-		if (x.getTeacher()->getName() == name) {
+		if (x.getTeacher()->getID() == ID) {
 			result.push_back(x);
 		}
 	}
@@ -44,11 +44,8 @@ Lesson Pool::getLesson(DayOfWeek day, Time time) const {
 
 }
 
-vector<Customer *> Pool::getAllCustomer() {
-	vector<Customer *> result;
-	for (Customer * x : customers) {
-		result.push_back(x);
-	}
+vector<Customer *> Pool::getCustomers() {
+	vector<Customer *> result = customers;
 	sort(result.begin(), result.end(),
 			[](Customer * a, Customer * b) {return a->getEntryNumber() < b->getEntryNumber();});
 
@@ -173,8 +170,7 @@ void Pool::addTeacher(Teacher* t) {
 	teachers.push_back(t);
 	unsigned int numberOfTeachers = teachers.size();
 	unsigned int counter = 0;
-	for (Lesson l : schedule)
-	{
+	for (Lesson l : schedule) {
 		l.setTeacher(teachers[counter]);
 		counter++;
 		if (counter == numberOfTeachers)
@@ -189,11 +185,9 @@ void Pool::attendLesson(Lesson lesson, Customer* customer, Date date) {
 	GivenLesson * givenLesson;
 	try {
 		givenLesson = getGivenLesson(lesson, date);
-	} catch (string x) {
-		if (x == "given lesson not found") {
+	} catch (NonExistentGivenLesson &x) {
 			givenLesson = new GivenLesson(lesson, date);
 			givenLessons.push_back(givenLesson);
-		}
 	}
 	for (Customer * i : givenLesson->getCustomers()) {
 		if (i == customer) {
@@ -224,13 +218,37 @@ void Pool::addFreeSwim(Customer* customer, Date date, Time time,
 }
 
 void Pool::removeCustomer(unsigned int ID) {
-	for (int i = 0; i < customers.size(); i++)
-	{
-		if(customers[i]->getID() == ID) {
+	for (int i = 0; i < customers.size(); i++) {
+		if (customers[i]->getID() == ID) {
 			customers.erase(customers.begin() + i);
 			break;
 		}
 	}
+}
+
+vector<GivenLesson*> Pool::getGivenLessons(unsigned int ID) {
+	vector<GivenLesson*> result;
+	for (GivenLesson* i : givenLessons) {
+		if (i->getLesson().getTeacher()->getID() == ID) {
+			result.push_back(i);
+		}
+	}
+
+	return result;
+}
+
+vector<Lesson> Pool::getLessons(Date date, Time time) {
+	vector<Lesson> result;
+	for (const Lesson & i : schedule) {
+		if (i.getDayOfWeek() == date.getDayOfWeek() && i.getTime() + 15 >= time) {
+			result.push_back(i);
+		}
+	}
+	return result;
+}
+
+vector<Lesson> Pool::getSchedule() const {
+	return schedule;
 }
 
 void Pool::writeGivenLessons() {

@@ -14,6 +14,9 @@ MenuResult ExitHandler::handle() {
 }
 
 MenuResult Menu::handle() {
+	if (entries.size() == 0) {
+		return EXIT;
+	}
 
 	while (true) {
 		unsigned int option;
@@ -34,6 +37,8 @@ MenuResult Menu::handle() {
 			invalidOption(option);
 			continue;
 		}
+
+		cin.ignore(256, '\n');
 
 		MenuHandler &handler = entries[option].second;
 		MenuResult res = handler.handle();
