@@ -25,7 +25,7 @@ Date::Date() {
 }
 
 Date::Date(string & input) {
-	string aux;
+	/*string aux;
 	unsigned int d, m, y;
 	size_t found_not = input.find_first_not_of("0123456789"); ///procurar o 1º elemento que nao é um número que separa o dia do mÊs
 	aux = input.substr(0, found_not);
@@ -41,15 +41,15 @@ Date::Date(string & input) {
 	aux = input.substr(0, found_not);
 	y = stoi(aux);
 
-	Date(d, m, y);
+	Date(d, m, y);*/
 
-	/*stringstream date;
+	stringstream date;
 	 date.str(input);
 	 date >> day;
 	 date.ignore();
 	 date >> month;
 	 date.ignore();
-	 date >> year;*/
+	 date >> year;
 }
 
 unsigned int Date::getDay() const {

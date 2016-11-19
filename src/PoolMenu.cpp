@@ -187,7 +187,9 @@ MenuResult CustomerAttendanceAll::handle() {
 		cout << "Customer n " << x->getID() << " - " << x->getName() << " : "
 				<< x->getEntryNumber() << endl;
 	}
-	cout << "There are no customers." << endl;
+	if(pool.getCustomers().size() == 0){
+		cout << "There are no customers." << endl;
+	}
 	return CONTINUE;
 }
 
@@ -200,7 +202,7 @@ MenuResult CustomerAttendanceName::handle() {
 	string name;
 	bool again = true;
 	int answer;
-	string s;
+
 
 	cout
 			<< "See the number of attendances of a specific Customer.\n Enter the name: ";
@@ -225,13 +227,14 @@ MenuResult CustomerAttendanceName::handle() {
 		do {
 			cout << "Do you want to try again?" << endl << endl
 					<< "1- YES    2- NO" << endl;
-			getline(cin, s);
-			answer = stoi(s);
+			cin >> answer;
+
 			cout << endl;
 		} while (answer != 1 || answer != 2); ///inputs invalidos
 		if (answer == 2) {
 			again = false; ///ciclo acaba
 		} else {
+			cin.ignore(10, '\n');
 			cout << "Enter the name: "; ///again = true => repete
 		}
 	}
