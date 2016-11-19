@@ -137,9 +137,17 @@ private:
 	Pool & pool;
 };
 
-class ViewTeachersLessons: public MenuHandler {
+class ViewTeacherSchedule: public MenuHandler {
 public:
-	ViewTeachersLessons(Pool & pool);
+	ViewTeacherSchedule(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class ViewTeacherGivenLessons: public MenuHandler {
+public:
+	ViewTeacherGivenLessons(Pool & pool);
 	MenuResult handle();
 private:
 	Pool & pool;

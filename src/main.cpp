@@ -37,7 +37,6 @@ int main() {
 	pool.addFreeSwim(pool.getCustomer(3), Date(14, 11, 2016), Time(10, 10), 30);
 	pool.write();*/
 
-	//TODO: load and sort!
 	/*
 
 	 Fazer:
@@ -89,8 +88,8 @@ int main() {
 	PoolMenu viewTeachers(pool);
 	PoolMenu viewCustomers(pool);
 
-	PoolMenu viewTeacherSchedule(pool);
-	PoolMenu viewTeacherGivenLessons(pool);
+	ViewTeacherSchedule viewTeacherSchedule(pool);
+	ViewTeacherGivenLessons viewTeacherGivenLessons(pool);
 
 	/* MAIN MENU */
 	menu.entries.push_back(MenuEntry("Exit", Menu::exitHandler));
@@ -147,7 +146,7 @@ int main() {
 	viewInfo.entries.push_back(MenuEntry("View teacher info", viewTeacherInfo));
 
 	viewTeacherInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	viewTeacherInfo.entries.push_back(MenuEntry("View teacher schedule", viewTeacherSchedule));
+	viewTeacherInfo.entries.push_back(MenuEntry("View teacher's schedule", viewTeacherSchedule));
 	viewTeacherInfo.entries.push_back(MenuEntry("View teacher's given lessons", viewTeacherGivenLessons));
 
 	menu.handle();

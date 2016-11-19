@@ -15,7 +15,7 @@ MenuResult ExitHandler::handle() {
 
 MenuResult Menu::handle() {
 	if (entries.size() == 0) {
-		return EXIT;
+		return CONTINUE;
 	}
 
 	while (true) {

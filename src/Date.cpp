@@ -1,7 +1,9 @@
 #include "Date.h"
 
+#include <crtdefs.h>
 #include <cmath>
-#include <sstream>
+#include <ctime>
+#include <cwchar>
 
 Date::Date(const unsigned int & day, const unsigned int & month,
 		const unsigned int & year) {
@@ -374,4 +376,50 @@ Time& Time::operator +(unsigned int minutes) const {
 	hourRes = (hour + (minute + minutes) / 60) % 24;
 	Time result(hourRes, minRes);
 	return result;
+}
+
+Date getCurrentDate() {  //retorna dia, mês e ano atual
+	unsigned int day, month, year;
+	time_t rawtime;
+	struct tm * timeinfo;
+
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+
+	day = (unsigned int) timeinfo->tm_mday;
+	month = (unsigned int) timeinfo->tm_mon + 1;
+	year = (unsigned int) timeinfo->tm_year + 1900;
+
+	Date date(day, month, year);
+	return date;
+}
+
+Time getCurrentTime() {  //retorna tempo atual
+
+	unsigned int hour, minute;
+	time_t rawtime;
+	struct tm * timeinfo;
+
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+
+	hour = (unsigned int) timeinfo->tm_hour;
+	minute = (unsigned int) timeinfo->tm_min;
+
+	Time time(hour, minute);
+	return time;
+}
+
+DayOfWeek getCurrentDayOfWeek() {  //retorna atual dia da semana
+	static const DayOfWeek wday_name[] = { MON, TUE, WED, THU, FRI, SAT, SUN };
+
+	DayOfWeek dw;
+	time_t rawtime;
+	struct tm * timeinfo;
+
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+
+	dw = wday_name[timeinfo->tm_wday];
+	return dw;
 }

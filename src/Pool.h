@@ -101,6 +101,12 @@ public:
 	unsigned int ID;
 };
 
+class NonExistentTeacherID {
+public:
+	NonExistentTeacherID(unsigned int ID);
+	unsigned int ID;
+};
+
 class NotSameDayAsDate {
 public:
 	NotSameDayAsDate();

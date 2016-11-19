@@ -76,6 +76,10 @@ ostream & operator <<(ostream & out, const Date & d);
 istream & operator >>(istream & in, Date & d);
 istream & operator >>(istream & in, Time & t);
 
+Date getCurrentDate();
+Time getCurrentTime();
+DayOfWeek getCurrentDayOfWeek();
+
 class InvalidDay {
 public:
 	InvalidDay();

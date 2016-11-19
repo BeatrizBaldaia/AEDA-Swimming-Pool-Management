@@ -92,6 +92,10 @@ NonExistentCustomerID::NonExistentCustomerID(unsigned int ID) {
 	this->ID = ID;
 }
 
+NonExistentTeacherID::NonExistentTeacherID(unsigned int ID) {
+	this->ID = ID;
+}
+
 ///////////////////////////////////////////////////////////////////////////
 
 void Pool::setMaxCustomers(unsigned int n) {
@@ -180,7 +184,7 @@ void Pool::addTeacher(Teacher* t) {
 
 void Pool::attendLesson(Lesson lesson, Customer* customer, Date date) {
 	if (lesson.getDayOfWeek() != date.getDayOfWeek()) {
-		throw NotSameDayAsDate(); //TODO
+		throw NotSameDayAsDate();
 	}
 	GivenLesson * givenLesson;
 	try {
@@ -408,9 +412,11 @@ void Pool::loadGivenLessons() {
 		string customersString;
 		getline(givenLessonsFile, customersString);
 		stringstream customersSS(customersString);
-		while (customersSS) {
+		while (!customersSS.eof()) {
+//			cout << customersSS.str() << endl;
 			unsigned int customerID;
 			customersSS >> customerID;
+//			cout << customerID << endl;
 			Customer * customer = getCustomer(customerID);
 			givenLesson->addCustomer(customer);
 			PoolUse * poolUse = new LessonUse(date, time, givenLesson);
@@ -488,7 +494,7 @@ Teacher* Pool::getTeacher(unsigned int ID) {
 			return x;
 		}
 	}
-	return NULL;
+	throw NonExistentTeacherID(ID);
 }
 
 void Pool::load() {

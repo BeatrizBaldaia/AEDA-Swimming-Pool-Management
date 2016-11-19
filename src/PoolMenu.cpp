@@ -1,15 +1,9 @@
 #include "PoolMenu.h"
 
-#include <crtdefs.h>
-#include <time.h>       /* time_t, struct tm, time, localtime */
 #include <algorithm>    // std::unique, std::distance
-#include <cctype>
-#include <cwchar>
-#include <iostream>
 #include <fstream>
-#include <sstream>
 #include <iomanip>
-#include <iterator>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -17,55 +11,7 @@
 #include "Lesson.h"
 #include "Person.h"
 #include "Pool.h"
-
-//TODO ^^^ Não uses bibliotecas .h. Tenta usar as bibliotecas de cpp (por exemplo time.h é ctime)
-
-/* FUNÇÕES UTEIS *///TODO \/\/\/ Passa o que trabalha sem Pool para o Date.
-Date getCurrentDate() {  //retorna dia, mês e ano atual
-	unsigned int day, month, year;
-	time_t rawtime;
-	struct tm * timeinfo;
-
-	time(&rawtime);
-	timeinfo = localtime(&rawtime);
-
-	day = (unsigned int) timeinfo->tm_mday;
-	month = (unsigned int) timeinfo->tm_mon + 1;
-	year = (unsigned int) timeinfo->tm_year + 1900;
-
-	Date date(day, month, year);
-	return date;
-}
-
-Time getCurrentTime() {  //retorna tempo atual
-
-	unsigned int hour, minute;
-	time_t rawtime;
-	struct tm * timeinfo;
-
-	time(&rawtime);
-	timeinfo = localtime(&rawtime);
-
-	hour = (unsigned int) timeinfo->tm_hour;
-	minute = (unsigned int) timeinfo->tm_min;
-
-	Time time(hour, minute);
-	return time;
-}
-
-DayOfWeek getCurrentDayOfWeek() {  //retorna atual dia da semana
-	static const DayOfWeek wday_name[] = { MON, TUE, WED, THU, FRI, SAT, SUN };
-
-	DayOfWeek dw;
-	time_t rawtime;
-	struct tm * timeinfo;
-
-	time(&rawtime);
-	timeinfo = localtime(&rawtime);
-
-	dw = wday_name[timeinfo->tm_wday];
-	return dw;
-}
+#include "PoolUse.h"
 
 /* POOL MENU */
 
@@ -418,6 +364,13 @@ MenuResult CustomerMakeBill::handle() {
 	unsigned int year;
 	cout << "Insert Customer ID: ";
 	cin >> customerID;
+	Customer * c;
+	try {
+		c = pool.getCustomer(customerID);
+	} catch (NonExistentCustomerID &x) {
+		printf("\nNon existing Customer");
+		return CONTINUE;
+	}
 	cout << "\n\nInsert month and year (ex. 02/1995): ";
 	cin >> monthString;
 	if (monthString.size() != 7 || monthString[2] != '/')
@@ -428,13 +381,6 @@ MenuResult CustomerMakeBill::handle() {
 	monthStream >> year;
 	vector<GivenLesson *> customerGivenLessons; //vetor que nos dá as given lessons do cliente nesse mes
 	vector<PoolUse *> customerFreeSwimUses; //vetor que nos dá os usos da piscina (freeswimuses) do cliente nesse mes
-	Customer * c;
-	try {
-		c = pool.getCustomer(customerID);
-	} catch (NonExistentCustomerID &x) {
-		printf("\nNon existing Customer");
-		return CONTINUE;
-	}
 	for (PoolUse * p : c->getPoolUses()) {
 		if (p->getDate().getMonth() == month && p->getDate().getYear() == year)
 			customerFreeSwimUses.push_back(p);
@@ -508,7 +454,7 @@ MenuResult AddTeacher::handle() {
 /* REMOVE TEACHER MENU */
 
 RemoveTeacher::RemoveTeacher(Pool& pool) :
-	pool(pool){
+		pool(pool) {
 
 }
 
@@ -518,10 +464,9 @@ MenuResult RemoveTeacher::handle() {
 	cin >> ID;
 	int counter = 0;
 	pool.removeTeacher(ID);
-	for(Lesson & l : pool.getSchedule())
-	{
+	for (Lesson & l : pool.getSchedule()) {
 		l.setTeacher(pool.getTeachers()[counter]);
-		counter ++;
+		counter++;
 		if (counter == pool.getTeachers().size())
 			counter = 0;
 	}
@@ -529,12 +474,42 @@ MenuResult RemoveTeacher::handle() {
 	return CONTINUE;
 }
 
-ViewTeachersLessons::ViewTeachersLessons(Pool& pool) :
+ViewTeacherSchedule::ViewTeacherSchedule(Pool& pool) :
 		pool(pool) {
 
 }
 
-MenuResult ViewTeachersLessons::handle() {
+MenuResult ViewTeacherSchedule::handle() {
+	unsigned int ID;
+	cout << "\nInsert teacher's ID: ";
+	cin >> ID;
+	Teacher * t;
+	try {
+		t = pool.getTeacher(ID);
+	} catch (NonExistentTeacherID &x) {
+		cout << "\nThere is no teacher with that ID.\n";
+		return CONTINUE;
+	}
+	cout << "\n" << t->getName() << "'s schedule:";
+
+	if (pool.getLessons(t->getID()).size() == 0) {
+		cout << "\nThere are no lessons scheduled.\n";
+		return CONTINUE;
+	}
+
+	DayOfWeek d = pool.getLessons(t->getID())[0].getDayOfWeek();
+
+	cout << "\n" << d << ":\n";
+
+	for (const Lesson & i : pool.getLessons(t->getID())) {
+		if (i.getDayOfWeek() != d) {
+			d = i.getDayOfWeek();
+			cout << "\n" << d << ":\n";
+		}
+		cout << i.getTime() << " - " << i.getModality() << endl;
+
+	}
+	return CONTINUE;
 }
 
 ViewSchedule::ViewSchedule(Pool& pool) :
@@ -557,7 +532,7 @@ MenuResult ViewSchedule::handle() {
 			d = i.getDayOfWeek();
 			cout << "\n" << d << ":\n";
 		}
-		cout << i.getTime() << " - " << i.getModality() << endl
+		cout << i.getTime() << " - " << i.getModality() << "\nTeacher: "
 				<< i.getTeacher()->getName() << endl;
 
 	}
@@ -565,12 +540,12 @@ MenuResult ViewSchedule::handle() {
 }
 
 AttendLesson::AttendLesson(Pool& pool) :
-	pool(pool){
+		pool(pool) {
 
 }
 
 MenuResult AttendLesson::handle() {
-	vector<Lesson &> lessons = pool.getLessons(getCurrentDate(),
+	vector<Lesson> lessons = pool.getLessons(getCurrentDate(),
 			getCurrentTime());
 	unsigned int choice;
 	unsigned int customerID;
@@ -589,21 +564,17 @@ MenuResult AttendLesson::handle() {
 	cout << "\n0 - Cancel";
 	cout << "\nChoose one class to attend today: ";
 	cin >> choice;
-	if (choice == 0)
+	if (choice == 0) {
 		return CONTINUE;
-	int noGivenLessonFlag = 0;
-	for (GivenLesson * g : pool.getGivenLessons()) {
-		if (g->getDate() == getCurrentDate() && g->getLesson() == lessons[choice - 1]) {
-			g->addCustomer(c);
-			return CONTINUE;
-		}
 	}
-	return CONTINUE;
 
+	pool.attendLesson(lessons[0], c, getCurrentDate());
+
+	return CONTINUE;
 }
 
 AddLesson::AddLesson(Pool& pool) :
-	pool(pool){
+		pool(pool) {
 }
 
 MenuResult AddLesson::handle() {
@@ -614,23 +585,24 @@ MenuResult AddLesson::handle() {
 	Time time;
 	cout << "\nInsert day of week: ";
 	cin >> weekDay;
-	if(weekDay == "Monday")
+	if (weekDay == "Monday")
 		dayOfWeek = MON;
 	else if (weekDay == "Tuesday")
 		dayOfWeek = TUE;
 	else if (weekDay == "Wednesday")
-			dayOfWeek = WED;
+		dayOfWeek = WED;
 	else if (weekDay == "Thursday")
-			dayOfWeek = THU;
+		dayOfWeek = THU;
 	else if (weekDay == "Friday")
-			dayOfWeek = FRI;
+		dayOfWeek = FRI;
 	else if (weekDay == "Saturday")
-			dayOfWeek = SAT;
+		dayOfWeek = SAT;
 	else if (weekDay == "Sunday")
-			dayOfWeek = SUN;
+		dayOfWeek = SUN;
 	cout << "\nInsert lesson's time: ";
 	cin >> time;
-	cout << "\n\n0 - HydroGym\n1 - Zumba\n2 - AquaticPolo\n3 - ArtisticSwimming\n4 - CompetitiveSwimming\n5 - Learning\n";
+	cout
+			<< "\n\n0 - HydroGym\n1 - Zumba\n2 - AquaticPolo\n3 - ArtisticSwimming\n4 - CompetitiveSwimming\n5 - Learning\n";
 	cout << "\nChoose lesson's modality: ";
 	cin >> modalityOpt;
 	modality = static_cast<Modality>(modalityOpt);
@@ -643,7 +615,7 @@ MenuResult AddLesson::handle() {
 }
 
 RemoveLesson::RemoveLesson(Pool& pool) :
-	pool(pool){
+		pool(pool) {
 
 }
 
@@ -651,18 +623,51 @@ MenuResult RemoveLesson::handle() {
 	unsigned int choice;
 	cout << endl;
 	int indice = 0;
-	for (Lesson & i : pool.getSchedule())
-	{
+	for (Lesson & i : pool.getSchedule()) {
 		indice++;
-		cout << indice << " - " << i.getModality() << endl << i.getDayOfWeek() << " - " << i.getTime() << endl;
+		cout << indice << " - " << i.getModality() << endl << i.getDayOfWeek()
+				<< " - " << i.getTime() << endl;
 	}
 	cout << "\n0 - Cancel\n";
 	cout << "Choose lesson to be deleted: ";
 	cin >> choice;
-	if (choice == 0)
-	{
+	if (choice == 0) {
 		return CONTINUE;
 	}
 	pool.getSchedule().erase(pool.getSchedule().begin() + choice);
+	return CONTINUE;
+}
+
+ViewTeacherGivenLessons::ViewTeacherGivenLessons(Pool& pool) :
+		pool(pool) {
+}
+
+MenuResult ViewTeacherGivenLessons::handle() {
+	int ID;
+	cout << "\nInsert teacher's ID: ";
+	cin >> ID;
+	Teacher * t;
+	try {
+		t = pool.getTeacher(ID);
+	} catch (NonExistentTeacherID &x) {
+		cout << "\nThere is no teacher with that ID.\n";
+		return CONTINUE;
+	}
+
+	vector<GivenLesson *> result = pool.getGivenLessons(ID);
+
+	if (result.size() == 0) {
+		cout << "\nThe teacher has no given lessons.\n";
+		return CONTINUE;
+	}
+
+	cout << "\n" << t->getName() << "'s given lessons:\n\n";
+
+	for (GivenLesson * i : result) {
+		cout << i->getDate() << " - " << i->getLesson().getTime() << "\n"
+				<< i->getLesson().getModality() << "\n"
+				<< i->getCustomers().size() << " customers\n\n";
+	}
+
 	return CONTINUE;
 }

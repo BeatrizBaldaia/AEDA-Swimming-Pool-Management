@@ -1,5 +1,7 @@
 #include "Lesson.h"
 
+#include <algorithm>
+#include <iterator>
 #include <string>
 
 unsigned int GivenLesson::lastID = 0;
@@ -86,7 +88,9 @@ GivenLesson::GivenLesson(Lesson lesson, Date date, unsigned int ID) {
 }
 
 void GivenLesson::addCustomer(Customer* customer) {
-	customers.push_back(customer);
+	if (find(customers.begin(), customers.end(), customer) == customers.end()) {
+		customers.push_back(customer);
+	}
 }
 
 unsigned int GivenLesson::getID() const {
