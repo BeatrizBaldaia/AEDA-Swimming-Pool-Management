@@ -26,6 +26,10 @@ MenuResult Menu::handle() {
 		cin >> option;
 
 		if (!cin.good()) {
+			if (cin.eof()) {
+				cin.clear();
+				break;
+			}
 			string s;
 			cin.clear();
 			getline(cin, s);

@@ -41,7 +41,7 @@ Date::Date(string & input) {
 	aux = input.substr(0, found_not);
 	y = stoi(aux);
 
-	Date(d, m, y);*/
+	Date(d, m, y);
 
 	stringstream date;
 	 date.str(input);
@@ -49,7 +49,7 @@ Date::Date(string & input) {
 	 date.ignore();
 	 date >> month;
 	 date.ignore();
-	 date >> year;
+	 date >> year;*/
 }
 
 unsigned int Date::getDay() const {

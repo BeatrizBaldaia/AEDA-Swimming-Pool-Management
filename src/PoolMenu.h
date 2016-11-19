@@ -102,29 +102,15 @@ private:
 
 /* CUSTOMERS  ATTENDANCE */
 
-class CustomerAttendanceAll: public MenuHandler {
+class ViewAttendance: public MenuHandler {
 public:
-	CustomerAttendanceAll(Pool & pool);
+	ViewAttendance(Pool& pool);
 	MenuResult handle();
 private:
-	Pool & pool;
+	Pool& pool;
 };
 
-class CustomerAttendanceName: public MenuHandler {
-public:
-	CustomerAttendanceName(Pool & pool);
-	MenuResult handle();
-private:
-	Pool & pool;
-};
-
-class CustomerAttendanceID: public MenuHandler {
-public:
-	CustomerAttendanceID(Pool & pool);
-	MenuResult handle();
-private:
-	Pool & pool;
-};
+/*-----------------------*/
 
 class CustomerMakeCurrentBill: public MenuHandler {
 public:
@@ -191,6 +177,31 @@ public:
 private:
 	Pool & pool;
 };
+
+class ViewCustomersInformation: public MenuHandler {
+public:
+	ViewCustomersInformation(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class ViewCustomerUses: public MenuHandler {
+public:
+	ViewCustomerUses(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class ViewTeacherInformation: public MenuHandler {
+public:
+	ViewTeacherInformation(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
 
 #endif /* SRC_POOLMENU_H_ */
 
