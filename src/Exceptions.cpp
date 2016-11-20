@@ -1,44 +1,48 @@
 #include "Exceptions.h"
 
-/* INVALID INPUT */
+/* Invalid input */
 
-InvalidInput::InvalidInput(int answer, int min, int max){
+InvalidInputInt::InvalidInputInt(int answer, int min, int max) {
 	this->answer = answer;
 	this->min = min;
 	this->max = max;
 }
 
-void InvalidInput::what(){
-	cout << "Invalid Input. Insert an integer in the range [ " << min << ", " << max << " ]" << endl;
+void InvalidInputInt::printError() {
+	cout << endl << "Invalid input. Insert an integer in the range [" << min
+			<< ", " << max << "]." << endl;
 }
 
-/* INVALID INPUT DATE */
+/* Invalid input DATE */
 
-InvalidInputDate::InvalidInputDate(){
-
-}
-
-void InvalidInputDate::what(){
-	cout << "Invalid Input for date. Insert the date in the form 01 / 01 / 1999." << endl;
-}
-
-
-/* INVALID INPUT TIME */
-
-InvalidInputTime::InvalidInputTime(){
+InvalidInputDate::InvalidInputDate() {
 
 }
 
-void InvalidInputTime::what(){
-	cout << "Invalid Input for time. Insert the time in the form 08 : 30." << endl;
+void InvalidInputDate::printError() {
+	cout << endl
+			<< "Invalid input format. Insert the date in the form DD/MM/YYYY."
+			<< endl;
 }
 
-/* INVALID INPUT DAY OF WEEK */
+/* Invalid input TIME */
 
-InvalidInputDayOfWeek::InvalidInputDayOfWeek(){
+InvalidInputTime::InvalidInputTime() {
 
 }
 
-void InvalidInputDayOfWeek::what(){
-	cout << "Invalid Input for day of the week. Insert one of the possible days of the week.";
+void InvalidInputTime::printError() {
+	cout << endl << "Invalid input format. Insert the time in the form HH:MM."
+			<< endl;
+}
+
+/* Invalid input DAY OF WEEK */
+
+InvalidInputDayOfWeek::InvalidInputDayOfWeek() {
+
+}
+
+void InvalidInputDayOfWeek::printError() {
+	cout << endl
+			<< "Invalid input for day of the week. Insert one of the possible days of the week.";
 }

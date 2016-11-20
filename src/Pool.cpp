@@ -171,14 +171,7 @@ void Pool::writeSchedule() {
 
 void Pool::addTeacher(Teacher* t) {
 	teachers.push_back(t);
-	unsigned int numberOfTeachers = teachers.size();
-	unsigned int counter = 0;
-	for (Lesson l : schedule) {
-		l.setTeacher(teachers[counter]);
-		counter++;
-		if (counter == numberOfTeachers)
-			counter = 0;
-	}
+	distributeLessons();
 }
 
 void Pool::attendLesson(Lesson lesson, Customer* customer, Date date) {
@@ -236,6 +229,7 @@ void Pool::removeTeacher(unsigned int ID) {
 			break;
 		}
 	}
+	distributeLessons();
 }
 
 vector<GivenLesson*> Pool::getGivenLessons(unsigned int ID) {
@@ -265,6 +259,16 @@ vector<Lesson> Pool::getSchedule() const {
 
 vector<Teacher*> Pool::getTeachers() const {
 	return teachers;
+}
+
+void Pool::distributeLessons() {
+	size_t counter = 0;
+	for (Lesson & l : schedule) {
+		l.setTeacher(teachers[counter]);
+		counter++;
+		if (counter == teachers.size())
+			counter = 0;
+	}
 }
 
 void Pool::writeGivenLessons() {

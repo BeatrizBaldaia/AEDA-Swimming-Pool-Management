@@ -1,4 +1,3 @@
-
 #ifndef SRC_UTILITIES_H_
 #define SRC_UTILITIES_H_
 
@@ -8,16 +7,14 @@
 #include <sstream>      // std::stringstream
 #include "Date.h"
 
-
 using namespace std;
 
+void getInputInt(int &answer, int min, int max, string msg);
 
-void ValidInputInt(int &answer, int min, int max, string msg);
+Date getInputDate(string msg);
 
-Date ValidDate(string msg);
+Time getInputTime(string msg);
 
-Time ValidTime(string msg);
-
-DayOfWeek ValidDayOfWeek(string msg);
+DayOfWeek getInputDayOfWeek(string msg);
 
 #endif /* SRC_UTILITIES_H_ */

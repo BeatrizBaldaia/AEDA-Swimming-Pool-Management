@@ -12,9 +12,10 @@ enum DayOfWeek {
 
 class Date {
 public:
+
 	Date();
 	Date(string & input);
-	Date(unsigned int & day,unsigned int & month, unsigned int & year);
+	Date(unsigned int day, unsigned int month, unsigned int year);
 
 	unsigned int getDay() const;
 	unsigned int getMonth() const;
@@ -26,7 +27,7 @@ public:
 	void setYear(const unsigned int &year);
 
 	bool valid() const;
-	const Date & operator= (const Date & d);
+	const Date & operator=(const Date & d);
 	bool operator <=(const Date &date) const;
 	bool operator >=(const Date &date) const;
 	bool operator <(const Date &date) const;
@@ -57,7 +58,7 @@ public:
 	bool operator <(const Time &time) const;
 	bool operator >(const Time &time) const;
 	bool operator ==(const Time &time) const;
-	const Time & operator= (const Time & t);
+	const Time & operator=(const Time & t);
 
 	Time & operator +(const Time &time) const;
 	Time & operator +(unsigned int minutes) const;
@@ -91,7 +92,7 @@ public:
 	InvalidMonth();
 };
 
-class InvalidTimeRange{
+class InvalidTimeRange {
 public:
 	InvalidTimeRange();
 };

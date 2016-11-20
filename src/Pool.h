@@ -31,6 +31,8 @@ public:
 	vector<Lesson> getSchedule() const;
 	vector<Teacher *> getTeachers() const;
 
+	void distributeLessons();
+
 	void setFileNames(vector<string> v);
 	void addFreeUse(PoolUse * freeUse);
 

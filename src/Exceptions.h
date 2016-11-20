@@ -1,4 +1,3 @@
-
 #ifndef SRC_EXCEPTIONS_H_
 #define SRC_EXCEPTIONS_H_
 
@@ -9,35 +8,35 @@ using namespace std;
 
 /* INVALID INPUT */
 
-class InvalidInput{
+class InvalidInputInt {
 	int answer;
 	int min, max;
 public:
-	InvalidInput(int answer, int min, int max);
-	void what();
+	InvalidInputInt(int answer, int min, int max);
+	void printError();
 };
 
 /* INVALID INPUT DATE */
 
-class InvalidInputDate{
+class InvalidInputDate {
 public:
 	InvalidInputDate();
-	void what();
+	void printError();
 };
 
 /* INVALID INPUT TIME */
 
-class InvalidInputTime{
+class InvalidInputTime {
 public:
 	InvalidInputTime();
-	void what();
+	void printError();
 };
 
 /* INVALID INPUT DAY OF WEEK */
 
-class InvalidInputDayOfWeek{
+class InvalidInputDayOfWeek {
 public:
 	InvalidInputDayOfWeek();
-	void what();
+	void printError();
 };
 #endif /* SRC_EXCEPTIONS_H_ */

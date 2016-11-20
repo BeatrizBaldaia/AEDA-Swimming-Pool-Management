@@ -6,7 +6,7 @@
 #include <cwchar>
 #include <sstream>
 
-Date::Date(unsigned int & day,unsigned int & month,unsigned int & year) {
+Date::Date(unsigned int day, unsigned int month, unsigned int year) {
 	if (month >= 1 && month <= 12) {
 		if (day >= 1 && day <= daysInMonth(month, year)) {
 			this->day = day;
@@ -26,30 +26,30 @@ Date::Date() {
 
 Date::Date(string & input) {
 	/*string aux;
-	unsigned int d, m, y;
-	size_t found_not = input.find_first_not_of("0123456789"); ///procurar o 1º elemento que nao é um número que separa o dia do mÊs
-	aux = input.substr(0, found_not);
-	d = stoi(aux);
-	size_t found = input.find_first_of("0123456789", found_not + 1); ///procura numero; primeiro digito para o mês
-	input = input.substr(found, input.size() - found); ///para ficar so com o resto da string; elimina a parte do dia
-	found_not = input.find_first_not_of("0123456789"); ///procura elemento que nao é digito e separa o mês do ano
-	aux = input.substr(0, found_not);
-	m = stoi(aux);
-	found = input.find_first_of("0123456789", found_not + 1); ///posição do primeiro digito para o ano
-	input = input.substr(found, input.size() - found);
-	found_not = input.find_first_not_of("0123456789"); ///posição até a onde vamos extrair o velor para o ano
-	aux = input.substr(0, found_not);
-	y = stoi(aux);
+	 unsigned int d, m, y;
+	 size_t found_not = input.find_first_not_of("0123456789"); ///procurar o 1º elemento que nao é um número que separa o dia do mÊs
+	 aux = input.substr(0, found_not);
+	 d = stoi(aux);
+	 size_t found = input.find_first_of("0123456789", found_not + 1); ///procura numero; primeiro digito para o mês
+	 input = input.substr(found, input.size() - found); ///para ficar so com o resto da string; elimina a parte do dia
+	 found_not = input.find_first_not_of("0123456789"); ///procura elemento que nao é digito e separa o mês do ano
+	 aux = input.substr(0, found_not);
+	 m = stoi(aux);
+	 found = input.find_first_of("0123456789", found_not + 1); ///posição do primeiro digito para o ano
+	 input = input.substr(found, input.size() - found);
+	 found_not = input.find_first_not_of("0123456789"); ///posição até a onde vamos extrair o velor para o ano
+	 aux = input.substr(0, found_not);
+	 y = stoi(aux);
 
-	Date(d, m, y);
-*/
+	 Date(d, m, y);
+	 */
 	stringstream date;
-	 date.str(input);
-	 date >> day;
-	 date.ignore();
-	 date >> month;
-	 date.ignore();
-	 date >> year;
+	date.str(input);
+	date >> day;
+	date.ignore();
+	date >> month;
+	date.ignore();
+	date >> year;
 }
 
 unsigned int Date::getDay() const {
@@ -180,7 +180,7 @@ bool Date::between(const Date &min, const Date &max) {
 	}
 }
 
-const Date & Date::operator= (const Date & d){
+const Date & Date::operator=(const Date & d) {
 	day = d.getDay();
 	month = d.getMonth();
 	year = d.getYear();
@@ -273,7 +273,7 @@ ostream & operator <<(ostream & out, const DayOfWeek & d) {
 }
 
 Time::Time(unsigned int h, unsigned int m) {
-	if((h < 0 && h > 24) || (m < 0 && m > 59)){
+	if (h >= 24 || m >= 60) {
 		throw InvalidTimeRange();
 	}
 
@@ -355,8 +355,7 @@ bool Time::operator ==(const Time& time) const {
 	return false;
 }
 
-
-const Time & Time::operator= (const Time & t){
+const Time & Time::operator=(const Time & t) {
 	hour = t.getHour();
 	minute = t.getMinute();
 	return *this;
@@ -396,7 +395,7 @@ Time& Time::operator +(unsigned int minutes) const {
 	return result;
 }
 
-InvalidTimeRange::InvalidTimeRange(){
+InvalidTimeRange::InvalidTimeRange() {
 
 }
 
