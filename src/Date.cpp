@@ -345,7 +345,10 @@ void Time::setMinute(unsigned int m) {
 }
 
 unsigned int Time::getTimeGap(const Time &time) {
-	return abs(hour * 60 + minute - time.getHour() * 60 + time.getMinute());
+	if((hour * 60 + minute) >= (time.getHour() * 60 + time.getMinute()))
+		return (hour * 60 + minute) - (time.getHour() * 60 + time.getMinute());
+	else
+		return (time.getHour() * 60 + time.getMinute()) - (hour * 60 + minute);
 }
 
 bool Time::operator ==(const Time& time) const {

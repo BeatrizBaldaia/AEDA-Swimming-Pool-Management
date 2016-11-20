@@ -16,7 +16,9 @@ ID, NAME, NUMUSES, GIVENLESSONS, ASSLESSONS
 class Pool;
 
 /* POOL MENU */
-
+/**
+ * cria menus (é derivada da class Menu)
+ */
 class PoolMenu: public Menu {
 public:
 	PoolMenu(Pool & pool);
@@ -66,7 +68,14 @@ private:
 };
 
 /* ATTEND LESSON */
-
+/**
+ * \brief associa um cliente a uma aula dada
+ *
+ * Prioridade daqueles que vão a uma aula está subjacente à maneira de como o cliente se inscreve na aula
+ * Uma pessoa que use o modo livre vai frequentar a piscina na hora atual.
+ * Uma pessoa que queira frequentar a aula, terá acesso a uma lista de aulas desse dia para escolher, sendo que marcará com antecedência, e impedirá
+ * aquele que irá usar o modo livre de usar a piscina, no caso de esta estar cheia.
+ */
 class AttendLesson: public MenuHandler {
 public:
 	AttendLesson(Pool & pool);
@@ -106,7 +115,9 @@ private:
 };
 
 /* CUSTOMERS  ATTENDANCE */
-
+/**
+ * mostra todos os usos de um cliente
+ */
 class ViewAttendance: public MenuHandler {
 public:
 	ViewAttendance(Pool& pool);
@@ -116,7 +127,9 @@ private:
 };
 
 /*-----------------------*/
-
+/**
+ * cria ficheiros de texto
+ */
 class CustomerMakeCurrentBill: public MenuHandler {
 public:
 	CustomerMakeCurrentBill(Pool& pool);
@@ -124,7 +137,9 @@ public:
 private:
 	Pool& pool;
 };
-
+/**
+ * cria ficheiros de texto
+ */
 class CustomerMakeBill: public MenuHandler {
 public:
 	CustomerMakeBill(Pool & pool);
@@ -132,7 +147,9 @@ public:
 private:
 	Pool & pool;
 };
-
+/**
+ * ve aulas atribuidas a um professor
+ */
 class ViewTeacherSchedule: public MenuHandler {
 public:
 	ViewTeacherSchedule(Pool & pool);
@@ -140,7 +157,9 @@ public:
 private:
 	Pool & pool;
 };
-
+/**
+ * ve aulas já dadas por um professor
+ */
 class ViewTeacherGivenLessons: public MenuHandler {
 public:
 	ViewTeacherGivenLessons(Pool & pool);
@@ -174,7 +193,9 @@ private:
 	Pool & pool;
 	OrderBy orderBy;
 };
-
+/**
+ * adiciona uma uso livre a um cliente
+ */
 class FreeSwimming: public MenuHandler {
 public:
 	FreeSwimming(Pool & pool);
@@ -190,7 +211,9 @@ public:
 private:
 	Pool & pool;
 };
-
+/**
+ * mostra todos os usos de piscina livre de um cliente
+ */
 class ViewCustomerUses: public MenuHandler {
 public:
 	ViewCustomerUses(Pool & pool);

@@ -28,8 +28,7 @@ MenuResult AddCustomer::handle() {
 	string name;
 	cout << "Insert customer's name: ";
 	getline(cin, name);
-	Date birthdate = getInputDate(
-			"Insert customer's birthday (DD/MM/YYYY)");
+	Date birthdate = getInputDate("Insert customer's birthday (DD/MM/YYYY)");
 	Customer * c = new Customer(name, birthdate);
 	pool.addCustomer(c);
 	cout << endl << name << " created with ID " << c->getID() << "!\n";
@@ -72,82 +71,132 @@ CurrentOccupation::CurrentOccupation(Pool & pool) :
 
 MenuResult CurrentOccupation::handle() {
 	DayOfWeek day = getCurrentDayOfWeek();
+	Time duration(1,0);
 	Time time = getCurrentTime();
 	Date date = getCurrentDate();
-	bool currentlesson = false; //condição para saber se está a ocorrer de momento uma aula na piscina
+	bool currentlesson = false;
+	bool existLessonsToday = true;
+	Lesson lesson;
 	try {
-		Lesson lesson = pool.getNextLesson(day, time, currentlesson);
+		lesson = pool.getNextLesson(day, time, currentlesson); //throw NoMoreLessons
+	} catch (NoMoreLessonsInDay & x) {
+		existLessonsToday = false;
+	}
 
-		if (currentlesson) {
-			cout << lesson.getModality() << "ends in "
-					<< lesson.getTime().getTimeGap(time) << "minutes" << endl;
-			GivenLesson givenlesson(lesson, date);
-			//vector<GivenLesson>::iterator it;
-			//it = find(pool.getGivenLessons().begin(), pool.getGivenLessons().end(), givenlesson); //ALGORITMO DE PESQUISA!!!!
-			//unsigned int numberCustomersLesson = it->getCustomers().size(); //número de pessoas que estão na aula atual
-			unsigned int numberCustomersLesson = 0;
-			for (GivenLesson * x : pool.getGivenLessons()) {
-				if ((*x) == givenlesson) {
-					numberCustomersLesson = x->getCustomers().size();
-					break;
-				}
-			}
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// somar a numberCustomersLesson o número de clientes que também estão agora a usar a piscina, mas em modo livre//
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			numberCustomersLesson += pool.CustomersFreeUse(date, time);
-			cout << "There are " << numberCustomersLesson
-					<< " people in the pool." << endl;
-			if (pool.getMaxCustomers() - numberCustomersLesson > 0) {
-				cout << "Only "
-						<< pool.getMaxCustomers() - numberCustomersLesson
-						<< " more people can log in." << endl;
-			} else {
-				cout << "Nobody else can log in." << endl;
-			}
-		} else {
-			cout << "Next lesson ( " << lesson.getModality() << " ) starts in "
-					<< lesson.getTime().getTimeGap(time) << " minutes" << endl;
-			unsigned int numberCustomersFree = pool.CustomersFreeUse(date,
-					time); //número de clientes que estão a usar a piscina em modo livre
-			if (numberCustomersFree == 0) {
-				cout << "No one is in the pool at the moment." << endl
-						<< pool.getMaxCustomers() << " people can log in."
-						<< endl;
-			} else {
-				cout << "There are " << numberCustomersFree
-						<< " people in the pool." << endl;
-				if (pool.getMaxCustomers() - numberCustomersFree > 0) {
-					cout << "Only "
-							<< pool.getMaxCustomers() - numberCustomersFree
-							<< " more people can log in." << endl;
-				} else {
-					cout << "Nobody else can log in." << endl;
-				}
-			}
+	if(existLessonsToday)
+	{
+		lesson = pool.getNextLesson(day, time, currentlesson);
+		if(currentlesson)
+		{
+			cout << "\nLesson of " << lesson.getModality() << " ends in " << (lesson.getTime() + duration).getTimeGap(time) << " minutes";
 		}
-	} catch (NoMoreLessonsInDay &x) {
-		cout << "There's no more lessons today." << endl;
-		//dar o número de pessoas a usar a piscina em modo livre
-		//fazer return/ acabar com a função
-		unsigned int numberCustomersFree = pool.CustomersFreeUse(date, time); //número de clientes que estão a usar a piscina em modo livre
-		if (numberCustomersFree == 0) {
-			cout << "No one is in the pool at the moment." << endl
-					<< pool.getMaxCustomers() << " people can log in." << endl;
-		} else {
-			cout << "There are " << numberCustomersFree
-					<< " people in the pool." << endl;
-			if (pool.getMaxCustomers() - numberCustomersFree > 0) {
-				cout << "Only " << pool.getMaxCustomers() - numberCustomersFree
-						<< " more people can log in." << endl;
-			} else {
-				cout << "Nobody else can log in." << endl;
+		else
+		{
+			cout << "\nLesson of " << lesson.getModality() << " starts in " << lesson.getTime().getTimeGap(time) << " minutes";
+		}
+	}
+	else
+	{
+		cout << "\nThere are no more lessons today";
+	}
+	unsigned int customersInPool = 0;
+	for (Customer * c : pool.getCustomers()) {
+		for (PoolUse * p : c->getPoolUses()) {
+			if (p->getTime().getTimeGap(getCurrentTime()) < p->getDuration()) {
+				customersInPool++;
+				break;
 			}
 		}
 	}
-
+	if(customersInPool == 0)
+	{
+		cout << "\n\nThere is nobody in the pool\n";
+	} else if (customersInPool == 1){
+		cout << "\n\nThere is 1 customer in the pool\n";
+	} else {
+		cout << "\n\nThere are " << customersInPool << " customers in pool\n";
+	}
+	cout << "\nVacancies: " << pool.getMaxCustomers() - customersInPool << endl << endl;
 	return CONTINUE;
 
+	/*DayOfWeek day = getCurrentDayOfWeek();
+	 Time time = getCurrentTime();
+	 Date date = getCurrentDate();
+	 bool currentlesson = false; //condição para saber se está a ocorrer de momento uma aula na piscina
+	 try {
+	 Lesson lesson = pool.getNextLesson(day, time, currentlesson);
+
+	 if (currentlesson) {
+	 cout << lesson.getModality() << " ends in "
+	 << lesson.getTime().getTimeGap(time) << "lesson.getModality() << " ends in "
+	 << lesson.getTime().getTimeGap(tim minutes" << endl;
+	 GivenLesson givenlesson(lesson, date);
+	 //vector<GivenLesson>::iterator it;
+	 //it = find(pool.getGivenLessons().begin(), pool.getGivenLessons().end(), givenlesson); //ALGORITMO DE PESQUISA!!!!
+	 //unsigned int numberCustomersLesson = it->getCustomers().size(); //número de pessoas que estão na aula atual
+	 unsigned int numberCustomersLesson = 0;
+	 for (GivenLesson * x : pool.getGivenLessons()) {
+	 if ((*x) == givenlesson) {
+	 numberCustomersLesson = x->getCustomers().size();
+	 break;
+	 }
+	 }
+	 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 // somar a numberCustomersLesson o número de clientes que também estão agora a usar a piscina, mas em modo livre//
+	 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 numberCustomersLesson += pool.CustomersFreeUse(date, time);
+	 cout << "There are " << numberCustomersLesson
+	 << " people in the pool." << endl;
+	 if (pool.getMaxCustomers() - numberCustomersLesson > 0) {
+	 cout << "Only "
+	 << pool.getMaxCustomers() - numberCustomersLesson
+	 << " more people can log in." << endl;
+	 } else {
+	 cout << "Nobody else can log in." << endl;
+	 }
+	 } else {
+	 cout << "Next lesson ( " << lesson.getModality() << " ) starts in "
+	 << lesson.getTime().getTimeGap(time) << " minutes" << endl;
+	 unsigned int numberCustomersFree = pool.CustomersFreeUse(date,
+	 time); //número de clientes que estão a usar a piscina em modo livre
+	 if (numberCustomersFree == 0) {
+	 cout << "No one is in the pool at the moment." << endl
+	 << pool.getMaxCustomers() << " people can log in."
+	 << endl;
+	 } else {
+	 cout << "There are " << numberCustomersFree
+	 << " people in the pool." << endl;
+	 if (pool.getMaxCustomers() - numberCustomersFree > 0) {
+	 cout << "Only "
+	 << pool.getMaxCustomers() - numberCustomersFree
+	 << " more people can log in." << endl;
+	 } else {
+	 cout << "Nobody else can log in." << endl;
+	 }
+	 }
+	 }
+	 } catch (NoMoreLessonsInDay &x) {
+	 cout << "There's no more lessons today." << endl;
+	 //dar o número de pessoas a usar a piscina em modo livre
+	 //fazer return/ acabar com a função
+	 unsigned int numberCustomersFree = pool.CustomersFreeUse(date, time); //número de clientes que estão a usar a piscina em modo livre
+	 if (numberCustomersFree == 0) {
+	 cout << "No one is in the pool at the moment." << endl
+	 << pool.getMaxCustomers() << " people can log in." << endl;
+	 } else {
+	 cout << "There are " << numberCustomersFree
+	 << " people in the pool." << endl;
+	 if (pool.getMaxCustomers() - numberCustomersFree > 0) {
+	 cout << "Only " << pool.getMaxCustomers() - numberCustomersFree
+	 << " more people can log in." << endl;
+	 } else {
+	 cout << "Nobody else can log in." << endl;
+	 }
+	 }
+	 }
+
+	 return CONTINUE;
+	 */
 }
 
 /* CUSTOMERS ATTENDANCE MENU */
@@ -411,16 +460,21 @@ ViewSchedule::ViewSchedule(Pool & pool) :
 }
 
 MenuResult ViewSchedule::handle() {
-	if (pool.getSchedule().size() == 0) {
+	vector<Lesson> schedule = pool.getSchedule();
+	if (schedule.size() == 0) {
 		cout << "\nThere are no lessons scheduled.\n";
 		return CONTINUE;
 	}
+	sort(schedule.begin(), schedule.end(),
+			[](Lesson & a, Lesson & b) {
+				return (a.getDayOfWeek()*60*24 + a.getTime().getHour()*60 + a.getTime().getMinute() < b.getDayOfWeek()*60*24 + b.getTime().getHour()*60 + b.getTime().getMinute());
+			});
 
-	DayOfWeek d = pool.getSchedule()[0].getDayOfWeek();
+	DayOfWeek d = schedule[0].getDayOfWeek();
 
 	cout << "\n" << d << ":\n";
 
-	for (const Lesson & i : pool.getSchedule()) {
+	for (const Lesson & i : schedule) {
 		if (i.getDayOfWeek() != d) {
 			d = i.getDayOfWeek();
 			cout << "\n" << d << ":\n";
@@ -440,38 +494,42 @@ AttendLesson::AttendLesson(Pool & pool) :
 }
 
 MenuResult AttendLesson::handle() {
-	while (true) {
-		try {
-			vector<Lesson> lessons = pool.getLessons(getCurrentDate(),
-					getCurrentTime());
-			int choice;
-			unsigned int customerID;
-			cout << "\nInsert customer's ID: ";
-			cin >> customerID;
-			Customer * c = pool.getCustomer(customerID);
-			if (lessons.size() == 0) {
-				cout << "\nNo more lessons scheduled for today.\n";
-				return CONTINUE;
-			}
-			cout << endl;
-			for (int i = 0; i < lessons.size(); i++) {
-				cout << i + 1 << " - " << lessons[i].getTime() << " ("
-						<< lessons[i].getModality() << ")\n";
-			}
-			cout << "\n0 - Cancel";
-			getInputInt(choice, 0, lessons.size(),
-					"Choose one class to attend today");
-			if (choice == 0) {
-				return CONTINUE;
-			}
 
-			pool.attendLesson(lessons[0], c, getCurrentDate());
-			pool.write();
-			return CONTINUE;
-		} catch (NonExistentCustomerID &x) {
-			cout << "There's no Customer with the ID " << x.ID << endl;
+	vector<Lesson> lessons = pool.getLessons(getCurrentDate(),
+			getCurrentTime());
+	int choice;
+	int customerID;
+	getInputInt(customerID, 0, 500, "\nInsert customer's ID");
+
+	Customer * c;
+	bool noExistID = false;
+	do {
+		noExistID = false;
+		try {
+			c = pool.getCustomer(customerID);
+		} catch (NonExistentCustomerID & x) {
+			cout << "\nNo customer with such ID\n";
+			noExistID = true;
 		}
+	} while (noExistID);
+
+	if (lessons.size() == 0) {
+		cout << "\nNo more lessons scheduled for today.\n";
+		return CONTINUE;
 	}
+	cout << endl;
+	for (int i = 0; i < lessons.size(); i++) {
+		cout << i + 1 << " - " << lessons[i].getTime() << " ("
+				<< lessons[i].getModality() << ")\n";
+	}
+	cout << "\n0 - Cancel";
+	getInputInt(choice, 0, lessons.size(), "Choose one class to attend today");
+	if (choice == 0) {
+		return CONTINUE;
+	}
+	pool.attendLesson(lessons[choice - 1], c, getCurrentDate());
+	pool.write();
+	return CONTINUE;
 }
 
 /* ADD LESSON MENU */
@@ -483,20 +541,36 @@ AddLesson::AddLesson(Pool & pool) :
 MenuResult AddLesson::handle() {
 	int modalityOpt;
 	Modality modality;
-
+	Time time;
+	DayOfWeek weekDay;
 	cout << endl;
-	DayOfWeek weekday =
-			getInputDayOfWeek(
-					"Insert the day of the week");
-
-	cout << endl;
-	Time time = getInputTime("Insert lesson's time (HH:MM)");
-
+	bool existLesson;
+	do {
+		existLesson = false;
+		weekDay = getInputDayOfWeek("Insert the day of the week");
+		cout << endl;
+		time = getInputTime("Insert lesson's time (HH:MM)");
+		Time tf(23, 0);
+		Time ti(6, 0);
+		if (time >= tf || time <= ti) {
+			cout << "Can't add lessons from 23:00 to 6:00.";
+			return CONTINUE;
+		}
+		for (const Lesson & i : pool.getSchedule()) {
+			if (i.getDayOfWeek() == weekDay) {
+				if (i.getTime().getTimeGap(time) <= 60) {
+					cout << "\nLessons are going to overlap...\n\n";
+					existLesson = true;
+					break;
+				}
+			}
+		}
+	} while (existLesson);
 	getInputInt(modalityOpt, 0, 5,
 			"0 - HydroGym\n1 - Zumba\n2 - AquaticPolo\n3 - ArtisticSwimming\n4 - CompetitiveSwimming\n5 - Learning\nChoose one modality");
 	modality = static_cast<Modality>(modalityOpt);
 	LessonTime lessonTime;
-	lessonTime.first = weekday;
+	lessonTime.first = weekDay;
 	lessonTime.second = time;
 	Lesson l(lessonTime, modality);
 	pool.addLesson(l); //TODO criar excepção de já existir uma aula a esta hora
@@ -616,11 +690,14 @@ FreeSwimming::FreeSwimming(Pool & pool) :
 }
 
 MenuResult FreeSwimming::handle() {
-	unsigned int ID;
+	if (poolIsFull(pool)) {
+		cout << "Pool is full, try again later\n";
+		return CONTINUE;
+	}
+	int ID;
 	unsigned int duration = 0;
 	bool existe = false;
-	cout << "\nInsert customer's ID: ";
-	cin >> ID;
+	getInputInt(ID, 0, 500, "\nInsert customer's ID");
 	for (Customer * x : pool.getCustomers()) {
 		if (x->getID() == ID) {
 			existe = true;
@@ -631,18 +708,27 @@ MenuResult FreeSwimming::handle() {
 		cout << "There's no customer with that ID.\n\n";
 		return CONTINUE;
 	}
-
+	Customer * c = pool.getCustomer(ID);
+	for (PoolUse * p : c->getPoolUses()) {
+		if (p->getTime().getTimeGap(getCurrentTime()) < p->getDuration()) {
+			cout << "\nCustomer in lesson, try later\n";
+			return CONTINUE;
+		}
+	}
 	while (true) {
 		cout << "\nInsert pretended duration: ";
 		cin >> duration;
-		if (duration > 120 && duration < 0) {
+		if (duration > 120 || duration < 0) {
 			cout << "\nInvalid duration (can't surpass 120 minutes)\n";
 			continue;
 		}
 		break;
 	}
-	pool.addFreeSwim(pool.getCustomer(ID), getCurrentDate(), getCurrentTime(),
+
+	FreeSwimUse * f = new FreeSwimUse(getCurrentDate(), getCurrentTime(),
 			duration);
+	pool.addFreeUse(f);
+	c->addUse(f);
 	pool.write();
 	return CONTINUE;
 }
@@ -671,7 +757,7 @@ MenuResult ViewCustomers::handle() {
 		break;
 	}
 	for (Customer *c : customers) {
-		cout << "ID: " << c->getID() << "\nName: " << c->getName()
+		cout << "\nID: " << c->getID() << "\nName: " << c->getName()
 				<< "\nBirthdate: " << c->getBirthDate() << "\nPool uses: "
 				<< c->getPoolUses().size() << "\nCost: "
 				<< c->getMonthCost(getCurrentDate().getMonth(),

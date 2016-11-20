@@ -35,12 +35,12 @@ public:
 	Customer(string name, Date birthDate, unsigned int ID);
 
 	float getMonthCost(unsigned int month, unsigned int year) const;
-	int getEntryNumber() const; // frequência com que os clientes vão á piscina
+	int getEntryNumber() const; /// frequência com que os clientes vão á piscina
 	vector<PoolUse *> getPoolUses();
 
-	void attendLesson(GivenLesson * lesson, Date date, Time time); //adicionar aula (cliente foi a aula)
-	void freeSwim(Time startTime, Date date, unsigned int duration); //adicionar uso em modo livre
-	void addUse(PoolUse * pooluse); //o mesmo que a função de cima...
+	void attendLesson(GivenLesson * lesson, Date date, Time time); ///adicionar aula (cliente foi a aula)
+	void freeSwim(Time startTime, Date date, unsigned int duration); ///adicionar uso em modo livre
+	void addUse(PoolUse * pooluse); ///adicionar uso em modo livre
 
 	bool attendedLesson(const GivenLesson * lesson);
 private:
@@ -52,11 +52,11 @@ public:
 	Teacher(string name, Date birthDate);
 	Teacher(string name, Date birthDate, unsigned int ID);
 
-	float getMonthCost(unsigned int month) const;
-	int getNumberLessons() const;
+	float getMonthCost(unsigned int month) const;///possivel implementação para a segunda parte do projeto
+	int getNumberLessons() const;///numero de aulas por semana
 	int getEntryNumber() const;
 
-	void setLesson();
+	void setLesson();///atribuir aula ao professor, e atribuir o mesmo número de aulas aos professores
 
 	bool operator <(const Teacher & t2) const;
 private:

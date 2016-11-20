@@ -246,7 +246,7 @@ vector<GivenLesson*> Pool::getGivenLessons(unsigned int ID) {
 vector<Lesson> Pool::getLessons(Date date, Time time) {
 	vector<Lesson> result;
 	for (const Lesson i : schedule) {
-		if (i.getDayOfWeek() == date.getDayOfWeek() && (i.getTime() + 15) >= time) {
+		if (i.getDayOfWeek() == date.getDayOfWeek() && (i.getTime() >= time)) {
 			result.push_back(i);
 		}
 	}
@@ -488,7 +488,7 @@ unsigned int Pool::CustomersFreeUse(Date date, Time time) {
 }
 
 void Pool::addFreeUse(PoolUse * freeUse) {
-	freeUses.insert(freeUses.begin(), freeUse);
+	freeUses.push_back(freeUse);
 }
 
 Teacher* Pool::getTeacher(unsigned int ID) {

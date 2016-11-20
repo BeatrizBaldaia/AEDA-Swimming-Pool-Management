@@ -15,6 +15,10 @@ enum MenuResult {
 
 class MenuHandler {
 public:
+	/**
+	 * manages menu options(treat inputs on menus)
+	 * @return MenuResult
+	 */
 	virtual MenuResult handle() = 0;
 	inline virtual ~MenuHandler() {
 	}
@@ -24,7 +28,10 @@ private:
 };
 
 typedef pair<string, MenuHandler&> MenuEntry;
-
+/**
+ * leaves menu
+ * @return EXIT
+ */
 class ExitHandler: public MenuHandler {
 public:
 	virtual MenuResult handle();
@@ -32,11 +39,15 @@ public:
 
 class Menu: public MenuHandler {
 public:
-	virtual MenuResult handle();
-	virtual void invalidOption(int opt);
-	virtual void invalidOption(string opt);
+	virtual MenuResult handle();///trata de intrepretar os inputs postos no menu
+	virtual void invalidOption(int opt);///manda uma mensagem de erro com o input inserido
+	virtual void invalidOption(string opt);///manda uma mensagem de erro com o input inserido
 
 protected:
+	/**
+	 * prints the menu (show the possible options)
+	 * entries is defined in main
+	 */
 	void printMenu() const;
 
 public:

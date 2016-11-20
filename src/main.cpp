@@ -8,8 +8,8 @@
 #include "Utilities.h"
 
 int main() {
-	cout << getInputDayOfWeek("help") << endl;
-	return 0;
+	//cout << getInputDayOfWeek("help") << endl;
+	//return 0;
 	vector<string> fileNames;
 
 	fileNames.push_back("poolinfo.txt");

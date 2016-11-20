@@ -6,15 +6,18 @@
 #include <string>
 #include <sstream>      // std::stringstream
 #include "Date.h"
+#include "Pool.h"
 
 using namespace std;
 
-void getInputInt(int &answer, int min, int max, string msg);
+void getInputInt(int &answer, int min, int max, string msg);///testa input de inteiros
 
-Date getInputDate(string msg);
+Date getInputDate(string msg);///testa input de datas
 
-Time getInputTime(string msg);
+Time getInputTime(string msg);///testa input de tempos
 
-DayOfWeek getInputDayOfWeek(string msg);
+DayOfWeek getInputDayOfWeek(string msg);///testa inputs de dias de semana
+
+bool poolIsFull(Pool & pool); ///ve se a piscina está cheia
 
 #endif /* SRC_UTILITIES_H_ */

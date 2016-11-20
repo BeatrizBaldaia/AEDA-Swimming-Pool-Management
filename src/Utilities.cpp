@@ -1,6 +1,7 @@
 #include "Utilities.h"
 #include "Exceptions.h"
 
+
 void getInputInt(int &answer, int min, int max, string msg) {
 	while (true) { ///sai do ciclo quando o input é aceite; passa o input válido por referência a partir de "answer"
 		try {
@@ -97,7 +98,7 @@ DayOfWeek getInputDayOfWeek(string msg) {
 			}
 			if (day != "monday" && day != "tuesday" && day != "wednesday"
 					&& day != "thursday" && day != "friday" && day != "saturday"
-							&& day != "sunday") {
+					&& day != "sunday") {
 				throw(InvalidInputDayOfWeek()); /// se não escreveu um dia da semana válido
 			}
 			DayOfWeek d;
@@ -122,4 +123,20 @@ DayOfWeek getInputDayOfWeek(string msg) {
 		}
 
 	}
+}
+
+bool poolIsFull(Pool & pool) {
+	unsigned int customersInPool = 0;
+	for (Customer * c : pool.getCustomers()) {
+		for (PoolUse * p : c->getPoolUses()) {
+			if (p->getTime().getTimeGap(getCurrentTime()) < p->getDuration()) {
+				customersInPool++;
+				if (customersInPool == pool.getMaxCustomers()) {
+					return true;
+				}
+				break;
+			}
+		}
+	}
+	return false;
 }

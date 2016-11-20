@@ -48,14 +48,14 @@ public:
 	void addTeacher(Teacher * t);
 	Teacher * getTeacher(unsigned int ID);
 
-	void load();
+	void load();///le o que está nos ficheiros de texto
 	void loadPoolInfo();
 	void loadCustomers();
 	void loadTeachers();
 	void loadSchedule();
 	void loadGivenLessons();
 
-	void write();
+	void write();///escreve para os ficheiros de texto
 	void writePoolInfo();
 	void writeCustomers();
 	void writeTeachers();

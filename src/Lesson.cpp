@@ -45,10 +45,10 @@ ostream & operator <<(ostream & out, const Modality & m) {
 		out << "Zumba";
 		break;
 	case AquaticPolo:
-		out << "Water Polo";
+		out << "Aquatic Polo";
 		break;
 	case ArtisticSwimming:
-		out << "Synchronized Swimming";
+		out << "Artistic Swimming";
 		break;
 	case CompetitiveSwimming:
 		out << "Competitive Swimming";
