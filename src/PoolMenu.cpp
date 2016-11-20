@@ -441,34 +441,36 @@ AttendLesson::AttendLesson(Pool & pool) :
 }
 
 MenuResult AttendLesson::handle() {
-	vector<Lesson> lessons = pool.getLessons(getCurrentDate(),
+	while(true){
+		try{
+			vector<Lesson> lessons = pool.getLessons(getCurrentDate(),getCurrentTime());
+			int choice;
+			unsigned int customerID;
+			cout << "\nInsert customer's ID: ";
+			cin >> customerID;
+			Customer * c = pool.getCustomer(customerID);
+			if (lessons.size() == 0) {
+				cout << "\nNo more lessons scheduled for today.\n";
+				return CONTINUE;
+			}
+			cout << endl;
+			for (int i = 0; i < lessons.size(); i++) {
+				cout << i + 1 << " - " << lessons[i].getTime() << " ("
+						<< lessons[i].getModality() << ")\n";
+			}
+			cout << "\n0 - Cancel";
+			ValidInputInt(choice, 0, lessons.size(), "Choose one class to attend today");
+			if (choice == 0) {
+				return CONTINUE;
+			}
 
-
-			getCurrentTime());
-	unsigned int choice;
-	unsigned int customerID;
-	cout << "\nInsert customer's ID: ";
-	cin >> customerID;
-	Customer * c = pool.getCustomer(customerID);
-	if (lessons.size() == 0) {
-		cout << "\nNo more lessons scheduled for today.\n";
-		return CONTINUE;
+			pool.attendLesson(lessons[0], c, getCurrentDate());
+			pool.write();
+			return CONTINUE;
+		}catch(NonExistentCustomerID &x){
+			cout << "There's no Customer with the ID " << x.ID << endl;
+		}
 	}
-	cout << endl;
-	for (int i = 0; i < lessons.size(); i++) {
-		cout << i + 1 << " - " << lessons[i].getTime() << " ("
-				<< lessons[i].getModality() << ")\n";
-	}
-	cout << "\n0 - Cancel";
-	cout << "\nChoose one class to attend today: ";
-	cin >> choice;
-	if (choice == 0) {
-		return CONTINUE;
-	}
-
-	pool.attendLesson(lessons[0], c, getCurrentDate());
-	pool.write();
-	return CONTINUE;
 }
 
 /* ADD LESSON MENU */
