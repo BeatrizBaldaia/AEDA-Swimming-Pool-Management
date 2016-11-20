@@ -76,7 +76,7 @@ int main() {
 	AddLesson addLesson(pool);
 	RemoveLesson removeLesson(pool);
 
-	PoolMenu freeSwimming(pool);
+	FreeSwimming freeSwimming(pool);
 	AttendLesson attendLesson(pool);
 
 	CurrentOccupation occupation(pool);
@@ -114,6 +114,7 @@ int main() {
 	manage.entries.push_back(MenuEntry("Manage customers", manageCustomers));
 	manage.entries.push_back(MenuEntry("Manage teachers", manageTeachers));
 	manage.entries.push_back(MenuEntry("Manage schedule", manageSchedule));
+	manage.entries.push_back(MenuEntry("Use pool", usePool));
 
 	manageCustomers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	manageCustomers.entries.push_back(MenuEntry("Add customer", addCustomer));

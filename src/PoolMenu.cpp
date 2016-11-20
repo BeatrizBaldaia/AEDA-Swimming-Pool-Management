@@ -465,7 +465,7 @@ MenuResult AttendLesson::handle() {
 	}
 
 	pool.attendLesson(lessons[0], c, getCurrentDate());
-
+	pool.write();
 	return CONTINUE;
 }
 
@@ -507,6 +507,7 @@ MenuResult AddLesson::handle() {
 	lessonTime.second = time;
 	Lesson l(lessonTime, modality);
 	pool.addLesson(l); //criar excepção de já existir uma aula a esta hora
+	pool.write();
 	return CONTINUE;
 }
 
@@ -624,6 +625,8 @@ MenuResult FreeSwimming::handle() {
 	}
 	pool.addFreeSwim(pool.getCustomer(ID), getCurrentDate(), getCurrentTime(),
 			duration);
+	pool.write();
+	return CONTINUE;
 }
 
 ViewCustomers::ViewCustomers(Pool& pool, OrderBy orderBy) :

@@ -251,8 +251,8 @@ vector<GivenLesson*> Pool::getGivenLessons(unsigned int ID) {
 
 vector<Lesson> Pool::getLessons(Date date, Time time) {
 	vector<Lesson> result;
-	for (const Lesson & i : schedule) {
-		if (i.getDayOfWeek() == date.getDayOfWeek() && i.getTime() + 15 >= time) {
+	for (const Lesson i : schedule) {
+		if (i.getDayOfWeek() == date.getDayOfWeek() && (i.getTime() + 15) >= time) {
 			result.push_back(i);
 		}
 	}
