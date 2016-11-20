@@ -273,8 +273,13 @@ ostream & operator <<(ostream & out, const DayOfWeek & d) {
 }
 
 Time::Time(unsigned int h, unsigned int m) {
+	if((h < 0 && h > 24) || (m < 0 && m > 59)){
+		throw InvalidTimeRange();
+	}
+
 	hour = h;
 	minute = m;
+
 }
 
 Time::Time() {
@@ -350,6 +355,13 @@ bool Time::operator ==(const Time& time) const {
 	return false;
 }
 
+
+const Time & Time::operator= (const Time & t){
+	hour = t.getHour();
+	minute = t.getMinute();
+	return *this;
+}
+
 istream& operator >>(istream& in, Time& t) {
 	unsigned int h, m;
 	in >> h;
@@ -384,7 +396,11 @@ Time& Time::operator +(unsigned int minutes) const {
 	return result;
 }
 
-Date getCurrentDate() {  //retorna dia, mês e ano atual
+InvalidTimeRange::InvalidTimeRange(){
+
+}
+
+Date getCurrentDate() {  ///retorna dia, mês e ano atual
 	unsigned int day, month, year;
 	time_t rawtime;
 	struct tm * timeinfo;

@@ -78,9 +78,9 @@ NoMoreLessonsInDay::NoMoreLessonsInDay() {
 
 }
 
-InvalidLesson::InvalidLesson(DayOfWeek day, Time time) {
+InvalidLesson::InvalidLesson(DayOfWeek day, Time &t) {
 	this->day = day;
-	this->time = time;
+	time = t;
 }
 
 NonExistentCustomerName::NonExistentCustomerName(string name) {

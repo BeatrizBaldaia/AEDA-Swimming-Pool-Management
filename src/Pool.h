@@ -85,7 +85,7 @@ public:
 
 class InvalidLesson {
 public:
-	InvalidLesson(DayOfWeek day, Time time);
+	InvalidLesson(DayOfWeek day, Time &t);
 	DayOfWeek day;
 	Time time;
 };

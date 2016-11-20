@@ -57,6 +57,7 @@ public:
 	bool operator <(const Time &time) const;
 	bool operator >(const Time &time) const;
 	bool operator ==(const Time &time) const;
+	const Time & operator= (const Time & t);
 
 	Time & operator +(const Time &time) const;
 	Time & operator +(unsigned int minutes) const;
@@ -88,6 +89,11 @@ public:
 class InvalidMonth {
 public:
 	InvalidMonth();
+};
+
+class InvalidTimeRange{
+public:
+	InvalidTimeRange();
 };
 
 #endif

@@ -25,6 +25,19 @@ public:
 	void what();
 };
 
+/* INVALID INPUT TIME */
 
+class InvalidInputTime{
+public:
+	InvalidInputTime();
+	void what();
+};
 
+/* INVALID INPUT DAY OF WEEK */
+
+class InvalidInputDayOfWeek{
+public:
+	InvalidInputDayOfWeek();
+	void what();
+};
 #endif /* SRC_EXCEPTIONS_H_ */

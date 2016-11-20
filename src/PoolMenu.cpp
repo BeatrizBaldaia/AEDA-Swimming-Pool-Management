@@ -171,7 +171,7 @@ MenuResult ViewAttendance::handle() {
 	return CONTINUE;
 }
 
-/* Customer Make Bill MENU */
+/* MAKE BILL MENU */
 
 CustomerMakeCurrentBill::CustomerMakeCurrentBill(Pool & pool) :
 		pool(pool) {
@@ -364,6 +364,8 @@ MenuResult RemoveTeacher::handle() {
 	return CONTINUE;
 }
 
+/* VIEW TEACHER SCHEDULE */
+
 ViewTeacherSchedule::ViewTeacherSchedule(Pool & pool) :
 		pool(pool) {
 
@@ -402,6 +404,8 @@ MenuResult ViewTeacherSchedule::handle() {
 	return CONTINUE;
 }
 
+/* VIEW SCHEDULE MENU */
+
 ViewSchedule::ViewSchedule(Pool & pool) :
 		pool(pool) {
 
@@ -429,6 +433,8 @@ MenuResult ViewSchedule::handle() {
 	return CONTINUE;
 }
 
+/* ATTEND LESSON MENU */
+
 AttendLesson::AttendLesson(Pool & pool) :
 		pool(pool) {
 
@@ -436,6 +442,8 @@ AttendLesson::AttendLesson(Pool & pool) :
 
 MenuResult AttendLesson::handle() {
 	vector<Lesson> lessons = pool.getLessons(getCurrentDate(),
+
+
 			getCurrentTime());
 	unsigned int choice;
 	unsigned int customerID;
@@ -463,41 +471,26 @@ MenuResult AttendLesson::handle() {
 	return CONTINUE;
 }
 
+/* ADD LESSON MENU */
+
 AddLesson::AddLesson(Pool & pool) :
 		pool(pool) {
 }
 
 MenuResult AddLesson::handle() {
-	DayOfWeek dayOfWeek;
-	string weekDay;
-	unsigned int modalityOpt;
+	int modalityOpt;
 	Modality modality;
-	Time time;
-	cout << "\nInsert day of week(ex: Monday): ";
-	cin >> weekDay;
-	if (weekDay == "Monday")
-		dayOfWeek = MON;
-	else if (weekDay == "Tuesday")
-		dayOfWeek = TUE;
-	else if (weekDay == "Wednesday")
-		dayOfWeek = WED;
-	else if (weekDay == "Thursday")
-		dayOfWeek = THU;
-	else if (weekDay == "Friday")
-		dayOfWeek = FRI;
-	else if (weekDay == "Saturday")
-		dayOfWeek = SAT;
-	else if (weekDay == "Sunday")
-		dayOfWeek = SUN;
-	cout << "\nInsert lesson's time(ex: 18:30): ";
-	cin >> time;
-	cout
-			<< "\n\n0 - HydroGym\n1 - Zumba\n2 - AquaticPolo\n3 - ArtisticSwimming\n4 - CompetitiveSwimming\n5 - Learning\n";
-	cout << "\nChoose lesson's modality: ";
-	cin >> modalityOpt;
+
+	cout << endl;
+	DayOfWeek weekday = ValidDayOfWeek("Insert one of the possible days of the week:\n Monday\n Tuesday\n Wednesday\n Thursday\n Friday\n Saturday\n Sunday\n\n");
+
+	cout << endl;
+	Time time = ValidTime("Insert lesson's time (ex. 18 : 30)");
+
+	ValidInputInt(modalityOpt, 0, 5, "\n\n0 - HydroGym\n1 - Zumba\n2 - AquaticPolo\n3 - ArtisticSwimming\n4 - CompetitiveSwimming\n5 - Learning\n Choose one Modality");
 	modality = static_cast<Modality>(modalityOpt);
 	LessonTime lessonTime;
-	lessonTime.first = dayOfWeek;
+	lessonTime.first = weekday;
 	lessonTime.second = time;
 	Lesson l(lessonTime, modality);
 	pool.addLesson(l); //criar excepção de já existir uma aula a esta hora
@@ -505,13 +498,15 @@ MenuResult AddLesson::handle() {
 	return CONTINUE;
 }
 
+/* REMOVE LESSON MENU */
+
 RemoveLesson::RemoveLesson(Pool & pool) :
 		pool(pool) {
 
 }
 
 MenuResult RemoveLesson::handle() {
-	unsigned int choice;
+	int choice;
 	cout << endl;
 	int indice = 0;
 	for (Lesson & i : pool.getSchedule()) {
@@ -520,8 +515,8 @@ MenuResult RemoveLesson::handle() {
 				<< " - " << i.getTime() << endl;
 	}
 	cout << "\n0 - Cancel\n";
-	cout << "Choose lesson to be deleted: ";
-	cin >> choice;
+
+	ValidInputInt(choice, 0, indice, "Choose lesson to be deleted");
 	if (choice == 0) {
 		return CONTINUE;
 	}
@@ -530,39 +525,47 @@ MenuResult RemoveLesson::handle() {
 	return CONTINUE;
 }
 
+/* VIEW TEACHER GIVEN LESSON */
+
 ViewTeacherGivenLessons::ViewTeacherGivenLessons(Pool & pool) :
 		pool(pool) {
 }
 
 MenuResult ViewTeacherGivenLessons::handle() {
-	int ID;
-	cout << "\nInsert teacher's ID: ";
-	cin >> ID;
-	Teacher * t;
-	try {
-		t = pool.getTeacher(ID);
-	} catch (NonExistentTeacherID &x) {
-		cout << "\nThere is no teacher with that ID.\n";
-		return CONTINUE;
+	while(true){
+		try {
+
+			int ID;
+			cout << "\nInsert teacher's ID: ";
+			cin >> ID;
+			Teacher * t;
+
+			t = pool.getTeacher(ID);
+
+			vector<GivenLesson *> result = pool.getGivenLessons(ID);
+
+			if (result.size() == 0) {
+				cout << "\nThe teacher has no given lessons.\n";
+				return CONTINUE;
+			}
+
+			cout << "\n" << t->getName() << "'s given lessons:\n\n";
+
+			for (GivenLesson * i : result) {
+				cout << i->getDate() << " - " << i->getLesson().getTime() << "\n"
+						<< i->getLesson().getModality() << "\n"
+						<< i->getCustomers().size() << " customers\n\n";
+			}
+
+			return CONTINUE;
+
+		} catch (NonExistentTeacherID &x) {
+			cout << "\nThere is no teacher with that ID.\n";
+		}
 	}
-
-	vector<GivenLesson *> result = pool.getGivenLessons(ID);
-
-	if (result.size() == 0) {
-		cout << "\nThe teacher has no given lessons.\n";
-		return CONTINUE;
-	}
-
-	cout << "\n" << t->getName() << "'s given lessons:\n\n";
-
-	for (GivenLesson * i : result) {
-		cout << i->getDate() << " - " << i->getLesson().getTime() << "\n"
-				<< i->getLesson().getModality() << "\n"
-				<< i->getCustomers().size() << " customers\n\n";
-	}
-
-	return CONTINUE;
 }
+
+/* VIEW TEACHERS */
 
 ViewTeachers::ViewTeachers(Pool& pool, OrderBy orderBy) :
 		pool(pool), orderBy(orderBy) {
@@ -599,6 +602,8 @@ MenuResult ViewTeachers::handle() {
 	return CONTINUE;
 }
 
+/* FREE SWIMMING */
+
 FreeSwimming::FreeSwimming(Pool & pool) :
 		pool(pool) {
 }
@@ -606,12 +611,24 @@ FreeSwimming::FreeSwimming(Pool & pool) :
 MenuResult FreeSwimming::handle() {
 	unsigned int ID;
 	unsigned int duration = 0;
+	bool existe = false;
 	cout << "\nInsert customer's ID: ";
 	cin >> ID;
+	for(Customer * x : pool.getCustomers()){
+		if(x->getID() == ID){
+			existe = true;
+			break;
+		}
+	}
+	if(!existe){
+		cout << "There's no customer with that ID.\n\n";
+		return CONTINUE;
+	}
+
 	while (true) {
 		cout << "\nInsert pretended duration: ";
 		cin >> duration;
-		if (duration < 120) {
+		if (duration > 120 && duration < 0) {
 			cout << "\nInvalid duration (can't surpass 120 minutes)\n";
 			continue;
 		}
@@ -622,6 +639,8 @@ MenuResult FreeSwimming::handle() {
 	pool.write();
 	return CONTINUE;
 }
+
+/* VIEW CUSTOMERS */
 
 ViewCustomers::ViewCustomers(Pool& pool, OrderBy orderBy) :
 		pool(pool), orderBy(orderBy) {
@@ -654,57 +673,86 @@ MenuResult ViewCustomers::handle() {
 	return CONTINUE;
 }
 
+/* VIEW CUSTOMERS INFORMATION */
+
 ViewCustomersInformation::ViewCustomersInformation(Pool & pool) :
 		pool(pool) {
 }
 
 MenuResult ViewCustomersInformation::handle() {
-	unsigned int ID;
-	cout << "\nInsert customer's ID: ";
-	cin >> ID;
-	Customer * c = pool.getCustomer(ID);
-	cout << "\nID: " << c->getID() << "\nName: " << c->getName()
-			<< "\nBirthdate: " << c->getBirthDate() << "\nPool uses: "
-			<< c->getPoolUses().size() << "\nCost: "
-			<< c->getMonthCost(getCurrentDate().getMonth(),
-					getCurrentDate().getYear()) << endl;
-	return CONTINUE;
+	while(true){
+		try{
+			unsigned int ID;
+
+			cout << "\nInsert customer's ID: ";
+			cin >> ID;
+			Customer * c = pool.getCustomer(ID);
+			cout << "\nID: " << c->getID() << "\nName: " << c->getName()
+							<< "\nBirthdate: " << c->getBirthDate() << "\nPool uses: "
+							<< c->getPoolUses().size() << "\nCost: "
+							<< c->getMonthCost(getCurrentDate().getMonth(),
+									getCurrentDate().getYear()) << endl;
+			return CONTINUE;
+		}catch(NonExistentCustomerID &x){
+			cout << "There's no such customer with ID " << x.ID;
+		}
+	}
 }
+
+/* VIEW CUSTOMER USES MENU */
 
 ViewCustomerUses::ViewCustomerUses(Pool & pool) :
 		pool(pool) {
 }
 
 MenuResult ViewCustomerUses::handle() {
-	unsigned int ID;
-	cout << "\nInsert customer's ID: ";
-	cin >> ID;
-	Customer * c = pool.getCustomer(ID);
-	cout << endl;
-	for (PoolUse * p : c->getPoolUses()) {
-		if (p->getLesson() == NULL) {
-			cout << "\nUse type: Free swim";
-		} else {
-			cout << "\nUse type: Lesson";
+	while(true){
+		try{
+			unsigned int ID;
+			cout << "\nInsert customer's ID: ";
+			cin >> ID;
+			Customer * c = pool.getCustomer(ID);
+			cout << endl;
+			for (PoolUse * p : c->getPoolUses()) {
+				if (p->getLesson() == NULL) {
+					cout << "\nUse type: Free swim";
+				} else {
+					cout << "\nUse type: Lesson";
+				}
+				cout << "\nDate: " << p->getDate() << "\nTime: " << p->getTime()
+						<< "\nDuration: " << p->getDuration() << " minutes\nCost: "
+						<< p->getCost() << endl;
+			}
+			return CONTINUE;
+
+		}catch(NonExistentCustomerID &x){
+			cout << "There's no such customer with ID " << x.ID;
 		}
-		cout << "\nDate: " << p->getDate() << "\nTime: " << p->getTime()
-				<< "\nDuration: " << p->getDuration() << " minutes\nCost: "
-				<< p->getCost() << endl;
 	}
+
 }
+
+/* VIEW TEACHER INFORMATION */
 
 ViewTeacherInformation::ViewTeacherInformation(Pool & pool) :
 		pool(pool) {
 }
 
 MenuResult ViewTeacherInformation::handle() {
-	unsigned int ID;
-	cout << "\nInsert teacher's ID: ";
-	cin >> ID;
-	Teacher * t = pool.getTeacher(ID);
-	cout << "\nID: " << t->getID() << "\nName: " << t->getName()
-			<< "\nBirthdate: " << t->getBirthDate() << "\nAssigned lessons: "
-			<< pool.getLessons(t->getID()).size() << "\nGiven lessons: "
-			<< pool.getGivenLessons(t->getID()).size() << endl << endl;
+	while(true){
+		try{
+			unsigned int ID;
+			cout << "\nInsert teacher's ID: ";
+			cin >> ID;
+			Teacher * t = pool.getTeacher(ID);
+			cout << "\nID: " << t->getID() << "\nName: " << t->getName()
+					<< "\nBirthdate: " << t->getBirthDate() << "\nAssigned lessons: "
+					<< pool.getLessons(t->getID()).size() << "\nGiven lessons: "
+					<< pool.getGivenLessons(t->getID()).size() << endl << endl;
+			return CONTINUE;
+		}catch(NonExistentTeacherID &x){
+			cout << "There's no such teacher with ID " << x.ID;
+		}
+	}
 }
 
