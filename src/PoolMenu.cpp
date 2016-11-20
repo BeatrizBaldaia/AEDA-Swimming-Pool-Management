@@ -7,11 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "Date.h"
-#include "Lesson.h"
-#include "Person.h"
-#include "Pool.h"
-#include "PoolUse.h"
+
 
 /* POOL MENU */
 
@@ -29,12 +25,10 @@ AddCustomer::AddCustomer(Pool & pool) :
 
 MenuResult AddCustomer::handle() {
 	string name;
-	Date birthDay;
 	cout << "Insert customer's name: ";
 	getline(cin, name);
-	cout << "Insert customer's birthday: ";
-	cin >> birthDay;
-	Customer c(name,birthDay);
+	Date Bdate = ValidDate("Insert customer's birthday (ex. 01 / 01 / 1999)");
+	Customer c(name,Bdate);
 	pool.addCustomer(&c);
 	cout << endl << name << " created!\n";
 	pool.write();
@@ -335,12 +329,12 @@ AddTeacher::AddTeacher(Pool & pool) :
 
 MenuResult AddTeacher::handle() {
 	string teacherName;
-	Date teacherBirthDate;
 	cout << "\nInsert Teacher's name: ";
 	getline(cin, teacherName);
-	cout << "\nInsert Teacher's birthdate: ";
-	cin >> teacherBirthDate;
-	Teacher t(teacherName, teacherBirthDate);
+
+	Date Bdate = ValidDate("Insert teacher's birthday (ex. 01 / 01 / 1999)");
+	Teacher t(teacherName, Bdate);
+
 	pool.addTeacher(&t);
 	cout << endl << teacherName << " created!\n";
 	pool.write();

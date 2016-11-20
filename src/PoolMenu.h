@@ -2,7 +2,12 @@
 #define SRC_POOLMENU_H_
 
 #include "Menu.h"
-
+#include "Date.h"
+#include "Lesson.h"
+#include "Person.h"
+#include "Pool.h"
+#include "PoolUse.h"
+#include "Utilities.h"
 
 enum OrderBy {
 ID, NAME, NUMUSES, GIVENLESSONS, ASSLESSONS

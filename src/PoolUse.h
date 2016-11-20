@@ -1,9 +1,8 @@
 #ifndef _POOLUSE_H_
 #define _POOLUSE_H_
 
-#include "Date.h"
+#include "Lesson.h"
 
-class GivenLesson;
 
 class PoolUse {
 public:

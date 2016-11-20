@@ -4,9 +4,9 @@
 #include <cmath>
 #include <ctime>
 #include <cwchar>
+#include <sstream>
 
-Date::Date(const unsigned int & day, const unsigned int & month,
-		const unsigned int & year) {
+Date::Date(unsigned int & day,unsigned int & month,unsigned int & year) {
 	if (month >= 1 && month <= 12) {
 		if (day >= 1 && day <= daysInMonth(month, year)) {
 			this->day = day;
@@ -42,14 +42,14 @@ Date::Date(string & input) {
 	y = stoi(aux);
 
 	Date(d, m, y);
-
+*/
 	stringstream date;
 	 date.str(input);
 	 date >> day;
 	 date.ignore();
 	 date >> month;
 	 date.ignore();
-	 date >> year;*/
+	 date >> year;
 }
 
 unsigned int Date::getDay() const {
@@ -180,6 +180,12 @@ bool Date::between(const Date &min, const Date &max) {
 	}
 }
 
+const Date & Date::operator= (const Date & d){
+	day = d.getDay();
+	month = d.getMonth();
+	year = d.getYear();
+	return *this;
+}
 ostream & operator <<(ostream & out, const Date & d) {
 	if (d.getDay() < 10) {
 		out << '0';

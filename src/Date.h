@@ -14,8 +14,7 @@ class Date {
 public:
 	Date();
 	Date(string & input);
-	Date(const unsigned int & day, const unsigned int & month,
-			const unsigned int & year);
+	Date(unsigned int & day,unsigned int & month, unsigned int & year);
 
 	unsigned int getDay() const;
 	unsigned int getMonth() const;
@@ -27,6 +26,7 @@ public:
 	void setYear(const unsigned int &year);
 
 	bool valid() const;
+	const Date & operator= (const Date & d);
 	bool operator <=(const Date &date) const;
 	bool operator >=(const Date &date) const;
 	bool operator <(const Date &date) const;

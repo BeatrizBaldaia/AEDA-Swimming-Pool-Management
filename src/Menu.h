@@ -4,8 +4,8 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "Date.h"
 
-class Date;
 
 using namespace std;
 

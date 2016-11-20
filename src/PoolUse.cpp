@@ -2,7 +2,6 @@
 
 #include <stddef.h>
 
-#include "Lesson.h"
 
 float FreeSwimUse::cost30 = 2.00;
 float LessonUse::lessonCost = 3.00;

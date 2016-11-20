@@ -6,6 +6,7 @@
 
 #include "Date.h"
 #include "PoolUse.h"
+#include "Lesson.h"
 
 using namespace std;
 
