@@ -13,7 +13,6 @@ vector<Lesson> Pool::getLessons(unsigned int ID) {
 			result.push_back(x);
 		}
 	}
-
 	return result;
 }
 
@@ -513,4 +512,6 @@ NonExistentGivenLesson::NonExistentGivenLesson(Lesson lesson, Date date) {
 	this->date = date;
 }
 
-
+void Pool::removeLesson(unsigned int position) {
+	schedule.erase(schedule.begin() + position);
+}

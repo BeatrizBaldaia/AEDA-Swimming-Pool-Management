@@ -40,6 +40,7 @@ public:
 
 	void removeCustomer(unsigned int ID);
 	void removeTeacher(unsigned int ID);
+	void removeLesson(unsigned int position);
 
 	void addCustomer(Customer * c);
 	void addTeacher(Teacher * t);
