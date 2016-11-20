@@ -6,15 +6,33 @@
 
 using namespace std;
 
+/**
+ * Day of week type.
+ */
 enum DayOfWeek {
 	MON, TUE, WED, THU, FRI, SAT, SUN
 };
 
+/**
+ * Date class.
+ */
 class Date {
 public:
-
+	/**
+	 * Default constructor.
+	 */
 	Date();
+	/**
+	 * Constructor by string.
+	 * @param input string in format DD/MM/YYYY;
+	 */
 	Date(string & input);
+	/**
+	 * Constructor by values.
+	 * @param day
+	 * @param month
+	 * @param year
+	 */
 	Date(unsigned int day, unsigned int month, unsigned int year);
 
 	unsigned int getDay() const;

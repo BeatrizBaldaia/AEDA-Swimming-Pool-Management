@@ -265,7 +265,7 @@ MenuResult CustomerMakeBill::handle() {
 		printf("\nNon existing Customer");
 		return CONTINUE;
 	}
-	cout << "\n\nInsert month and year (ex. 02/1995): ";
+	cout << "\n\nInsert month and year (ex. MM/YYYY): ";
 	cin >> monthString;
 	if (monthString.size() != 7 || monthString[2] != '/') {
 		return CONTINUE;
@@ -426,7 +426,7 @@ MenuResult ViewSchedule::handle() {
 			cout << "\n" << d << ":\n";
 		}
 		cout << i.getTime() << " - " << i.getModality() << "\nTeacher: "
-				<< i.getTeacher()->getName() << endl;
+				<< i.getTeacher()->getName() << endl << endl;
 
 	}
 	return CONTINUE;
@@ -487,20 +487,21 @@ MenuResult AddLesson::handle() {
 	cout << endl;
 	DayOfWeek weekday =
 			getInputDayOfWeek(
-					"Insert one of the possible days of the week:\n Monday\n Tuesday\n Wednesday\n Thursday\n Friday\n Saturday\n Sunday\n\n");
+					"Insert the day of the week");
 
 	cout << endl;
-	Time time = getInputTime("Insert lesson's time (ex. 18 : 30)");
+	Time time = getInputTime("Insert lesson's time (HH:MM)");
 
 	getInputInt(modalityOpt, 0, 5,
-			"\n\n0 - HydroGym\n1 - Zumba\n2 - AquaticPolo\n3 - ArtisticSwimming\n4 - CompetitiveSwimming\n5 - Learning\n Choose one Modality");
+			"0 - HydroGym\n1 - Zumba\n2 - AquaticPolo\n3 - ArtisticSwimming\n4 - CompetitiveSwimming\n5 - Learning\nChoose one modality");
 	modality = static_cast<Modality>(modalityOpt);
 	LessonTime lessonTime;
 	lessonTime.first = weekday;
 	lessonTime.second = time;
 	Lesson l(lessonTime, modality);
-	pool.addLesson(l); //criar excepção de já existir uma aula a esta hora
+	pool.addLesson(l); //TODO criar excepção de já existir uma aula a esta hora
 	pool.write();
+	cout << "\nLesson created.\n";
 	return CONTINUE;
 }
 

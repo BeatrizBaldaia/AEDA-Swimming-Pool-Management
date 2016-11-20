@@ -1,0 +1,5 @@
+<map id="PoolMenu" name="PoolMenu">
+<area shape="rect" id="node2" href="$class_menu.html" title="{Menu\n|+ entries\l|+ handle()\l+ invalidOption()\l+ invalidOption()\l# printMenu()\l}" alt="" coords="5,287,120,408"/>
+<area shape="rect" id="node3" href="$class_menu_handler.html" title="{MenuHandler\n||+ handle()\l+ ~MenuHandler()\l}" alt="" coords="6,5,133,97"/>
+<area shape="rect" id="node4" href="$class_exit_handler.html" title="{ExitHandler\n||+ handle()\l}" alt="" coords="79,147,169,224"/>
+</map>

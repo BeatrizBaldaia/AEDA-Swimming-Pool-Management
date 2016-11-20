@@ -1,0 +1,4 @@
+<map id="Person" name="Person">
+<area shape="rect" id="node2" href="$class_customer.html" title="{Customer\n||+ Customer()\l+ Customer()\l+ getMonthCost()\l+ getEntryNumber()\l+ getPoolUses()\l+ attendLesson()\l+ freeSwim()\l+ addUse()\l+ attendedLesson()\l}" alt="" coords="5,219,141,413"/>
+<area shape="rect" id="node3" href="$class_teacher.html" title="{Teacher\n||+ Teacher()\l+ Teacher()\l+ getMonthCost()\l+ getNumberLessons()\l+ getEntryNumber()\l+ setLesson()\l+ operator\&lt;()\l}" alt="" coords="165,233,320,399"/>
+</map>

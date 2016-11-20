@@ -97,38 +97,25 @@ DayOfWeek getInputDayOfWeek(string msg) {
 			}
 			if (day != "monday" && day != "tuesday" && day != "wednesday"
 					&& day != "thursday" && day != "friday" && day != "saturday"
-					&& day != "sunday") {
+							&& day != "sunday") {
 				throw(InvalidInputDayOfWeek()); /// se não escreveu um dia da semana válido
 			}
 			DayOfWeek d;
-			if (day == "Monday") {
+			if (day == "monday") {
 				d = MON;
-			} else {
-				if (day == "Tuesday") {
-					d = TUE;
-				} else {
-					if (day == "Wednesday") {
-						d = WED;
-					} else {
-						if (day == "Thursday") {
-							d = THU;
-						} else {
-							if (day == "Friday") {
-								d = FRI;
-							} else {
-								if (day == "Saturday") {
-									d = SAT;
-								} else {
-									if (day == "Sunday") {
-										d = SUN;
-									}
-								}
-							}
-						}
-					}
-				}
+			} else if (day == "tuesday") {
+				d = TUE;
+			} else if (day == "wednesday") {
+				d = WED;
+			} else if (day == "thursday") {
+				d = THU;
+			} else if (day == "friday") {
+				d = FRI;
+			} else if (day == "saturday") {
+				d = SAT;
+			} else if (day == "sunday") {
+				d = SUN;
 			}
-
 			return d;
 		} catch (InvalidInputDayOfWeek &e) {
 			e.printError();

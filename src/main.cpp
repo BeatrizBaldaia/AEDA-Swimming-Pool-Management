@@ -8,6 +8,8 @@
 #include "Utilities.h"
 
 int main() {
+	cout << getInputDayOfWeek("help") << endl;
+	return 0;
 	vector<string> fileNames;
 
 	fileNames.push_back("poolinfo.txt");
@@ -186,6 +188,7 @@ int main() {
 	viewCustomerInfo.entries.push_back(
 			MenuEntry("Make customer's specific month bill", customerMakeBill));
 
+	cout << pool.getName() << endl;
 	menu.handle();
 
 	return 0;
