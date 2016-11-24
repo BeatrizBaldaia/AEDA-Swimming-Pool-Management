@@ -78,8 +78,8 @@ public:
 	bool operator ==(const Time &time) const;
 	const Time & operator=(const Time & t);
 
-	Time & operator +(const Time &time) const;///somar dois Times
-	Time & operator +(unsigned int minutes) const;///somar um tempo com minutos
+	Time operator +(const Time &time) const;///somar dois Times
+	Time operator +(unsigned int minutes) const;///somar um tempo com minutos
 
 	unsigned int getTimeGap(const Time &time);///ver diferença de minutos entre dois tempos
 private:

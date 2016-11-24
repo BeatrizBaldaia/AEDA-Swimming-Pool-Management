@@ -17,7 +17,7 @@ enum Modality {
 	Zumba,              //!< Zumba
 	AquaticPolo,        //!< AquaticPolo
 	ArtisticSwimming,   //!< ArtisticSwimming
-	CompetitiveSwimming,//!< CompetitiveSwimming
+	CompetitiveSwimming,   //!< CompetitiveSwimming
 	Learning            //!< Learning
 };
 
@@ -26,13 +26,13 @@ public:
 	Lesson(LessonTime lessonTime, Modality modality);
 	Lesson();
 	static unsigned int duration;
-	Teacher * getTeacher() const;///aceder ao professor atribuido a aula
+	Teacher * getTeacher() const;        ///aceder ao professor atribuido a aula
 	void setTeacher(Teacher * teacher);
-	DayOfWeek getDayOfWeek() const;///retorna o dia da semana em que a aula é dada
-	Time getTime() const;///retorna hora da aula
-	Modality getModality() const;///retorna modalidade da aula
+	DayOfWeek getDayOfWeek() const; ///retorna o dia da semana em que a aula é dada
+	Time getTime() const;            ///retorna hora da aula
+	Modality getModality() const;            ///retorna modalidade da aula
 	bool operator ==(const Lesson &lesson) const;
-
+	bool operator <(const Lesson& lesson) const;
 private:
 	Teacher * teacher;
 	Modality modality;
@@ -47,10 +47,10 @@ public:
 	unsigned int getID() const;
 	Lesson getLesson() const;
 	Date getDate() const;
-	void removeCustomer(unsigned int ID);///remove um customer de uma givenLesson
-	vector<Customer *> getCustomers() const;///retorna todos os clientes que foram a aula
+	void removeCustomer(unsigned int ID); ///remove um customer de uma givenLesson
+	vector<Customer *> getCustomers() const; ///retorna todos os clientes que foram a aula
 	bool operator ==(const GivenLesson &givenlesson) const;
-	static unsigned int lastID;///ultimo id atribuido a uma givenlesson
+	static unsigned int lastID; ///ultimo id atribuido a uma givenlesson
 private:
 	Lesson lesson;
 	Date date;

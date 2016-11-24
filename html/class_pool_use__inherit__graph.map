@@ -1,4 +1,0 @@
-<map id="PoolUse" name="PoolUse">
-<area shape="rect" id="node2" href="$class_free_swim_use.html" title="{FreeSwimUse\n||+ FreeSwimUse()\l+ getCost()\l+ getLesson()\l}" alt="" coords="5,204,128,311"/>
-<area shape="rect" id="node3" href="$class_lesson_use.html" title="{LessonUse\n||+ LessonUse()\l+ getCost()\l+ getLesson()\l}" alt="" coords="152,204,259,311"/>
-</map>

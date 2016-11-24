@@ -71,11 +71,11 @@ CurrentOccupation::CurrentOccupation(Pool & pool) :
 
 MenuResult CurrentOccupation::handle() {
 	DayOfWeek day = getCurrentDayOfWeek();
+	cout << endl << day << endl;
 	Time duration(1,0);
 	Time time = getCurrentTime();
 	Date date = getCurrentDate();
-	bool currentlesson = false;
-	bool existLessonsToday = true;
+	bool existLessonsToday = true, currentlesson;
 	Lesson lesson;
 	try {
 		lesson = pool.getNextLesson(day, time, currentlesson); //throw NoMoreLessons
@@ -566,8 +566,12 @@ MenuResult AddLesson::handle() {
 			}
 		}
 	} while (existLesson);
+	for (size_t i = 0; i < 6; i++) {
+		Modality mod = static_cast<Modality>(i);
+		cout << i << " - " << mod << endl;
+	}
 	getInputInt(modalityOpt, 0, 5,
-			"0 - HydroGym\n1 - Zumba\n2 - AquaticPolo\n3 - ArtisticSwimming\n4 - CompetitiveSwimming\n5 - Learning\nChoose one modality");
+			"Choose one modality");
 	modality = static_cast<Modality>(modalityOpt);
 	LessonTime lessonTime;
 	lessonTime.first = weekDay;

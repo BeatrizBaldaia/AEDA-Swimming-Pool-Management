@@ -1,4 +1,0 @@
-<map id="Menu" name="Menu">
-<area shape="rect" id="node3" href="$class_pool_menu.html" title="{PoolMenu\n||+ PoolMenu()\l}" alt="" coords="19,329,119,407"/>
-<area shape="rect" id="node2" href="$class_menu_handler.html" title="{MenuHandler\n||+ handle()\l+ ~MenuHandler()\l}" alt="" coords="5,5,132,97"/>
-</map>

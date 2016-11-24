@@ -1,4 +1,0 @@
-<map id="NonExistentGivenLesson" name="NonExistentGivenLesson">
-<area shape="rect" id="node2" href="$class_lesson.html" title="{Lesson\n|+ duration\l|+ Lesson()\l+ Lesson()\l+ getTeacher()\l+ setTeacher()\l+ getDayOfWeek()\l+ getTime()\l+ getModality()\l+ operator==()\l}" alt="" coords="5,27,136,207"/>
-<area shape="rect" id="node3" href="$class_date.html" title="{Date\n||+ Date()\l+ Date()\l+ Date()\l+ getDay()\l+ getMonth()\l+ getYear()\l+ getDayOfWeek()\l+ setDay()\l+ setMonth()\l+ setYear()\land 8 more...\l}" alt="" coords="160,5,291,229"/>
-</map>

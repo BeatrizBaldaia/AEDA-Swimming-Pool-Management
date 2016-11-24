@@ -309,31 +309,47 @@ ostream& operator <<(ostream& out, const Time& t) {
 }
 
 bool Time::operator <=(const Time& time) const {
-	if (hour <= time.getHour()) {
+	if (hour < time.getHour()) {
+		return true;
+	} else if (hour == time.getHour()) {
 		if (minute <= time.getMinute()) {
 			return true;
 		}
-		return false;
 	}
 	return false;
 }
 
 bool Time::operator >=(const Time& time) const {
-	if (hour >= time.getHour()) {
+	if (hour > time.getHour()) {
+		return true;
+	} else if (hour == time.getHour()) {
 		if (minute >= time.getMinute()) {
 			return true;
 		}
-		return false;
 	}
 	return false;
 }
 
 bool Time::operator <(const Time& time) const {
-	return hour * 60 + minute < time.getHour() * 60 + time.getMinute();
+	if (hour < time.getHour()) {
+		return true;
+	} else if (hour == time.getHour()) {
+		if (minute < time.getMinute()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 bool Time::operator >(const Time& time) const {
-	return hour * 60 + minute > time.getHour() * 60 + time.getMinute();
+	if (hour > time.getHour()) {
+		return true;
+	} else if (hour == time.getHour()) {
+		if (minute > time.getMinute()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Time::setHour(unsigned int h) {
@@ -382,7 +398,7 @@ InvalidMonth::InvalidMonth() {
 
 }
 
-Time& Time::operator +(const Time& time) const {
+Time Time::operator +(const Time& time) const {
 	unsigned int hourRes, minRes;
 	minRes = (minute + time.getMinute()) % 60;
 	hourRes = (hour + time.getHour() + (minute + time.getMinute()) / 60) % 24;
@@ -390,7 +406,7 @@ Time& Time::operator +(const Time& time) const {
 	return result;
 }
 
-Time& Time::operator +(unsigned int minutes) const {
+Time Time::operator +(unsigned int minutes) const {
 	unsigned int hourRes, minRes;
 	minRes = (minute + minutes) % 60;
 	hourRes = (hour + (minute + minutes) / 60) % 24;
@@ -435,7 +451,7 @@ Time getCurrentTime() {  //retorna tempo atual
 }
 
 DayOfWeek getCurrentDayOfWeek() {  //retorna atual dia da semana
-	static const DayOfWeek wday_name[] = { MON, TUE, WED, THU, FRI, SAT, SUN };
+	static const DayOfWeek wday_name[] = { SUN, MON, TUE, WED, THU, FRI, SAT};
 
 	DayOfWeek dw;
 	time_t rawtime;

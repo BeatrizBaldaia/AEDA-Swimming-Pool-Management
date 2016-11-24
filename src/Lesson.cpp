@@ -54,7 +54,7 @@ ostream & operator <<(ostream & out, const Modality & m) {
 		out << "Competitive Swimming";
 		break;
 	case Learning:
-		out << "Technical Lessons";
+		out << "Learning";
 		break;
 	}
 
@@ -118,4 +118,18 @@ void GivenLesson::removeCustomer(unsigned int ID) {
 
 bool GivenLesson::operator ==(const GivenLesson &givenlesson) const {
 	return (lesson == givenlesson.getLesson() && date == givenlesson.getDate());
+}
+
+bool Lesson::operator <(const Lesson& lesson) const {
+	if (getDayOfWeek() < lesson.getDayOfWeek()) {
+		return true;
+	} else if (getDayOfWeek() > lesson.getDayOfWeek()) {
+		return false;
+	} else {
+		if (getTime() < lesson.getTime()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

@@ -24,7 +24,7 @@ void Pool::addLesson(Lesson lesson) {
 	lesson.setTeacher(teachers[0]); //estamos a retornar o professor com menos aulas dadas porque o vetor teachers já está ordenado
 	schedule.push_back(lesson);
 	teachers[0]->setLesson();
-
+	sort(schedule.begin(), schedule.end());
 	sort(teachers.begin(), teachers.end(),
 			[](Teacher * a, Teacher * b) {return a->getNumberLessons() < b->getNumberLessons();});
 }
@@ -379,6 +379,7 @@ void Pool::loadSchedule() {
 		lesson.setTeacher(t);
 		schedule.push_back(lesson);
 	}
+	sort(schedule.begin(),schedule.end());
 }
 
 void Pool::loadGivenLessons() {
@@ -446,30 +447,24 @@ vector<GivenLesson *> Pool::getGivenLessons() {
 
 Lesson Pool::getNextLesson(DayOfWeek day, Time time,
 		bool & currentlesson) const { //Ia usar esta função para o menu PoolOccupation para obter a aula que estava a ocorrer ou a próxima aula que ia começar
-	unsigned int gap = UINT_MAX;
-	bool excecao = true;
-	Lesson next;
-	for (Lesson x : schedule) {
-		if (x.getDayOfWeek() == day) {
-			if (x.getTime() < time) {
-				if (x.getTime().getTimeGap(time) < 60) { //aula que inda está a decorrer
+	vector<Lesson> lessonsInDay;
+	for (const Lesson & i : schedule) {
+		if (day == i.getDayOfWeek()) {
+			if (i.getTime() < time) {
+				Time duration(1, 0);
+				Time sum = i.getTime() + duration;
+				if(sum > time) {
 					currentlesson = true;
-					return x;
+					return i;
 				}
+
 			} else {
-				if (x.getTime().getTimeGap(time) < gap) { //nao percebo porque que aqui dá erro visto que o overload do operador - da classe Time retorna um unsigned int
-					gap = x.getTime().getTimeGap(time);
-					next = x;
-					excecao = false;
-				}
+				currentlesson = false;
+				return i;
 			}
 		}
 	}
-	if (excecao) { //neste dia não há mais aulas
-		throw NoMoreLessonsInDay();
-	}
-
-	return next;
+	throw NoMoreLessonsInDay();
 }
 
 unsigned int Pool::CustomersFreeUse(Date date, Time time) {
