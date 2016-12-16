@@ -46,3 +46,55 @@ void InvalidInputDayOfWeek::printError() {
 	cout << endl
 			<< "Invalid input for day of the week. Insert one of the possible days of the week.";
 }
+
+/* INVALID ITEM */
+
+InvalidItem::InvalidItem(string designation, unsigned int size){
+	this->designation = designation;
+	this->size = size;
+}
+
+void InvalidItem::printError(){
+	cout << endl << "There's no such Item: " << designation << " of size " << size << endl;
+}
+
+InvalidItems::InvalidItems(vector<Item> v){
+	items = v;
+}
+
+void InvalidItems::printError(){
+	cout << endl << "There're no such Items: " << endl;
+	for(const Item &x : items){
+		cout << x.getDesignation() << " of size " << x.getSize() << endl;
+	}
+	cout << endl;
+}
+
+InvalidStock::InvalidStock(vector<Item> v){
+	items = v;
+}
+
+void InvalidStock::printError(){
+	cout << endl << "The number of stock is not valid for the following Items: " << endl;
+	for(const Item &y : items){
+		cout << y.getDesignation() << " of size " << y.getSize() << endl;
+	}
+	cout << endl;
+}
+
+InvalidRemoveItem::InvalidRemoveItem(vector<Item> nonexistent, vector<Item> overflowItems){
+	this->nonexistent = nonexistent;
+	this->overflowItems = overflowItems;
+}
+
+void InvalidRemoveItem::printError(){
+	cout << endl << "There're no such Items: " << endl;
+	for(const Item &x : nonexistent){
+		cout << x.getDesignation() << " of size " << x.getSize() << endl;
+	}
+	cout << endl << "The number of stock is not valid for the following Items: " << endl;
+	for(const Item &y : overflowItems){
+		cout << y.getDesignation() << " of size " << y.getSize() << endl;
+	}
+	cout << endl;
+}

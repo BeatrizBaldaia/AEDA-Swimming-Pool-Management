@@ -39,4 +39,40 @@ public:
 	InvalidInputDayOfWeek();
 	void printError();
 };
+
+/* INVALID ITEM */
+
+class InvalidItem{
+public:
+	InvalidItem(string designation, unsigned int size);
+	void printError();
+private:
+	string designation;
+	unsigned int size;
+};
+
+class InvalidItems{
+public:
+	InvalidItems(vector<Item> v);
+	void printError();
+private:
+	vector<Item> items;
+};
+
+class InvalidRemoveItem{
+	InvalidRemoveItem(vector<Item> nonexistent, vector<Item> overflowItems);
+	void printError();
+private:
+	vector<Item> nonexistent;
+	vector<Item> overflowItems;
+};
+
+class InvalidStock{
+public:
+	InvalidStock(vector<Item> v);
+	void printError();
+private:
+	vector<Item> items;
+};
+
 #endif /* SRC_EXCEPTIONS_H_ */

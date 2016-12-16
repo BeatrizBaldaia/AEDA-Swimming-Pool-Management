@@ -40,6 +40,16 @@ void Person::setName(string name) {
 	this->name = name;
 }
 
+void Person::buyItem(Item item){
+	shopping.insert(shopping.begin(), item);
+	shopping.sort();
+}
+
+void Person::buyItem(vector<Item> items){
+	shopping.insert(shopping.begin(), items.begin(), items.end());
+	shopping.sort();
+}
+
 /* CUSTOMER */
 
 Customer::Customer(string name, Date birthDate) :

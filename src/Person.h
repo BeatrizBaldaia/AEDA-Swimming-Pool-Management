@@ -3,10 +3,12 @@
 
 #include <string>
 #include <vector>
+#include <list>
 
 #include "Date.h"
 #include "PoolUse.h"
 #include "Lesson.h"
+#include "Shop.h"
 
 using namespace std;
 
@@ -19,14 +21,16 @@ public:
 	unsigned int getID() const;
 	Date getBirthDate() const;
 	virtual int getEntryNumber() const = 0;
-
 	void setName(string name);
+	void buyItem(Item item);
+	void buyItem(vector<Item> items);
 
 	static unsigned int lastID;
 private:
 	const unsigned int ID;
 	string name;
 	Date birthDate;
+	list<Item> shopping;
 };
 
 class Customer: public Person {
