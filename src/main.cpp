@@ -163,11 +163,11 @@ int main() {
 	viewCustomers.entries.push_back(
 			MenuEntry("View customer's info", viewCustomerInfo));
 	viewCustomers.entries.push_back(
-			MenuEntry("View customers by ID", viewCustomersByID));
+			MenuEntry("View customers sorted by ID", viewCustomersByID));
 	viewCustomers.entries.push_back(
-			MenuEntry("View customers by name", viewCustomersByName));
+			MenuEntry("View customers sorted by name", viewCustomersByName));
 	viewCustomers.entries.push_back(
-			MenuEntry("View customers by number of uses", viewCustomersByUses));
+			MenuEntry("View customers sorted by number of uses", viewCustomersByUses));
 
 	viewTeacherInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	viewTeacherInfo.entries.push_back(

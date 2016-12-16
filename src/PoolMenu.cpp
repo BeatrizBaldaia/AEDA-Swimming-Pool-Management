@@ -102,7 +102,7 @@ MenuResult CurrentOccupation::handle() {
 	unsigned int customersInPool = 0;
 	for (Customer * c : pool.getCustomers()) {
 		for (PoolUse * p : c->getPoolUses()) {
-			if (p->getTime().getTimeGap(getCurrentTime()) < p->getDuration()) {
+			if (p->getTime() + p->getDuration() >= time && p->getTime() <= time) {
 				customersInPool++;
 				break;
 			}
@@ -605,8 +605,10 @@ MenuResult RemoveLesson::handle() {
 	if (choice == 0) {
 		return CONTINUE;
 	}
-	pool.removeLesson(choice);
+	pool.removeLesson(choice - 1);
+	pool.distributeLessons();
 	pool.write();
+	cout << "\nLesson deleted.\n";
 	return CONTINUE;
 }
 

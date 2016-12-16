@@ -21,12 +21,9 @@ void Pool::setName(string name) {
 }
 
 void Pool::addLesson(Lesson lesson) {
-	lesson.setTeacher(teachers[0]); //estamos a retornar o professor com menos aulas dadas porque o vetor teachers já está ordenado
 	schedule.push_back(lesson);
-	teachers[0]->setLesson();
+	distributeLessons();
 	sort(schedule.begin(), schedule.end());
-	sort(teachers.begin(), teachers.end(),
-			[](Teacher * a, Teacher * b) {return a->getNumberLessons() < b->getNumberLessons();});
 }
 
 unsigned int Pool::CustomersInLesson(GivenLesson lesson) {
@@ -97,16 +94,18 @@ NonExistentTeacherID::NonExistentTeacherID(unsigned int ID) {
 
 ///////////////////////////////////////////////////////////////////////////
 
+unsigned int Pool::getMaxCustomers() const {
+	return maxCustomers;
+}
+
+
+
 void Pool::setMaxCustomers(unsigned int n) {
 	maxCustomers = n;
 }
 
 string Pool::getName() const {
 	return name;
-}
-
-unsigned int Pool::getMaxCustomers() const {
-	return maxCustomers;
 }
 
 void Pool::setFileNames(vector<string> v) {
@@ -379,6 +378,7 @@ void Pool::loadSchedule() {
 		lesson.setTeacher(t);
 		schedule.push_back(lesson);
 	}
+	distributeLessons();
 	sort(schedule.begin(),schedule.end());
 }
 
