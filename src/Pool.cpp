@@ -173,11 +173,18 @@ void Pool::writeSchedule() {
 void Pool::testInactiveCustomers() {
 	Date d = getCurrentDate();
 	for (Customer * c : customers) {
-		Date lastUse = (*max_element(c->getPoolUses().begin(), c->getPoolUses().end(), [](PoolUse * a, PoolUse * b) {
-			return a->getDate() < b->getDate();
-		}))->getDate();
-		if (d - lastUse > inactivityPeriod) {
+		if (c->getPoolUses().size() == 0){
 			inactiveCustomers.insert(c);
+		}
+		else{
+			vector<PoolUse *> v = c->getPoolUses();
+			PoolUse * pU = (*max_element(v.begin(), v.end(), [](PoolUse * a, PoolUse * b) {
+			return a->getDate() < b->getDate();
+			}));
+			Date lastUse = pU->getDate();
+			if (d - lastUse > inactivityPeriod) {
+				inactiveCustomers.insert(c);
+			}
 		}
 	}
 }
@@ -568,6 +575,7 @@ void Pool::load() {
 	loadTeachers();
 	loadSchedule();
 	loadGivenLessons();
+	testInactiveCustomers();
 	loadShop();
 }
 
