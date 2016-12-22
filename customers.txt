@@ -19,4 +19,5 @@
 17;Mariana Pinto Gomes;10/08/1991;0
 18;Julieta Carvalho Costa;10/05/1981;0
 19;Julia Dias Barros;06/12/1973;0
-20;Luana Carvalho Cunha;10/03/2002;0
+20;Luana Carvalho Cunha;10/03/2002;1
+22/12/2016;19:18;100
