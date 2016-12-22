@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include "Shop.h"
 
 using namespace std;
 
@@ -44,11 +45,11 @@ public:
 
 class InvalidItem{
 public:
-	InvalidItem(string designation, unsigned int size);
+	InvalidItem(string designation, string size);
 	void printError();
 private:
 	string designation;
-	unsigned int size;
+	string size;
 };
 
 class InvalidItems{
@@ -60,6 +61,7 @@ private:
 };
 
 class InvalidRemoveItem{
+public:
 	InvalidRemoveItem(vector<Item> nonexistent, vector<Item> overflowItems);
 	void printError();
 private:

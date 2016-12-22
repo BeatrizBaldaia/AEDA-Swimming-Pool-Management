@@ -168,6 +168,17 @@ void Pool::writeSchedule() {
 	scheduleFile.close();
 }
 
+void Pool::writeShop(){
+	ofstream shopFile(fileNames[5]);
+	shopFile << shop->getName() << endl << shop->getNumberOfItems();
+	BST<Item>tree = shop->getTree();
+	BSTItrIn<Item>it(tree);
+	while(!it.isAtEnd()){
+		shopFile << endl << it.retrieve().getDesignation() << ";" << it.retrieve().getSize() << ";" << it.retrieve().getStock();
+		it.advance();
+	}
+}
+
 void Pool::addTeacher(Teacher* t) {
 	teachers.push_back(t);
 	distributeLessons();
@@ -429,6 +440,30 @@ void Pool::loadGivenLessons() {
 	}
 }
 
+void Pool::loadShop() {
+	ifstream shopFile(fileNames[5]);
+	string name; ///nome da loja
+	getline(shopFile, name);
+	unsigned int n; ///numero de itens da loja
+	vector<Item> v; ///vetor com os itens da loja
+	shopFile >> n;
+	shopFile.ignore(INT_MAX, '\n');
+	for (size_t i = 0; i < n; i++) {
+		string designation, size;
+		unsigned int stock;
+		getline(shopFile, designation, ';');
+		getline(shopFile, size, ';');
+		shopFile >> stock;
+		shopFile.ignore(INT_MAX, '\n');
+		Item it(designation, size, stock);
+		v.push_back(it);
+	}
+	Shop * s = new Shop(name);
+	s->buyItem(v);
+	shop = s;
+}
+
+
 void Pool::addCustomer(Customer* c) {
 	customers.push_back(c);
 }
@@ -439,6 +474,7 @@ void Pool::write() {
 	writeTeachers();
 	writeSchedule();
 	writeGivenLessons();
+	writeShop();
 }
 
 vector<GivenLesson *> Pool::getGivenLessons() {
@@ -501,6 +537,7 @@ void Pool::load() {
 	loadTeachers();
 	loadSchedule();
 	loadGivenLessons();
+	loadShop();
 }
 
 NotSameDayAsDate::NotSameDayAsDate() {
@@ -513,4 +550,8 @@ NonExistentGivenLesson::NonExistentGivenLesson(Lesson lesson, Date date) {
 
 void Pool::removeLesson(unsigned int position) {
 	schedule.erase(schedule.begin() + position);
+}
+
+Shop * Pool::getShop() const{
+	return shop;
 }

@@ -17,6 +17,7 @@ int main() {
 	fileNames.push_back("teachers.txt");
 	fileNames.push_back("schedule.txt");
 	fileNames.push_back("givenlessons.txt");
+	fileNames.push_back("shop.txt");
 
 	Pool pool;
 
@@ -103,6 +104,7 @@ int main() {
 	ViewTeacherSchedule viewTeacherSchedule(pool);
 	ViewTeacherGivenLessons viewTeacherGivenLessons(pool);
 
+	 ShopSellItems shopSell(pool);
 	/* MAIN MENU */
 
 	menu.entries.push_back(MenuEntry("Exit", Menu::exitHandler));
@@ -121,6 +123,7 @@ int main() {
 	manageCustomers.entries.push_back(MenuEntry("Add customer", addCustomer));
 	manageCustomers.entries.push_back(
 			MenuEntry("Remove customer", removeCustomer));
+	manageCustomers.entries.push_back(MenuEntry("Buy Products", shopSell));
 
 	manageTeachers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	manageTeachers.entries.push_back(MenuEntry("Add teacher", addTeacher));

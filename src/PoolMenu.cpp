@@ -119,84 +119,7 @@ MenuResult CurrentOccupation::handle() {
 	cout << "\nVacancies: " << pool.getMaxCustomers() - customersInPool << endl << endl;
 	return CONTINUE;
 
-	/*DayOfWeek day = getCurrentDayOfWeek();
-	 Time time = getCurrentTime();
-	 Date date = getCurrentDate();
-	 bool currentlesson = false; //condição para saber se está a ocorrer de momento uma aula na piscina
-	 try {
-	 Lesson lesson = pool.getNextLesson(day, time, currentlesson);
 
-	 if (currentlesson) {
-	 cout << lesson.getModality() << " ends in "
-	 << lesson.getTime().getTimeGap(time) << "lesson.getModality() << " ends in "
-	 << lesson.getTime().getTimeGap(tim minutes" << endl;
-	 GivenLesson givenlesson(lesson, date);
-	 //vector<GivenLesson>::iterator it;
-	 //it = find(pool.getGivenLessons().begin(), pool.getGivenLessons().end(), givenlesson); //ALGORITMO DE PESQUISA!!!!
-	 //unsigned int numberCustomersLesson = it->getCustomers().size(); //número de pessoas que estão na aula atual
-	 unsigned int numberCustomersLesson = 0;
-	 for (GivenLesson * x : pool.getGivenLessons()) {
-	 if ((*x) == givenlesson) {
-	 numberCustomersLesson = x->getCustomers().size();
-	 break;
-	 }
-	 }
-	 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	 // somar a numberCustomersLesson o número de clientes que também estão agora a usar a piscina, mas em modo livre//
-	 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	 numberCustomersLesson += pool.CustomersFreeUse(date, time);
-	 cout << "There are " << numberCustomersLesson
-	 << " people in the pool." << endl;
-	 if (pool.getMaxCustomers() - numberCustomersLesson > 0) {
-	 cout << "Only "
-	 << pool.getMaxCustomers() - numberCustomersLesson
-	 << " more people can log in." << endl;
-	 } else {
-	 cout << "Nobody else can log in." << endl;
-	 }
-	 } else {
-	 cout << "Next lesson ( " << lesson.getModality() << " ) starts in "
-	 << lesson.getTime().getTimeGap(time) << " minutes" << endl;
-	 unsigned int numberCustomersFree = pool.CustomersFreeUse(date,
-	 time); //número de clientes que estão a usar a piscina em modo livre
-	 if (numberCustomersFree == 0) {
-	 cout << "No one is in the pool at the moment." << endl
-	 << pool.getMaxCustomers() << " people can log in."
-	 << endl;
-	 } else {
-	 cout << "There are " << numberCustomersFree
-	 << " people in the pool." << endl;
-	 if (pool.getMaxCustomers() - numberCustomersFree > 0) {
-	 cout << "Only "
-	 << pool.getMaxCustomers() - numberCustomersFree
-	 << " more people can log in." << endl;
-	 } else {
-	 cout << "Nobody else can log in." << endl;
-	 }
-	 }
-	 }
-	 } catch (NoMoreLessonsInDay &x) {
-	 cout << "There's no more lessons today." << endl;
-	 //dar o número de pessoas a usar a piscina em modo livre
-	 //fazer return/ acabar com a função
-	 unsigned int numberCustomersFree = pool.CustomersFreeUse(date, time); //número de clientes que estão a usar a piscina em modo livre
-	 if (numberCustomersFree == 0) {
-	 cout << "No one is in the pool at the moment." << endl
-	 << pool.getMaxCustomers() << " people can log in." << endl;
-	 } else {
-	 cout << "There are " << numberCustomersFree
-	 << " people in the pool." << endl;
-	 if (pool.getMaxCustomers() - numberCustomersFree > 0) {
-	 cout << "Only " << pool.getMaxCustomers() - numberCustomersFree
-	 << " more people can log in." << endl;
-	 } else {
-	 cout << "Nobody else can log in." << endl;
-	 }
-	 }
-	 }
-
-	 return CONTINUE;
-	 */
 }
 
 /* CUSTOMERS ATTENDANCE MENU */
@@ -856,3 +779,63 @@ MenuResult ViewTeacherInformation::handle() {
 	}
 }
 
+/* SHOP MENU */
+
+ShopSellItems::ShopSellItems(Pool & pool): pool(pool){
+}
+
+MenuResult ShopSellItems::handle(){
+	string name;
+	cout << "Insert customer's name: ";
+	getline(cin, name);
+	Customer * c = NULL;
+	try {
+		c = pool.getCustomer(name); ///cliente que vai realizar a compra
+	} catch (NonExistentCustomerName &x) {
+		cout << "There's no such customer. \n \n ";
+		return CONTINUE;
+	}
+	cout << "\n List of our products: \n \n";
+	vector<Item> v = pool.getShop()->getItems();
+	for(int i = 0; i < v.size(); i++){
+		cout << (i + 1) << " -> " << v[i].getDesignation() << " (size " << v[i].getSize() << ")" << endl;
+	}
+	cout << endl << "0 -> Stop adding products \n \n";
+	cout << endl;
+	vector<Item> items; ///itens que o utilizador vai comprar
+	while(true){
+	cout << "Insert the product number: ";
+	int prodN;
+	cin >> prodN;
+	if(prodN == 0){
+		break;
+	}
+	cout << "Insert the product quantity: ";
+	int prodQ;
+	cin >> prodQ;
+	cout << endl;
+	Item i(v[prodN-1].getDesignation(), v[prodN-1].getSize(), prodQ);
+	items.push_back(i);
+	}
+	if(items.empty()){
+		return CONTINUE;
+	}
+	Shop * s = pool.getShop();
+	try{
+		s->sellItem(c, items);
+		pool.write();
+		return CONTINUE;
+	}catch(InvalidRemoveItem &x){
+		x.printError();
+	}
+	catch(InvalidItems &x){
+		x.printError();
+	}
+	catch(InvalidStock &x){
+		x.printError();
+	}
+	catch(...){
+		cout << "ENTROU \n \n";
+	}
+
+}

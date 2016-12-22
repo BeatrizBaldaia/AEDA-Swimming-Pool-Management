@@ -60,6 +60,7 @@ class BST
 
   const BST & operator=( const BST & rhs );
 
+
  private:
   BinaryNode<Comparable> *root;
   const Comparable ITEM_NOT_FOUND;

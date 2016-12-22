@@ -1,14 +1,14 @@
 #ifndef _PERSON_H_
 #define _PERSON_H_
 
+#include <list>
 #include <string>
 #include <vector>
-#include <list>
 
 #include "Date.h"
 #include "PoolUse.h"
-#include "Lesson.h"
 #include "Shop.h"
+#include "Lesson.h"
 
 using namespace std;
 
@@ -22,15 +22,13 @@ public:
 	Date getBirthDate() const;
 	virtual int getEntryNumber() const = 0;
 	void setName(string name);
-	void buyItem(Item item);
-	void buyItem(vector<Item> items);
 
 	static unsigned int lastID;
 private:
 	const unsigned int ID;
 	string name;
 	Date birthDate;
-	list<Item> shopping;
+
 };
 
 class Customer: public Person {
@@ -47,8 +45,10 @@ public:
 	void addUse(PoolUse * pooluse); ///adicionar uso em modo livre
 
 	bool attendedLesson(const GivenLesson * lesson);
+	void buyItem(vector<Item> items);
 private:
 	vector<PoolUse *> uses;
+	list<Item> shopping;
 };
 
 class Teacher: public Person {

@@ -49,7 +49,7 @@ void InvalidInputDayOfWeek::printError() {
 
 /* INVALID ITEM */
 
-InvalidItem::InvalidItem(string designation, unsigned int size){
+InvalidItem::InvalidItem(string designation, string size){
 	this->designation = designation;
 	this->size = size;
 }
@@ -94,7 +94,7 @@ void InvalidRemoveItem::printError(){
 	}
 	cout << endl << "The number of stock is not valid for the following Items: " << endl;
 	for(const Item &y : overflowItems){
-		cout << y.getDesignation() << " of size " << y.getSize() << endl;
+		cout << y.getDesignation() << " of size " << y.getSize()  << ": lack of "<< y.getStock() << " units" << endl;
 	}
 	cout << endl;
 }

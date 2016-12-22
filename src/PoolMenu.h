@@ -8,6 +8,7 @@
 #include "Pool.h"
 #include "PoolUse.h"
 #include "Utilities.h"
+#include "EXceptions.h"
 
 enum OrderBy {
 ID, NAME, NUMUSES, GIVENLESSONS, ASSLESSONS
@@ -230,6 +231,17 @@ private:
 	Pool & pool;
 };
 
+/*
+ * trata da venda de produtos aos utentes e a compra de produtos ao fornecedor
+ * */
+
+class ShopSellItems: public MenuHandler{///vender produto aos utentes
+public:
+	ShopSellItems(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
 
 #endif /* SRC_POOLMENU_H_ */
 

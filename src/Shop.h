@@ -1,22 +1,27 @@
 #ifndef SRC_SHOP_H_
 #define SRC_SHOP_H_
 
+#include <string>
+#include <vector>
+
 #include "BST.h"
-#include "Exceptions.h"
+
+class Customer;
 
 class Item{
 private:
 	string designation;
-	unsigned int size;
+	string size;
 	unsigned int stock;
 public:
-	Item(string designation, unsigned int size, unsigned int stock);
+	Item(string designation, string size, unsigned int stock);
 	string getDesignation() const;
-	unsigned int getSize() const;
+	string getSize() const;
 	unsigned int getStock() const;
-	void setSize(unsigned int newSize);
+	void setSize(string newSize);
 	void setStock(unsigned int numberStock);
-	bool operator< (Item &item2) const;
+	bool operator< (Item item2) const;
+	bool operator== (Item item2) const;
 };
 class Shop{
 private:
@@ -25,9 +30,11 @@ private:
 public:
 	Shop(string name);
 	int getNumberOfItems() const;
-	void sellItem(Person *person, Item item); ///funcionario da loja vende artigo; numero do stock diminui
-	void sellItem(Person *person, vector<Item> items);
+	string getName() const;
+	void sellItem(Customer *person, vector<Item> items); ///funcionario da loja vende artigo; numero do stock diminui
 	void buyItem(vector<Item> items); ///funcionario compra artigos ao fornecedor; numero de stock aumenta
+	vector<Item>getItems() const;
+	BST<Item> getTree() const;
 };
 
 

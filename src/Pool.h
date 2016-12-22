@@ -3,11 +3,34 @@
 
 #include <string>
 #include <vector>
+#include <tr1/unordered_set>
 
 #include "Date.h"
 #include "Lesson.h"
 #include "Person.h"
 #include "PoolUse.h"
+#include "Shop.h"
+
+
+/* HASH TABLE */
+struct hCustomer {
+
+	int operator()(const Customer& c1) const{
+		int result;
+		for(int i; i < c1.getName().size(); i++){
+			result+= c1.getName()[i]*37;
+		}
+		return result;
+	}
+
+	bool operator()(const Customer& c1, const Customer& c2) const {
+		return c1.getName() == c2.getName();
+	}
+};
+
+typedef tr1::unordered_set<Customer, hCustomer, hCustomer> hashCustomer;
+
+///////////////////////////////////
 
 class Pool {
 public:
@@ -48,12 +71,15 @@ public:
 	void addTeacher(Teacher * t);
 	Teacher * getTeacher(unsigned int ID);
 
+	Shop * getShop() const;
+
 	void load();///le o que está nos ficheiros de texto
 	void loadPoolInfo();
 	void loadCustomers();
 	void loadTeachers();
 	void loadSchedule();
 	void loadGivenLessons();
+	void loadShop();
 
 	void write();///escreve para os ficheiros de texto
 	void writePoolInfo();
@@ -61,8 +87,10 @@ public:
 	void writeTeachers();
 	void writeSchedule();
 	void writeGivenLessons();
+	void writeShop();
 private:
 	vector<Customer *> customers;
+
 	vector<Teacher *> teachers; //Quando Pool é criado os vetores devem ser logo ordenados usando as funções sort;
 	vector<Lesson> schedule; //Se o número de elementos do vetor for inferior ou igual a 20 usar INSERTION SORT senão usar QUICK SORT
 	vector<GivenLesson *> givenLessons;
@@ -74,7 +102,10 @@ private:
 	// 2 teachers
 	// 3 schedule
 	// 4 givenlessons
-	// 5 freeuses
+	// 5 shop
+
+	Shop * shop;
+	hashCustomer inactiveCustomers;
 
 	string name;
 	unsigned int maxCustomers;

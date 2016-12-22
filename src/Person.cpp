@@ -40,15 +40,6 @@ void Person::setName(string name) {
 	this->name = name;
 }
 
-void Person::buyItem(Item item){
-	shopping.insert(shopping.begin(), item);
-	shopping.sort();
-}
-
-void Person::buyItem(vector<Item> items){
-	shopping.insert(shopping.begin(), items.begin(), items.end());
-	shopping.sort();
-}
 
 /* CUSTOMER */
 
@@ -98,20 +89,28 @@ bool Customer::attendedLesson(const GivenLesson * lesson) {
 }
 
 int Customer::getEntryNumber() const { //frequência com que os clientes vão á piscina
-//	if (uses.size() == 0) {
-//		return 0;
-//	}
-//	Date d = uses[0]->getDate();
-//	int result = 1;
-//	for (int i = 1; 1 < uses.size(); i++) {
-//		if (d == uses[i]->getDate()) {
-//			d = uses[i]->getDate();
-//			result++;
-//		}
-//	}
-//
-//	return result;
 	return uses.size();
+}
+
+void Customer::buyItem(vector<Item> items){
+	bool exist = false;
+	list<Item>::iterator it = shopping.begin();
+	for(int i = 0; i < items.size(); i++){
+		for(; it != shopping.end(); it++){
+			if(items[i] == (*it)){
+				int newStock = items[i].getStock() + it->getStock();
+				it->setStock(newStock);
+				exist = true;
+				break;
+			}
+		}
+		if(!exist){
+			shopping.push_back(items[i]);
+		}
+
+		exist = false;
+	}
+	shopping.sort();
 }
 
 /* TEACHER */
