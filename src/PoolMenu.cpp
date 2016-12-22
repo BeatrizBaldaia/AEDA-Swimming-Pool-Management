@@ -57,6 +57,9 @@ MenuResult RemoveCustomer::handle() {
 		g->removeCustomer(ID);
 	}
 	pool.removeCustomer(ID);
+	if(pool.isCustomerInactive(c)){
+		pool.activateCustomer(c);
+	}
 	cout << c->getName() << " removed!\n\n";
 	pool.write();
 	return CONTINUE;
@@ -451,6 +454,9 @@ MenuResult AttendLesson::handle() {
 		return CONTINUE;
 	}
 	pool.attendLesson(lessons[choice - 1], c, getCurrentDate());
+	if(pool.isCustomerInactive(c)){
+		pool.activateCustomer(c);
+	}
 	pool.write();
 	return CONTINUE;
 }
@@ -658,6 +664,9 @@ MenuResult FreeSwimming::handle() {
 			duration);
 	pool.addFreeUse(f);
 	c->addUse(f);
+	if(pool.isCustomerInactive(c)){
+		pool.activateCustomer(c);
+	}
 	pool.write();
 	return CONTINUE;
 }
@@ -691,6 +700,17 @@ MenuResult ViewCustomers::handle() {
 				<< c->getPoolUses().size() << "\nCost: "
 				<< c->getMonthCost(getCurrentDate().getMonth(),
 						getCurrentDate().getYear()) << endl;
+	}
+	cout << endl << endl << "Inactive Customers: \n \n";
+	if(pool.getInactiveCustomer().size() == 0){
+		cout << "There're no Inactive Customers. \n \n";
+	}
+	else{
+		hashCustomer table = pool.getInactiveCustomer();
+		hashCustomer::iterator it = table.begin();
+		for(it; it != table.end(); it++){
+			cout << (*it)->getName() << endl;
+		}
 	}
 	return CONTINUE;
 }

@@ -15,25 +15,26 @@
 /* HASH TABLE */
 struct hCustomer {
 
-	int operator()(const Customer& c1) const{
+	int operator()(Customer* c1) const{
 		int result;
-		for(int i; i < c1.getName().size(); i++){
-			result+= c1.getName()[i]*37;
+		for(int i; i < c1->getName().size(); i++){
+			result+= c1->getName()[i]*37;
 		}
 		return result;
 	}
 
-	bool operator()(const Customer& c1, const Customer& c2) const {
-		return c1.getName() == c2.getName();
+	bool operator()(Customer* c1, Customer* c2) const {
+		return (c1->getName() == c2->getName()) && (c1->getID() == c2->getID());
 	}
 };
 
-typedef tr1::unordered_set<Customer, hCustomer, hCustomer> hashCustomer;
+typedef tr1::unordered_set<Customer *, hCustomer, hCustomer> hashCustomer;
 
 ///////////////////////////////////
 
 class Pool {
 public:
+	static int inactivityPeriod; /// days to be considered inactive
 	unsigned int getMaxCustomers() const;
 	Lesson getNextLesson(DayOfWeek day, Time time, bool & currentlesson) const;
 	vector<Lesson> getLessons(unsigned int ID); /// retorna vetor com as aulas dadas por um professor
@@ -53,6 +54,9 @@ public:
 	string getName() const; ///dá nome da piscina
 	vector<Lesson> getSchedule() const;
 	vector<Teacher *> getTeachers() const;
+	bool isCustomerInactive(Customer * c);///ver se cliente e inativo
+	void activateCustomer(Customer * c);///torna cliente inativo em ativo
+	hashCustomer getInactiveCustomer();
 
 	void distributeLessons();
 
@@ -79,6 +83,7 @@ public:
 	void loadTeachers();
 	void loadSchedule();
 	void loadGivenLessons();
+	void testInactiveCustomers();
 	void loadShop();
 
 	void write();///escreve para os ficheiros de texto

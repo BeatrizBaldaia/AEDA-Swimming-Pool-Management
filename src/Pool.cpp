@@ -6,6 +6,8 @@
 #include <sstream>
 #include <utility>
 
+int Pool::inactivityPeriod = 30;
+
 vector<Lesson> Pool::getLessons(unsigned int ID) {
 	vector<Lesson> result;
 	for (const Lesson & x : schedule) {
@@ -166,6 +168,35 @@ void Pool::writeSchedule() {
 		scheduleFile << i.getTime() << endl;
 	}
 	scheduleFile.close();
+}
+
+void Pool::testInactiveCustomers() {
+	Date d = getCurrentDate();
+	for (Customer * c : customers) {
+		Date lastUse = (*max_element(c->getPoolUses().begin(), c->getPoolUses().end(), [](PoolUse * a, PoolUse * b) {
+			return a->getDate() < b->getDate();
+		}))->getDate();
+		if (d - lastUse > inactivityPeriod) {
+			inactiveCustomers.insert(c);
+		}
+	}
+}
+
+bool Pool::isCustomerInactive(Customer* c) {
+	hashCustomer::iterator it = inactiveCustomers.find(c);
+	if(it != inactiveCustomers.end()){
+		return true;
+	}
+	return false;
+}
+
+void Pool::activateCustomer(Customer * c){
+	hashCustomer::iterator it = inactiveCustomers.find(c);
+	inactiveCustomers.erase(it);
+}
+
+hashCustomer Pool::getInactiveCustomer(){
+	return inactiveCustomers;
 }
 
 void Pool::writeShop(){

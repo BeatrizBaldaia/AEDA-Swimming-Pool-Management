@@ -51,6 +51,12 @@ public:
 	bool operator <(const Date &date) const;
 	bool operator >(const Date &date) const;
 	bool operator ==(const Date &date) const;
+	/**
+	 * Returns difference between dates in days.
+	 * @param date
+	 * @return
+	 */
+	int operator -(const Date &date) const;
 
 	bool between(const Date &min, const Date &max);///ve se uma data está entre duas datas
 

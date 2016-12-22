@@ -172,6 +172,40 @@ bool Date::operator==(const Date & date) const {
 			&& this->year == date.year;
 }
 
+int Date::operator -(const Date& date) const {
+	int d1 = 0, d2 = 0;
+
+	for(size_t i = 1970; i < year; i++) {
+		if (isLeapYear(i)) {
+			d1 += 366;
+		} else {
+			d1 += 365;
+		}
+	}
+
+	for (size_t i = 1; i < month; i++) {
+		d1 += daysInMonth(i, year);
+	}
+
+	d1 += day;
+
+	for(size_t i = 1970; i < date.getYear(); i++) {
+		if (isLeapYear(i)) {
+			d2 += 366;
+		} else {
+			d2 += 365;
+		}
+	}
+
+	for (size_t i = 1; i < date.getMonth(); i++) {
+		d2 += daysInMonth(i, date.getYear());
+	}
+
+	d2 += date.getDay();
+
+	return d1 - d2;
+}
+
 bool Date::between(const Date &min, const Date &max) {
 	if (*this >= min && *this <= max) {
 		return true;
