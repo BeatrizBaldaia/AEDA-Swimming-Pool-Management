@@ -1,0 +1,19 @@
+18
+Sleeveless Tops;s
+Sleeveless Tops;m
+Sleeveless Tops;l
+Long Sleeve Tops;s
+Long Sleeve Tops;m
+Long Sleeve Tops;l
+Hoodies;s
+Hoodies;m
+Hoodies;l
+Jackets;s
+Jackets;m
+Jackets;l
+Shorts;s
+Shorts;m
+Shorts;l
+Pants;s
+Pants;m
+Pants;l

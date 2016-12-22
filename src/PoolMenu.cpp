@@ -709,7 +709,7 @@ MenuResult ViewCustomers::handle() {
 		hashCustomer table = pool.getInactiveCustomer();
 		hashCustomer::iterator it = table.begin();
 		for(it; it != table.end(); it++){
-			cout << (*it)->getName() << endl;
+			cout << (*it)->getName();
 		}
 	}
 	return CONTINUE;
@@ -815,8 +815,9 @@ MenuResult ShopSellItems::handle(){
 		cout << "There's no such customer. \n \n ";
 		return CONTINUE;
 	}
-	cout << "\n List of our products: \n \n";
+	cout << "\nList of our products: \n \n";
 	vector<Item> v = pool.getShop()->getItems();
+	int n = 0;
 	for(int i = 0; i < v.size(); i++){
 		cout << (i + 1) << " -> " << v[i].getDesignation() << " (size " << v[i].getSize() << ")" << endl;
 	}
@@ -834,8 +835,10 @@ MenuResult ShopSellItems::handle(){
 	int prodQ;
 	cin >> prodQ;
 	cout << endl;
-	Item i(v[prodN-1].getDesignation(), v[prodN-1].getSize(), prodQ);
-	items.push_back(i);
+	if(prodN <= v.size()){
+		Item i(v[prodN-1].getDesignation(), v[prodN-1].getSize(), prodQ);
+		items.push_back(i);
+	}
 	}
 	if(items.empty()){
 		return CONTINUE;
@@ -847,15 +850,59 @@ MenuResult ShopSellItems::handle(){
 		return CONTINUE;
 	}catch(InvalidRemoveItem &x){
 		x.printError();
+		pool.write();
 	}
 	catch(InvalidItems &x){
 		x.printError();
+		pool.write();
 	}
 	catch(InvalidStock &x){
 		x.printError();
+		pool.write();
 	}
-	catch(...){
-		cout << "ENTROU \n \n";
-	}
+}
 
+ShopBuyItems::ShopBuyItems(Pool & pool): pool(pool){
+}
+
+MenuResult ShopBuyItems::handle(){
+	cout << "\nList of provider's Products: \n \n";
+	vector<Item>v = pool.getProviderItems();
+	vector<Item>items;
+	for(int i = 0; i < v.size(); i++){
+		cout << (i + 1) << " -> " << v[i].getDesignation() << " (size " << v[i].getSize() << ") \n";
+	}
+	cout << endl << "0 -> Stop adding products \n \n";
+	while(true){
+		cout << "Insert the product number: ";
+		int prodN;
+		cin >> prodN;
+		if(prodN == 0){
+			break;
+		}
+		cout << "Insert the product quantity: ";
+		int prodQ;
+		cin >> prodQ;
+		cout << endl;
+		if(prodN <= v.size()){
+			Item i(v[prodN-1].getDesignation(), v[prodN-1].getSize(), prodQ);
+			items.push_back(i);
+		}
+	}
+	Shop * shop = pool.getShop();
+	shop->buyItem(items);
+	pool.writeShop();
+	return CONTINUE;
+}
+
+ViewShopInfo::ViewShopInfo(Pool & pool): pool(pool){
+}
+
+MenuResult ViewShopInfo::handle(){
+	vector<Item> v = pool.getShop()->getItems();
+	cout << "\nShop << " << pool.getShop()->getName() << " >> List of Products: \n \n";
+	for(const Item & x : v){
+		cout << "Designation: " << x.getDesignation() << "\nSize: " << x.getSize() << "\nCurrent Stock: " << x.getStock() << endl << endl;
+	}
+	return CONTINUE;
 }

@@ -579,18 +579,34 @@ void Pool::load() {
 	loadShop();
 }
 
-NotSameDayAsDate::NotSameDayAsDate() {
-}
-
-NonExistentGivenLesson::NonExistentGivenLesson(Lesson lesson, Date date) {
-	this->lesson = lesson;
-	this->date = date;
-}
-
 void Pool::removeLesson(unsigned int position) {
 	schedule.erase(schedule.begin() + position);
 }
 
 Shop * Pool::getShop() const{
 	return shop;
+}
+
+vector<Item> Pool::getProviderItems(){
+	ifstream providerFile(fileNames[6]);
+	vector<Item> result;
+	unsigned int n;
+	providerFile >> n;
+	providerFile.ignore(INT_MAX, '\n');
+	for (size_t i = 0; i < n; i++) {
+		string designation, size;
+		getline(providerFile, designation, ';');
+		getline(providerFile, size);
+		Item item(designation, size, 0);
+		result.push_back(item);
+	}
+	return result;
+}
+
+NotSameDayAsDate::NotSameDayAsDate() {
+}
+
+NonExistentGivenLesson::NonExistentGivenLesson(Lesson lesson, Date date) {
+	this->lesson = lesson;
+	this->date = date;
 }

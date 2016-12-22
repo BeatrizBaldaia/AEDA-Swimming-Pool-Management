@@ -100,10 +100,10 @@ void Shop::sellItem(Customer *person, vector<Item> items){
 			if (it.retrieve().getDesignation() == d
 					&& it.retrieve().getSize() == s) {
 				Item i = it.retrieve();
-				unsigned int n = i.getStock() - x.getStock();
+				int n = i.getStock() - x.getStock();
 				shopItems.remove(i);
 				saveItems.push_back(x);
-				if (n >= 0) { ///ha intens suficientes para vender ao cliente
+				if (n >= 0) { ///ha itens suficientes para vender ao cliente
 					i.setStock(n);
 					shopItems.insert(i);
 					exist = true;

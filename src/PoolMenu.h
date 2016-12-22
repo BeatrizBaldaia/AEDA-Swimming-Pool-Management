@@ -243,5 +243,21 @@ private:
 	Pool & pool;
 };
 
+class ShopBuyItems: public MenuHandler{
+public:
+	ShopBuyItems(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class ViewShopInfo: public MenuHandler{
+public:
+	ViewShopInfo(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
 #endif /* SRC_POOLMENU_H_ */
 

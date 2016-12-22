@@ -75,9 +75,9 @@ InvalidStock::InvalidStock(vector<Item> v){
 }
 
 void InvalidStock::printError(){
-	cout << endl << "The number of stock is not valid for the following Items: " << endl;
+	cout << endl << "The stock is not enough for the following Items: " << endl;
 	for(const Item &y : items){
-		cout << y.getDesignation() << " of size " << y.getSize() << endl;
+		cout << y.getDesignation() << " of size " << y.getSize() << ": lack of "<< y.getStock() << " units" << endl;
 	}
 	cout << endl;
 }
@@ -92,7 +92,7 @@ void InvalidRemoveItem::printError(){
 	for(const Item &x : nonexistent){
 		cout << x.getDesignation() << " of size " << x.getSize() << endl;
 	}
-	cout << endl << "The number of stock is not valid for the following Items: " << endl;
+	cout << endl << "The stock is not enough for the following Items: " << endl;
 	for(const Item &y : overflowItems){
 		cout << y.getDesignation() << " of size " << y.getSize()  << ": lack of "<< y.getStock() << " units" << endl;
 	}

@@ -18,6 +18,7 @@ int main() {
 	fileNames.push_back("schedule.txt");
 	fileNames.push_back("givenlessons.txt");
 	fileNames.push_back("shop.txt");
+	fileNames.push_back("provider.txt");
 
 	Pool pool;
 
@@ -57,15 +58,17 @@ int main() {
 
 	manage(pool),
 
-	viewInfo(pool),
+	viewInfo(pool), viewTeachers(pool), viewCustomers(pool), viewCustomerInfo(pool),
 
 	manageCustomers(pool), manageTeachers(pool), manageSchedule(pool),
 
 	usePool(pool),
 
-	viewTeacherInfo(pool);
+	viewTeacherInfo(pool),
 
-	ViewSchedule viewSchedule(pool);
+	shop(pool);
+
+	/* MANAGE POOL */
 
 	AddCustomer addCustomer(pool);
 	RemoveCustomer removeCustomer(pool);
@@ -79,22 +82,22 @@ int main() {
 	FreeSwimming freeSwimming(pool);
 	AttendLesson attendLesson(pool);
 
-	CurrentOccupation occupation(pool);
+	/* VIEW INFORMATIONS */
 
+	CurrentOccupation occupation(pool);
+	ViewSchedule viewSchedule(pool);
 	ViewAttendance viewAttendance(pool);
 
-	PoolMenu viewTeachers(pool);
 	ViewTeachers viewTeachersByID(pool, ID);
 	ViewTeachers viewTeachersByName(pool, NAME);
 	ViewTeachers viewTeachersByGivenLessons(pool, GIVENLESSONS);
 	ViewTeachers viewTeachersByLessons(pool, ASSLESSONS);
 
-	PoolMenu viewCustomers(pool);
+
 	ViewCustomers viewCustomersByID(pool, ID);
 	ViewCustomers viewCustomersByName(pool, NAME);
 	ViewCustomers viewCustomersByUses(pool, NUMUSES);
 
-	PoolMenu viewCustomerInfo(pool);
 	ViewCustomersInformation viewCustomerInformation(pool);
 	ViewCustomerUses viewCustomerUses(pool);
 	CustomerMakeBill customerMakeBill(pool);
@@ -104,12 +107,18 @@ int main() {
 	ViewTeacherSchedule viewTeacherSchedule(pool);
 	ViewTeacherGivenLessons viewTeacherGivenLessons(pool);
 
+	/* MANAGE SHOP */
+
 	 ShopSellItems shopSell(pool);
+	 ShopBuyItems shopBuy(pool);
+	 ViewShopInfo viewShop(pool);
+
 	/* MAIN MENU */
 
 	menu.entries.push_back(MenuEntry("Exit", Menu::exitHandler));
 	menu.entries.push_back(MenuEntry("Manage", manage));
 	menu.entries.push_back(MenuEntry("View information", viewInfo));
+	menu.entries.push_back(MenuEntry("Shop", shop));
 
 	/* MANAGE OPTION and DERIVATES*/
 
@@ -190,6 +199,13 @@ int main() {
 					customerMakeCurrentBill));
 	viewCustomerInfo.entries.push_back(
 			MenuEntry("Make customer's specific month bill", customerMakeBill));
+
+	/* SHOP MENU */
+
+	shop.entries.push_back(MenuEntry("Back", Menu::exitHandler));
+	shop.entries.push_back(MenuEntry("View Shop Information", viewShop));
+	shop.entries.push_back(MenuEntry("Costumer -> Buy Products!", shopSell));
+	shop.entries.push_back(MenuEntry("Increase Stock", shopBuy));
 
 	cout << pool.getName() << endl;
 	menu.handle();
