@@ -31,6 +31,6 @@
 
 .metadata
 local.properties
-.settings/
+.settings/*
 .loadpath
 .recommenders
