@@ -10,6 +10,7 @@
 #include "Person.h"
 #include "PoolUse.h"
 #include "Shop.h"
+#include "Exceptions.h"
 
 
 /* HASH TABLE */
@@ -43,8 +44,9 @@ public:
 	string getName() const;
 	double getDistance() const;
 	vector<Modality> getModalityLessons() const;
+	void addModality(Modality modality);
 	bool haveModality(Modality modality);
-	bool operator<(OtherPool & oP2)const;
+	bool operator<(OtherPool & oP2) const;
 };
 
 class Pool {
@@ -56,6 +58,7 @@ public:
 	vector<Lesson> getLessons(Date date, Time time);
 	vector<GivenLesson *> getGivenLessons(); /// dá o vetor givenLessons
 	vector<GivenLesson *> getGivenLessons(unsigned int ID);
+	vector<Lesson> getLessonByModality(Modality modality)const;
 	GivenLesson * getGivenLesson(Lesson lesson, Date date); /// dá GivenLesson que tem uma certa Lesson e ocorreu num certo Date
 	void addLesson(Lesson lesson); /// adiciona aula ao vetor schedule e atribui a mesma um professor
 	unsigned int CustomersInLesson(GivenLesson lesson); /// dá o número de clientes numa certa aula
@@ -72,9 +75,14 @@ public:
 
 	bool isCustomerInactive(Customer * c);///ver se cliente e inativo
 	void activateCustomer(Customer * c);///torna cliente inativo em ativo
-	hashCustomer getInactiveCustomer();
+	hashCustomer getInactiveCustomer() const;
 
 	vector<Item> getProviderItems();
+
+	priority_queue<OtherPool *> getOtherPools() const;
+	void addOtherPool(OtherPool * oP);///adiciona a fila de prioridade uma piscina das redondezas
+	void addModalityToPool(string name, vector<Modality> vM); ///adiciona modalidade a uma piscina das redondezas (de nome name)
+	OtherPool * getNextPool(Modality modality);
 
 	void distributeLessons();
 
@@ -103,6 +111,7 @@ public:
 	void loadGivenLessons();
 	void testInactiveCustomers();
 	void loadShop();
+	void loadOtherPools();
 
 	void write();///escreve para os ficheiros de texto
 	void writePoolInfo();
@@ -111,11 +120,12 @@ public:
 	void writeSchedule();
 	void writeGivenLessons();
 	void writeShop();
+	void writeOtherPools();
 private:
 	vector<Customer *> customers;
 
 	vector<Teacher *> teachers; ///Quando Pool é criado os vetores devem ser logo ordenados usando as funções sort;
-	vector<Lesson> schedule; ///Se o número de elementos do vetor for inferior ou igual a 20 usar INSERTION SORT senão usar QUICK SORT
+	vector<Lesson> schedule;
 	vector<GivenLesson *> givenLessons;
 	vector<PoolUse *> freeUses; ///sempre que alguem que usar a piscina em modo livre, o uso é guardado neste vetor; usar freeuses.insert(freeuses.begin(), PoolUse * objeto) e não freeuses.push_back(...) para termos sempre os objetos mais recentes no inicio
 
@@ -127,12 +137,13 @@ private:
 	// 4 givenlessons
 	// 5 shop
 	// 6 provider
+	// 7 otherpools
 
-	Shop * shop;
-	hashCustomer inactiveCustomers;
-	priority_queue<OtherPool> otherPools;
-	string name;
-	unsigned int maxCustomers;
+	Shop * shop;///apontador para a loja da piscina
+	hashCustomer inactiveCustomers;///tabela de dispersao com os clientes inativos
+	priority_queue<OtherPool *> otherPools;///fila de prioridade com as piscinas nas redondezas
+	string name;///nome da nossa piscina
+	unsigned int maxCustomers;///numero maximo de utentes que podem estar na piscina
 };
 
 class NoMoreLessonsInDay {
@@ -180,6 +191,7 @@ public:
 class CustomerAlreadyAttendedLesson {
 
 };
+
 
 #else
 

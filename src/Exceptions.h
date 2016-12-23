@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "Shop.h"
+#include "Lesson.h"
 
 using namespace std;
 
@@ -77,4 +78,31 @@ private:
 	vector<Item> items;
 };
 
+/* INVALID POOL */
+
+class InvalidPool{
+public:
+	InvalidPool(string name);
+	void printError();
+private:
+	string name;
+};
+
+/* INVALID MODALITY */
+
+class InvalidModality{
+public:
+	InvalidModality(Modality modality);
+	void printError();
+private:
+	Modality modality;
+};
+
+class NoModality{
+public:
+	NoModality(Modality modality);
+	void printError();
+private:
+	Modality modality;
+};
 #endif /* SRC_EXCEPTIONS_H_ */

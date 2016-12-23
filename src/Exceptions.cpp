@@ -98,3 +98,32 @@ void InvalidRemoveItem::printError(){
 	}
 	cout << endl;
 }
+
+
+/* INVALID POOL */
+
+InvalidPool::InvalidPool(string name){
+	this->name = name;
+}
+
+void InvalidPool::printError(){
+	cout << endl << "There's no such Pool of name " << name << endl << endl;
+}
+
+/* INAVALID MODALITY */
+
+InvalidModality::InvalidModality(Modality modality){
+	this->modality = modality;
+}
+
+void InvalidModality::printError(){
+	cout << endl << "Our Pool doesn't give lessons of " << modality << endl << endl;
+}
+
+NoModality::NoModality(Modality modality){
+	this->modality = modality;
+}
+
+void NoModality::printError(){
+	cout << endl << "There's no Pool nearby that gives lessons of " << modality << endl << endl;
+}

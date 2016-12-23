@@ -85,6 +85,14 @@ private:
 	Pool & pool;
 };
 
+class AttendToSpecificModality: public MenuHandler{
+public:
+	AttendToSpecificModality(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
 /* ADD LESSON */
 
 class AddLesson: public MenuHandler {
@@ -254,6 +262,34 @@ private:
 class ViewShopInfo: public MenuHandler{
 public:
 	ViewShopInfo(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+/*
+ * ver informacoes e alterar iformacoes das piscinas proximas da nossa piscina
+ * */
+
+class ViewOtherPools: public MenuHandler{
+public:
+	ViewOtherPools(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class AddOtherPool: public MenuHandler{
+public:
+	AddOtherPool(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class AddModalityToPool: public MenuHandler{
+public:
+	AddModalityToPool(Pool & pool);
 	MenuResult handle();
 private:
 	Pool & pool;

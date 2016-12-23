@@ -40,11 +40,15 @@ bool OtherPool::haveModality(Modality modality){
 	return false;
 }
 
-bool OtherPool::operator<(OtherPool & oP2)const{
+bool OtherPool::operator<(OtherPool & oP2) const{
 	if(distance == oP2.getDistance()){
 		return name < oP2.getName();
 	}
 	return distance > oP2.getDistance();
+}
+
+void OtherPool::addModality(Modality modality){
+	modalityLessons.push_back(modality);
 }
 
 vector<Lesson> Pool::getLessons(unsigned int ID) {
@@ -241,7 +245,7 @@ void Pool::activateCustomer(Customer * c){
 	inactiveCustomers.erase(it);
 }
 
-hashCustomer Pool::getInactiveCustomer(){
+hashCustomer Pool::getInactiveCustomer() const{
 	return inactiveCustomers;
 }
 
@@ -256,6 +260,29 @@ void Pool::writeShop(){
 	}
 }
 
+void Pool::writeOtherPools(){
+	ofstream otherPoolsFile(fileNames[7]);
+	otherPoolsFile << otherPools.size() << '\n';
+	int n = otherPools.size();///numero de outras piscinas
+	priority_queue<OtherPool*> queue = otherPools;
+	while(n > 0){
+		///nome da piscina;distancia;numero de modalidades;lista das modalidades (separadas por virgulas)
+		otherPoolsFile << queue.top()->getName() << ';' << queue.top()->getDistance() << ';' << queue.top()->getModalityLessons().size() << ';';
+		vector<Modality> vM = queue.top()->getModalityLessons();
+		for(int i = 0; i < vM.size(); i++){
+			int modInt = static_cast<int>(vM[i]);
+			otherPoolsFile << modInt;
+			if(i != (vM.size() - 1)){
+				otherPoolsFile << ',';
+			}
+		}
+		n--;
+		if(n == 0){
+			otherPoolsFile << '\n';
+		}
+		queue.pop();
+	}
+}
 void Pool::addTeacher(Teacher* t) {
 	teachers.push_back(t);
 	distributeLessons();
@@ -540,6 +567,36 @@ void Pool::loadShop() {
 	shop = s;
 }
 
+void Pool::loadOtherPools(){
+	ifstream otherPoolsFile(fileNames[7]);
+	unsigned int n; ///numero de lojas na redondeza
+	vector<OtherPool> v; ///vetor com os itens da loja
+	otherPoolsFile >> n;
+	otherPoolsFile.ignore(INT_MAX, '\n');
+	for (size_t i = 0; i < n; i++) {
+		string name; ///nome da piscina
+		getline(otherPoolsFile, name, ';');
+		double distance; ///distancia da piscina a nossa piscina
+		otherPoolsFile >> distance;
+		otherPoolsFile.ignore();
+		int numberModalities; ///numero de diferentes modalidades que a piscina da
+		otherPoolsFile >> numberModalities;
+		otherPoolsFile.ignore();
+		vector<Modality>m;
+		while(numberModalities > 0){
+			numberModalities--;
+			unsigned int modValue;
+			otherPoolsFile >> modValue;
+			Modality lesson = static_cast<Modality>(modValue);///passar de unsigned int para enum Modality
+			if(numberModalities != 0){
+				otherPoolsFile.ignore();///ignorar virgula a frente
+			}
+			m.push_back(lesson);
+		}
+		OtherPool *oP = new OtherPool(name, distance, m);
+		otherPools.push(oP);
+	}
+}
 
 void Pool::addCustomer(Customer* c) {
 	customers.push_back(c);
@@ -552,6 +609,7 @@ void Pool::write() {
 	writeSchedule();
 	writeGivenLessons();
 	writeShop();
+	writeOtherPools();
 }
 
 vector<GivenLesson *> Pool::getGivenLessons() {
@@ -616,6 +674,7 @@ void Pool::load() {
 	loadGivenLessons();
 	testInactiveCustomers();
 	loadShop();
+	loadOtherPools();
 }
 
 void Pool::removeLesson(unsigned int position) {
@@ -640,6 +699,61 @@ vector<Item> Pool::getProviderItems(){
 		result.push_back(item);
 	}
 	return result;
+}
+
+priority_queue<OtherPool * > Pool::getOtherPools() const{
+	return otherPools;
+}
+
+void Pool::addOtherPool(OtherPool * oP){
+	otherPools.push(oP);
+}
+
+void Pool::addModalityToPool(string name, vector<Modality> vM){
+	priority_queue<OtherPool *> queue = otherPools;
+	bool exist = false;
+	OtherPool * oP = queue.top();
+	while(!queue.empty()){
+		oP = queue.top();
+		if(oP->getName() == name){
+			exist = true;
+			break;
+		}
+		queue.pop();
+	}
+	if(!exist){
+		throw InvalidPool(name);
+	}
+	for (int i = 0; i < vM.size(); i++){
+		oP->addModality(vM[i]);
+	}
+
+}
+
+vector<Lesson> Pool::getLessonByModality(Modality modality)const{
+	vector<Lesson> result;
+	for(const Lesson &x : schedule){
+		if(x.getModality() == modality){
+			result.push_back(x);
+		}
+	}
+	if(result.empty()){
+		throw InvalidModality(modality);
+	}
+	return result;
+}
+
+OtherPool* Pool::getNextPool(Modality modality){
+	priority_queue<OtherPool *> queue = otherPools;
+	OtherPool * oP = queue.top();
+	while(!queue.empty()){
+		oP = queue.top();
+		if(oP->haveModality(modality)){
+			return oP;
+		}
+		queue.pop();
+	}
+	throw(NoModality(modality));
 }
 
 NotSameDayAsDate::NotSameDayAsDate() {

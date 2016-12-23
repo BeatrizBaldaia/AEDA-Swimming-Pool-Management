@@ -31,7 +31,7 @@ MenuResult AddCustomer::handle() {
 	Date birthdate = getInputDate("Insert customer's birthday (DD/MM/YYYY)");
 	Customer * c = new Customer(name, birthdate);
 	pool.addCustomer(c);
-	cout << endl << name << " created with ID " << c->getID() << "!\n";
+	cout << endl << name << " created with ID " << c->getID() << "! \n";
 	pool.write();
 	return CONTINUE;
 }
@@ -50,7 +50,7 @@ MenuResult RemoveCustomer::handle() {
 	try {
 		c = pool.getCustomer(ID);
 	} catch (NonExistentCustomerID &x) {
-		cout << "\n\nCustomer doesn't belong to Pool or was already deleted";
+		cout << "\n \nCustomer doesn't belong to Pool or was already deleted";
 		return CONTINUE;
 	}
 	for (GivenLesson * g : pool.getGivenLessons()) {
@@ -60,7 +60,7 @@ MenuResult RemoveCustomer::handle() {
 	if(pool.isCustomerInactive(c)){
 		pool.activateCustomer(c);
 	}
-	cout << c->getName() << " removed!\n\n";
+	cout << c->getName() << " removed!\n \n";
 	pool.write();
 	return CONTINUE;
 }
@@ -113,11 +113,11 @@ MenuResult CurrentOccupation::handle() {
 	}
 	if(customersInPool == 0)
 	{
-		cout << "\n\nThere is nobody in the pool\n";
+		cout << "\n \nThere is nobody in the pool\n";
 	} else if (customersInPool == 1){
-		cout << "\n\nThere is 1 customer in the pool\n";
+		cout << "\n \nThere is 1 customer in the pool\n";
 	} else {
-		cout << "\n\nThere are " << customersInPool << " customers in pool\n";
+		cout << "\n \nThere are " << customersInPool << " customers in pool\n";
 	}
 	cout << "\nVacancies: " << pool.getMaxCustomers() - customersInPool << endl << endl;
 	return CONTINUE;
@@ -133,7 +133,7 @@ ViewAttendance::ViewAttendance(Pool& pool) :
 
 MenuResult ViewAttendance::handle() {
 	for (Customer * c : pool.getCustomers()) {
-		cout << "\n\nUses of " << c->getName() << ":\n";
+		cout << "\n \nUses of " << c->getName() << ":\n";
 		for (PoolUse * p : c->getPoolUses()) {
 			if (p->getLesson() == NULL) {
 				cout << "\nUse type: Free swim";
@@ -459,6 +459,79 @@ MenuResult AttendLesson::handle() {
 	}
 	pool.write();
 	return CONTINUE;
+}
+
+AttendToSpecificModality::AttendToSpecificModality(Pool & pool): pool(pool){
+}
+
+MenuResult AttendToSpecificModality::handle() {
+	int customerID;
+	getInputInt(customerID, 0, 500, "\nInsert customer's ID");
+
+	Customer * c;
+	bool noExistID = false;
+	do {
+		noExistID = false;
+		try {
+			c = pool.getCustomer(customerID);
+		} catch (NonExistentCustomerID & x) {
+			cout << "\nNo customer with such ID\n";
+			noExistID = true;
+		}
+	} while (noExistID);
+
+	cout <<"\nList of Modalities: \n \n";
+	cout << "1 -> " << static_cast<Modality>(0) << '\n';
+	cout << "2 -> " << static_cast<Modality>(1) << '\n';
+	cout << "3 -> " << static_cast<Modality>(2) << '\n';
+	cout << "4 -> " << static_cast<Modality>(3) << '\n';
+	cout << "5 -> " << static_cast<Modality>(4) << "\n \n";
+	int modN;
+	cout << "Insert the Modality number: ";
+	cin >> modN;
+	Modality mod = static_cast<Modality>((modN-1));
+	try{
+		int choice;
+		vector<Lesson>lessons2=pool.getLessonByModality(mod);
+		vector<Lesson> aux = pool.getLessons(getCurrentDate(),getCurrentTime());
+		vector<Lesson> lessons;
+		for(const Lesson &x : aux){
+			if(x.getModality() == mod){
+				lessons.push_back(x);
+			}
+		}
+		if(lessons.empty()){//TODO: terminar esta funcao
+			return CONTINUE;
+		}
+		cout << "\nList of the lessons of " << mod << ": \n";
+		for (int i = 0; i < lessons.size(); i++) {
+				cout << i + 1 << " -> " << lessons[i].getDayOfWeek() << " at " << lessons[i].getTime() << " ( with teacher "
+						<< lessons[i].getTeacher()->getName() << " )\n";
+			}
+			cout << "\n0 -> Cancel";
+			getInputInt(choice, 0, lessons.size(), "Choose the number of the class you want to attend");
+			if (choice == 0) {
+				return CONTINUE;
+			}
+			pool.attendLesson(lessons[choice - 1], c, getCurrentDate());
+			if(pool.isCustomerInactive(c)){
+				pool.activateCustomer(c);
+			}
+			pool.write();
+			return CONTINUE;
+	}catch(InvalidModality &x){
+		x.printError();
+		try{
+			OtherPool * oP = pool.getNextPool(mod);
+			cout << "You can visit the nearest Pool ( " << oP->getName() << ", " << oP->getDistance() << " Km from here ) to have a lesson of " << mod;
+			return CONTINUE;
+		}catch(NoModality &y){
+			y.printError();
+			return CONTINUE;
+		}
+	}
+
+	pool.write();
 }
 
 /* ADD LESSON MENU */
@@ -904,5 +977,98 @@ MenuResult ViewShopInfo::handle(){
 	for(const Item & x : v){
 		cout << "Designation: " << x.getDesignation() << "\nSize: " << x.getSize() << "\nCurrent Stock: " << x.getStock() << endl << endl;
 	}
+	return CONTINUE;
+}
+
+/* OTHER POOLS MANAGE */
+
+ViewOtherPools::ViewOtherPools(Pool & pool): pool(pool){
+}
+
+MenuResult ViewOtherPools::handle(){
+	cout << "\nList of Pools Nearby: \n\n";
+	priority_queue<OtherPool *> queue = pool.getOtherPools();
+	while(!queue.empty()){
+		OtherPool *oP =queue.top();
+		cout << "Name: " << oP->getName() << endl << "Distance: " << oP->getDistance() << " Km\nModalities given: ";
+		vector<Modality>vM = oP->getModalityLessons();
+		for(int i = 0; i < vM.size(); i++){
+			cout << vM[i];
+			if(i != (vM.size() - 1)){
+				cout << ", ";
+			}
+		}
+		cout << endl << endl;
+		queue.pop();
+	}
+	cout << endl;
+}
+
+AddOtherPool::AddOtherPool(Pool & pool): pool(pool){
+}
+
+MenuResult AddOtherPool::handle(){
+	cout << "\nInsert Pool Name: ";
+	string name;
+	getline(cin, name);
+	cout << "\nDistance: ";
+	double distance;
+	vector<Modality> vM;
+	cin >> distance;
+	cout <<"\nList of Modalities: \n\n";
+	cout << "1 -> " << static_cast<Modality>(0) << '\n';
+	cout << "2 -> " << static_cast<Modality>(1) << '\n';
+	cout << "3 -> " << static_cast<Modality>(2) << '\n';
+	cout << "4 -> " << static_cast<Modality>(3) << '\n';
+	cout << "5 -> " << static_cast<Modality>(4) << "\n \n";
+	cout << "0 -> Stop adding Modalities \n \n";
+	while(true){
+		cout << "Insert the Modality number: ";
+		int modN;
+		cin >> modN;
+		if(modN == 0){
+			break;
+		}
+		Modality mod = static_cast<Modality>((modN-1));
+		vM.push_back(mod);
+	}
+	OtherPool *oP = new OtherPool(name, distance, vM);
+	pool.addOtherPool(oP);
+	pool.writeOtherPools();
+	return CONTINUE;
+}
+
+AddModalityToPool::AddModalityToPool(Pool & pool): pool(pool){
+}
+
+MenuResult AddModalityToPool::handle(){
+	cout <<"\nInsert Pool Name: ";
+	string name;
+	getline(cin, name);
+	vector<Modality> vM;
+	cout <<"\nList of Modalities: \n\n";
+	cout << "1 -> " << static_cast<Modality>(0) << '\n';
+	cout << "2 -> " << static_cast<Modality>(1) << '\n';
+	cout << "3 -> " << static_cast<Modality>(2) << '\n';
+	cout << "4 -> " << static_cast<Modality>(3) << '\n';
+	cout << "5 -> " << static_cast<Modality>(4) << "\n \n";
+	cout << "0 -> Stop adding Modalities\n \n";
+	int modN;
+	while(true){
+		cout << "Insert the Modality number: ";
+		cin >> modN;
+		if(modN == 0){
+			break;
+		}
+		Modality mod = static_cast<Modality>((modN-1));
+		vM.push_back(mod);
+	}
+	try{
+		pool.addModalityToPool(name, vM);
+	}catch(InvalidPool &x){
+		x.printError();
+		return CONTINUE;
+	}
+	pool.writeOtherPools();
 	return CONTINUE;
 }
