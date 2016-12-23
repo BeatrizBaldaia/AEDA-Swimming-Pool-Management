@@ -32,6 +32,21 @@ typedef tr1::unordered_set<Customer *, hCustomer, hCustomer> hashCustomer;
 
 ///////////////////////////////////
 
+class OtherPool{
+private:
+	string name;///nome da piscina
+	double distance; ///distancia da piscina secundaria em relacao a nossa piscina
+	vector<Modality> modalityLessons;
+public:
+	OtherPool(string name, double distance);
+	OtherPool(string name, double distance, vector<Modality> lessons);
+	string getName() const;
+	double getDistance() const;
+	vector<Modality> getModalityLessons() const;
+	bool haveModality(Modality modality);
+	bool operator<(OtherPool & oP2)const;
+};
+
 class Pool {
 public:
 	static int inactivityPeriod; /// days to be considered inactive
@@ -115,7 +130,7 @@ private:
 
 	Shop * shop;
 	hashCustomer inactiveCustomers;
-
+	priority_queue<OtherPool> otherPools;
 	string name;
 	unsigned int maxCustomers;
 };

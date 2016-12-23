@@ -49,6 +49,8 @@ public:
 private:
 	vector<PoolUse *> uses;
 	list<Item> shopping;
+	string contacto;
+	string morada;
 };
 
 class Teacher: public Person {

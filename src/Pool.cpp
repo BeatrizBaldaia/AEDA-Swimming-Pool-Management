@@ -8,6 +8,45 @@
 
 int Pool::inactivityPeriod = 30;
 
+OtherPool::OtherPool(string name, double distance){
+	this->name = name;
+	this->distance = distance;
+}
+
+OtherPool::OtherPool(string name, double distance, vector<Modality> lessons){
+	this->name = name;
+	this->distance = distance;
+	this->modalityLessons = lessons;
+}
+
+string OtherPool::getName() const{
+	return name;
+}
+
+double OtherPool::getDistance() const{
+	return distance;
+}
+
+vector<Modality> OtherPool::getModalityLessons() const{
+	return modalityLessons;
+}
+
+bool OtherPool::haveModality(Modality modality){
+	for(const Modality &x : modalityLessons){
+		if(x == modality){
+			return true;
+		}
+	}
+	return false;
+}
+
+bool OtherPool::operator<(OtherPool & oP2)const{
+	if(distance == oP2.getDistance()){
+		return name < oP2.getName();
+	}
+	return distance > oP2.getDistance();
+}
+
 vector<Lesson> Pool::getLessons(unsigned int ID) {
 	vector<Lesson> result;
 	for (const Lesson & x : schedule) {
