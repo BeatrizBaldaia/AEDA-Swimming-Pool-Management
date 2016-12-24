@@ -33,6 +33,18 @@ typedef tr1::unordered_set<Customer *, hCustomer, hCustomer> hashCustomer;
 
 ///////////////////////////////////
 
+class PromotionalCampaign {
+private:
+	Date beginDate;
+	Date endDate;
+	int discount;
+public:
+	PromotionalCampaign(Date beginDate, Date endDate, int discount);
+	Date getBeginDate();
+	Date getEndDate();
+	int getDiscount();
+};
+
 class OtherPool{
 private:
 	string name;///nome da piscina
@@ -72,6 +84,9 @@ public:
 	string getName() const; ///dá nome da piscina
 	vector<Lesson> getSchedule() const;
 	vector<Teacher *> getTeachers() const;
+
+	vector<PromotionalCampaign*> getPromotionalCampaign() const;
+	void addPromotionalCampaign(PromotionalCampaign * campaign);///retorna exceção se houver algum overlap de campanhas promocionais
 
 	bool isCustomerInactive(Customer * c);///ver se cliente e inativo
 	void activateCustomer(Customer * c);///torna cliente inativo em ativo
@@ -144,6 +159,7 @@ private:
 	priority_queue<OtherPool *> otherPools;///fila de prioridade com as piscinas nas redondezas
 	string name;///nome da nossa piscina
 	unsigned int maxCustomers;///numero maximo de utentes que podem estar na piscina
+	vector<PromotionalCampaign*> promotions;
 };
 
 class NoMoreLessonsInDay {
@@ -186,6 +202,11 @@ public:
 	NonExistentGivenLesson(Lesson lesson, Date date);
 	Lesson lesson;
 	Date date;
+};
+
+class OverlapingCampaign {
+public:
+	OverlapingCampaign();
 };
 
 class CustomerAlreadyAttendedLesson {

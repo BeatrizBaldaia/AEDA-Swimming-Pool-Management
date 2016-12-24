@@ -8,6 +8,28 @@
 
 int Pool::inactivityPeriod = 30;
 
+PromotionalCampaign::PromotionalCampaign(Date beginDate, Date endDate, int discount) :
+		beginDate(beginDate), endDate(endDate), discount(discount)
+{
+}
+
+Date PromotionalCampaign::getBeginDate()
+{
+	return beginDate;
+}
+
+Date PromotionalCampaign::getEndDate()
+{
+	return endDate;
+}
+
+int PromotionalCampaign::getDiscount()
+{
+	return discount;
+}
+
+//////////////////////////////////////////////////////////////////////
+
 OtherPool::OtherPool(string name, double distance){
 	this->name = name;
 	this->distance = distance;
@@ -258,6 +280,23 @@ void Pool::writeShop(){
 		shopFile << endl << it.retrieve().getDesignation() << ";" << it.retrieve().getSize() << ";" << it.retrieve().getStock();
 		it.advance();
 	}
+}
+
+vector<PromotionalCampaign*> Pool::getPromotionalCampaign() const
+{
+	return promotions;
+}
+
+void Pool::addPromotionalCampaign(PromotionalCampaign* campaign)
+{
+	for (PromotionalCampaign * p : promotions)
+	{
+		if(!(((p->getBeginDate() - campaign->getBeginDate())*(p->getBeginDate() - campaign->getEndDate()) > 0) && (p->getEndDate() - campaign->getBeginDate())*(p->getEndDate() - campaign->getEndDate()) > 0))
+		{
+			throw OverlapingCampaign();
+		}
+	}
+	promotions.push_back(campaign);
 }
 
 void Pool::writeOtherPools(){
@@ -762,4 +801,7 @@ NotSameDayAsDate::NotSameDayAsDate() {
 NonExistentGivenLesson::NonExistentGivenLesson(Lesson lesson, Date date) {
 	this->lesson = lesson;
 	this->date = date;
+}
+
+OverlapingCampaign::OverlapingCampaign() {
 }
