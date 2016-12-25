@@ -529,8 +529,8 @@ MenuResult AttendToSpecificModality::handle() {
 	}catch(InvalidModality &x){
 		x.printError();
 		try{
-			OtherPool * oP = pool.getNextPool(mod);
-			cout << "You can visit the nearest Pool ( " << oP->getName() << ", " << oP->getDistance() << " Km from here ) to have a lesson of " << mod;
+			ptrOtherPool oP (pool.getNextPool(mod));
+			cout << "You can visit the nearest Pool ( " << oP.getName() << ", " << oP.getDistance() << " Km from here ) to have a lesson of " << mod;
 			return CONTINUE;
 		}catch(NoModality &y){
 			y.printError();
@@ -995,11 +995,11 @@ ViewOtherPools::ViewOtherPools(Pool & pool): pool(pool){
 
 MenuResult ViewOtherPools::handle(){
 	cout << "\nList of Pools Nearby: \n\n";
-	priority_queue<OtherPool *> queue = pool.getOtherPools();
+	priority_queue<ptrOtherPool> queue = pool.getOtherPools();
 	while(!queue.empty()){
-		OtherPool *oP =queue.top();
-		cout << "Name: " << oP->getName() << endl << "Distance: " << oP->getDistance() << " Km\nModalities given: ";
-		vector<Modality>vM = oP->getModalityLessons();
+		ptrOtherPool oP = queue.top();
+		cout << "Name: " << oP.getName() << endl << "Distance: " << oP.getDistance() << " Km\nModalities given: ";
+		vector<Modality>vM = oP.getModalityLessons();
 		for(int i = 0; i < vM.size(); i++){
 			cout << vM[i];
 			if(i != (vM.size() - 1)){
@@ -1040,7 +1040,7 @@ MenuResult AddOtherPool::handle(){
 		Modality mod = static_cast<Modality>((modN-1));
 		vM.push_back(mod);
 	}
-	OtherPool *oP = new OtherPool(name, distance, vM);
+	ptrOtherPool oP(new OtherPool(name, distance, vM));
 	pool.addOtherPool(oP);
 	pool.writeOtherPools();
 	return CONTINUE;

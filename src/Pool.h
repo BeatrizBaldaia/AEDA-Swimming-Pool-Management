@@ -62,6 +62,19 @@ public:
 	bool operator<(OtherPool & oP2) const;
 };
 
+class ptrOtherPool{
+private:
+	OtherPool * ptr;
+public:
+	ptrOtherPool(OtherPool * p);
+	string getName() const;
+	double getDistance() const;
+	vector<Modality> getModalityLessons() const;
+	void addModality(Modality modality);
+	bool haveModality(Modality modality);
+	bool operator<(ptrOtherPool oP2) const;
+};
+
 class Pool {
 public:
 	static int inactivityPeriod; /// days to be considered inactive
@@ -95,10 +108,10 @@ public:
 
 	vector<Item> getProviderItems();
 
-	priority_queue<OtherPool *> getOtherPools() const;
-	void addOtherPool(OtherPool * oP);///adiciona a fila de prioridade uma piscina das redondezas
+	priority_queue<ptrOtherPool> getOtherPools() const;
+	void addOtherPool(ptrOtherPool oP);///adiciona a fila de prioridade uma piscina das redondezas
 	void addModalityToPool(string name, vector<Modality> vM); ///adiciona modalidade a uma piscina das redondezas (de nome name)
-	OtherPool * getNextPool(Modality modality);
+	ptrOtherPool getNextPool(Modality modality);
 
 	void distributeLessons();
 
@@ -157,7 +170,7 @@ private:
 
 	Shop * shop;///apontador para a loja da piscina
 	hashCustomer inactiveCustomers;///tabela de dispersao com os clientes inativos
-	priority_queue<OtherPool *> otherPools;///fila de prioridade com as piscinas nas redondezas
+	priority_queue<ptrOtherPool> otherPools;///fila de prioridade com as piscinas nas redondezas
 	string name;///nome da nossa piscina
 	unsigned int maxCustomers;///numero maximo de utentes que podem estar na piscina
 	vector<PromotionalCampaign*> promotions;

@@ -30,6 +30,10 @@ int PromotionalCampaign::getDiscount()
 
 //////////////////////////////////////////////////////////////////////
 
+/*
+ * OtherPool member functions
+ * */
+
 OtherPool::OtherPool(string name, double distance){
 	this->name = name;
 	this->distance = distance;
@@ -72,6 +76,45 @@ bool OtherPool::operator<(OtherPool & oP2) const{
 void OtherPool::addModality(Modality modality){
 	modalityLessons.push_back(modality);
 }
+
+/*
+ * ptrOtherPool member functions
+ * */
+
+ptrOtherPool::ptrOtherPool(OtherPool * p){
+	ptr = p;
+}
+
+string ptrOtherPool::getName() const{
+	return ptr->getName();
+}
+
+double ptrOtherPool::getDistance() const{
+	return ptr->getDistance();
+}
+
+vector<Modality> ptrOtherPool::getModalityLessons() const{
+	return ptr->getModalityLessons();
+}
+
+void ptrOtherPool::addModality(Modality modality){
+	ptr->addModality(modality);
+}
+
+bool ptrOtherPool::haveModality(Modality modality){
+	return ptr->haveModality(modality);
+}
+
+bool ptrOtherPool::operator<(ptrOtherPool oP2) const{
+	if(ptr->getDistance() == oP2.getDistance()){
+			return ptr->getName() < oP2.getName();
+		}
+		return ptr->getDistance() > oP2.getDistance();
+}
+
+/*
+ * Pool member functions
+ * */
 
 vector<Lesson> Pool::getLessons(unsigned int ID) {
 	vector<Lesson> result;
@@ -303,11 +346,11 @@ void Pool::writeOtherPools(){
 	ofstream otherPoolsFile(fileNames[7]);
 	otherPoolsFile << otherPools.size() << '\n';
 	int n = otherPools.size();///numero de outras piscinas
-	priority_queue<OtherPool*> queue = otherPools;
+	priority_queue<ptrOtherPool> queue = otherPools;
 	while(n > 0){
 		///nome da piscina;distancia;numero de modalidades;lista das modalidades (separadas por virgulas)
-		otherPoolsFile << queue.top()->getName() << ';' << queue.top()->getDistance() << ';' << queue.top()->getModalityLessons().size() << ';';
-		vector<Modality> vM = queue.top()->getModalityLessons();
+		otherPoolsFile << queue.top().getName() << ';' << queue.top().getDistance() << ';' << queue.top().getModalityLessons().size() << ';';
+		vector<Modality> vM = queue.top().getModalityLessons();
 		for(int i = 0; i < vM.size(); i++){
 			int modInt = static_cast<int>(vM[i]);
 			otherPoolsFile << modInt;
@@ -632,7 +675,7 @@ void Pool::loadOtherPools(){
 			}
 			m.push_back(lesson);
 		}
-		OtherPool *oP = new OtherPool(name, distance, m);
+		ptrOtherPool oP(new OtherPool(name, distance, m));
 		otherPools.push(oP);
 	}
 }
@@ -740,21 +783,21 @@ vector<Item> Pool::getProviderItems(){
 	return result;
 }
 
-priority_queue<OtherPool * > Pool::getOtherPools() const{
+priority_queue<ptrOtherPool > Pool::getOtherPools() const{
 	return otherPools;
 }
 
-void Pool::addOtherPool(OtherPool * oP){
+void Pool::addOtherPool(ptrOtherPool oP){
 	otherPools.push(oP);
 }
 
 void Pool::addModalityToPool(string name, vector<Modality> vM){
-	priority_queue<OtherPool *> queue = otherPools;
+	priority_queue<ptrOtherPool> queue = otherPools;
 	bool exist = false;
-	OtherPool * oP = queue.top();
+	ptrOtherPool oP = queue.top();
 	while(!queue.empty()){
 		oP = queue.top();
-		if(oP->getName() == name){
+		if(oP.getName() == name){
 			exist = true;
 			break;
 		}
@@ -764,7 +807,7 @@ void Pool::addModalityToPool(string name, vector<Modality> vM){
 		throw InvalidPool(name);
 	}
 	for (int i = 0; i < vM.size(); i++){
-		oP->addModality(vM[i]);
+		oP.addModality(vM[i]);
 	}
 
 }
@@ -782,12 +825,12 @@ vector<Lesson> Pool::getLessonByModality(Modality modality)const{
 	return result;
 }
 
-OtherPool* Pool::getNextPool(Modality modality){
-	priority_queue<OtherPool *> queue = otherPools;
-	OtherPool * oP = queue.top();
+ptrOtherPool Pool::getNextPool(Modality modality){
+	priority_queue<ptrOtherPool> queue = otherPools;
+	ptrOtherPool oP = queue.top();
 	while(!queue.empty()){
 		oP = queue.top();
-		if(oP->haveModality(modality)){
+		if(oP.haveModality(modality)){
 			return oP;
 		}
 		queue.pop();
