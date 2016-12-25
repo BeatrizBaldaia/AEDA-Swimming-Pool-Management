@@ -797,6 +797,8 @@ void Pool::addModalityToPool(string name, vector<Modality> vM){
 	ptrOtherPool oP = queue.top();
 	while(!queue.empty()){
 		oP = queue.top();
+		//cout << "\n <<<<<<<<<< \n\n " << oP.getName() << " =? " << name << endl << oP.getName().compare(name) << endl << endl;
+		//if(oP.getName().compare(name)){
 		if(oP.getName() == name){
 			exist = true;
 			break;

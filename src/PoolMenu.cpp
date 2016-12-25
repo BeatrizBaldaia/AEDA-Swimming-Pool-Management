@@ -906,16 +906,13 @@ MenuResult ShopSellItems::handle(){
 	cout << endl;
 	vector<Item> items; ///itens que o utilizador vai comprar
 	while(true){
-	cout << "Insert the product number: ";
 	int prodN;
-	cin >> prodN;
+	getInputInt(prodN, 0, v.size(), "Insert the product number");
 	if(prodN == 0){
 		break;
 	}
-	cout << "Insert the product quantity: ";
 	int prodQ;
-	cin >> prodQ;
-	cout << endl;
+	getInputInt(prodQ, 0, 30000, "Insert the product quantity");
 	if(prodN <= v.size()){
 		Item i(v[prodN-1].getDesignation(), v[prodN-1].getSize(), prodQ);
 		items.push_back(i);
@@ -955,16 +952,13 @@ MenuResult ShopBuyItems::handle(){
 	}
 	cout << endl << "0 -> Stop adding products \n \n";
 	while(true){
-		cout << "Insert the product number: ";
 		int prodN;
-		cin >> prodN;
+		getInputInt(prodN, 0, v.size(), "Insert the product number");
 		if(prodN == 0){
 			break;
 		}
-		cout << "Insert the product quantity: ";
 		int prodQ;
-		cin >> prodQ;
-		cout << endl;
+		getInputInt(prodQ, 0, 30000, "Insert the product quantity");
 		if(prodN <= v.size()){
 			Item i(v[prodN-1].getDesignation(), v[prodN-1].getSize(), prodQ);
 			items.push_back(i);
@@ -1031,9 +1025,8 @@ MenuResult AddOtherPool::handle(){
 	cout << "5 -> " << static_cast<Modality>(4) << "\n \n";
 	cout << "0 -> Stop adding Modalities \n \n";
 	while(true){
-		cout << "Insert the Modality number: ";
 		int modN;
-		cin >> modN;
+		getInputInt(modN, 0, 5, "Insert the Modality number");
 		if(modN == 0){
 			break;
 		}
@@ -1053,6 +1046,7 @@ MenuResult AddModalityToPool::handle(){
 	cout <<"\nInsert Pool Name: ";
 	string name;
 	getline(cin, name);
+	cout << endl << name << endl << endl;
 	vector<Modality> vM;
 	cout <<"\nList of Modalities: \n\n";
 	cout << "1 -> " << static_cast<Modality>(0) << '\n';
@@ -1063,8 +1057,7 @@ MenuResult AddModalityToPool::handle(){
 	cout << "0 -> Stop adding Modalities\n \n";
 	int modN;
 	while(true){
-		cout << "Insert the Modality number: ";
-		cin >> modN;
+		getInputInt(modN, 0, 5, "Insert the Modality number");
 		if(modN == 0){
 			break;
 		}

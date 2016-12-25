@@ -1,6 +1,6 @@
 YOLO
 5
-Long Sleeve Tops;m;9
+Long Sleeve Tops;m;7
 Long Sleeve Tops;s;2
 Sleeveless Tops;l;5
 Sleeveless Tops;m;10

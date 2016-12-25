@@ -107,7 +107,7 @@ InvalidPool::InvalidPool(string name){
 }
 
 void InvalidPool::printError(){
-	cout << endl << "There's no such Pool of name " << name << endl << endl;
+	cout << endl << "There's no such Pool named " << name << endl << endl;
 }
 
 /* INAVALID MODALITY */
