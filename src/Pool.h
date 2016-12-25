@@ -33,6 +33,7 @@ typedef tr1::unordered_set<Customer *, hCustomer, hCustomer> hashCustomer;
 
 ///////////////////////////////////
 
+
 class PromotionalCampaign {
 private:
 	Date beginDate;

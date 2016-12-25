@@ -1,4 +1,4 @@
 3
-
+Piscina 3;1;5;1,2,3,4,1
+Piscina 2;7;2;3,4
 Piscina 1;5;3;0,1,2
-Piscina 2;7;2;3,4Piscina 3;1;5;1,2,3,4,1

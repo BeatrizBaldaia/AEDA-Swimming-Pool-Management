@@ -51,6 +51,7 @@ public:
 	bool operator <(const Date &date) const;
 	bool operator >(const Date &date) const;
 	bool operator ==(const Date &date) const;
+	Date & operator++();
 	/**
 	 * Returns difference between dates in days.
 	 * @param date

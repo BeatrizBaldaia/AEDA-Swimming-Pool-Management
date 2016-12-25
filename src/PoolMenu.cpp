@@ -485,40 +485,47 @@ MenuResult AttendToSpecificModality::handle() {
 	cout << "2 -> " << static_cast<Modality>(1) << '\n';
 	cout << "3 -> " << static_cast<Modality>(2) << '\n';
 	cout << "4 -> " << static_cast<Modality>(3) << '\n';
-	cout << "5 -> " << static_cast<Modality>(4) << "\n \n";
+	cout << "5 -> " << static_cast<Modality>(4) << "\n\n";
+	cout << "0 -> Cancel\n\n";
 	int modN;
-	cout << "Insert the Modality number: ";
-	cin >> modN;
+	getInputInt(modN, 0, 5, "Insert the Modality number");
+		if (modN == 0) {
+			return CONTINUE;
+		}
 	Modality mod = static_cast<Modality>((modN-1));
+	vector<Lesson> lessons;
 	try{
+		lessons=pool.getLessonByModality(mod);
+		for(int i = 0; i < lessons.size(); i++){
+			cout << i+1 << " -> " << lessons[i].getDayOfWeek() << " at " << lessons[i].getTime() << " with " << lessons[i].getTeacher()->getName() << endl;
+		}
+		cout << endl << "0 -> Cancel \n\n";
 		int choice;
-		vector<Lesson>lessons2=pool.getLessonByModality(mod);
-		vector<Lesson> aux = pool.getLessons(getCurrentDate(),getCurrentTime());
-		vector<Lesson> lessons;
-		for(const Lesson &x : aux){
-			if(x.getModality() == mod){
-				lessons.push_back(x);
-			}
-		}
-		if(lessons.empty()){//TODO: terminar esta funcao
+		getInputInt(choice, 0, lessons.size(), "Choose the lesson you want to book/attend");
+		if (choice == 0) {
 			return CONTINUE;
 		}
-		cout << "\nList of the lessons of " << mod << ": \n";
-		for (int i = 0; i < lessons.size(); i++) {
-				cout << i + 1 << " -> " << lessons[i].getDayOfWeek() << " at " << lessons[i].getTime() << " ( with teacher "
-						<< lessons[i].getTeacher()->getName() << " )\n";
-			}
-			cout << "\n0 -> Cancel";
-			getInputInt(choice, 0, lessons.size(), "Choose the number of the class you want to attend");
-			if (choice == 0) {
-				return CONTINUE;
-			}
-			pool.attendLesson(lessons[choice - 1], c, getCurrentDate());
-			if(pool.isCustomerInactive(c)){
-				pool.activateCustomer(c);
-			}
-			pool.write();
-			return CONTINUE;
+		Date today = getCurrentDate();
+		choice--;
+		DayOfWeek dayLesson = lessons[choice].getDayOfWeek();
+		int dayOfWeekLesson = static_cast<int>(dayLesson);
+		int dayOfWeekToday = static_cast<int>(getCurrentDayOfWeek());
+		int diff;
+		///obter o dia da aula escolhida partindo do dia atual
+		if(dayOfWeekLesson >= dayOfWeekToday){
+			diff = dayOfWeekLesson - dayOfWeekToday;
+		}
+		else{
+			diff = (7 - dayOfWeekToday)+ dayOfWeekLesson;
+		}
+		while(diff > 0){
+			++today;
+			diff--;
+		}
+		pool.attendLesson(lessons[choice], c, today);
+		if(pool.isCustomerInactive(c)){
+			pool.activateCustomer(c);
+		}
 	}catch(InvalidModality &x){
 		x.printError();
 		try{
@@ -532,6 +539,7 @@ MenuResult AttendToSpecificModality::handle() {
 	}
 
 	pool.write();
+	return CONTINUE;
 }
 
 /* ADD LESSON MENU */
