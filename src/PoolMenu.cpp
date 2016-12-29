@@ -484,7 +484,7 @@ MenuResult AttendLesson::handle() {
 	if (choice == 0) {
 		return CONTINUE;
 	}
-	double discount = 1;
+	double discount = 0;
 	try{
 		PromotionalCampaign promCamp = pool.getCurrentPromotion();
 		discount = promCamp.getDiscount();
@@ -567,7 +567,7 @@ MenuResult AttendToSpecificModality::handle() {
 			++today;
 			diff--;
 		}
-		double discount = 1;
+		double discount = 0;
 		try{///caso estejamos numa campanha promocional
 			PromotionalCampaign promCamp = pool.getCurrentPromotion();
 			discount = promCamp.getDiscount();
@@ -801,7 +801,7 @@ MenuResult FreeSwimming::handle() {
 		}
 		break;
 	}
-	double discount = 1;
+	double discount = 0;
 		try{
 			PromotionalCampaign promCamp = pool.getCurrentPromotion();
 			discount = promCamp.getDiscount();
@@ -1187,9 +1187,59 @@ MenuResult UpdateCustomersInfo::handle(){
 			cout << "One Promotional Campaign has started on " << promo.getBeginDate() << " and will end on " << promo.getEndDate() << ".\nAll lessons and free uses have a discount of " << promo.getDiscount() << endl << endl;
 			cout << "\nList of the current inactive Customers:\n\n";
 			//TODO: percorrer a tabela de dispersao
+			hashCustomer tab = pool.getInactiveCustomer();
+			hashCustomer::const_iterator it = tab.begin();
+			int i = 1;
+			for(;it !=  tab.end(); it++){
+				cout << i << " - " << (*it)->getName() << " : " << (*it)->getStreet() << ", " << (*it)->getNumber() << ", " << (*it)->getPostalCode() << ", " << (*it)->getCity() << endl;
+				int answer;
+				getInputInt(answer, 0, 1, "Do you want to update the customer's address?\n\n---------   ----------\n|0 -> No|   |1 -> Yes|\n---------   ----------\n")
+				if(answer == 1){
+					pool.eraseInactive((*it));
+					cout << "=> City: ";
+					string city;
+					getline(cin, city);
+					cout << "=> Street: ";
+					string street;
+					getline(cin, street);
+					cout << "=> Number of the door: ";
+					int number;
+					cin >> number;
+					cout << "Postal Code: ";
+					string code;
+					getline(cin, code);
+					(*it)->setCity(city); (*it)->setStreet(street); (*it)->setNumber(number); (*it)->setPostalCode(code);
+					pool.insertInactive((*it));
+				}
+				cout << endl <<endl;
+				i++;
+			}
+			cout << "All inactive customers were updated!\n\n";
+			pool.writeCustomers();
+			return CONTINUE;
 
 		}catch(NoCurrentCampaign &e){
 			cout << "\nNo campaign is currently running, so  there's no need to update inactive customers' address.\n";
 			return CONTINUE;
 		}
+}
+
+AddCampaign::AddCampaign(Pool & pool): pool(pool){
+}
+
+MenuResult AddCampaign::handle(){
+	Date startDate = getInputDate("Insert the start date (DD/MM/YYYY)");
+	Date endDate = getInputDate("Insert the end date (DD/MM/YYYY)");
+	double discount;
+	getInputDouble(discount, 0, 1, "Insert the Promotional Campaign discount value");
+	PromotionalCampaign promo(startDate,endDate,discount);
+	try{
+		pool.addPromotionalCampaign(promo);
+		pool.writePromotions();
+		return CONTINUE;
+	}catch(OverlapingCampaign &e){
+		cout << "There's already one Promotional Campaign occurring\n";
+		return CONTINUE;
+	}
+
 }

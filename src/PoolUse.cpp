@@ -32,7 +32,7 @@ LessonUse::LessonUse(Date d, Time t, GivenLesson * l, double discount) :
 		PoolUse(d, t, Lesson::duration) {
 	this->discount = discount;
 	lesson = l;
-	currentCost = lessonCost*discount;///se nao esta a haver nehuma campanha promocional o desconto vai ser de 1, ou seja, nao ha desconto
+	currentCost = lessonCost - (lessonCost*discount);///se nao esta a haver nehuma campanha promocional o desconto vai ser de 0, ou seja, nao ha desconto
 }
 
 GivenLesson * LessonUse::getLesson() const {
@@ -50,7 +50,7 @@ FreeSwimUse::FreeSwimUse(Date d, Time t, unsigned int dur, double discount) :
 	this->discount = discount;
 	float cost = (getDuration() % 30) != 0 ? getDuration() / 30 + 1 : getDuration() / 30;
 	cost *= cost30;
-	currentCost = cost*discount;///se nao esta a haver nehuma campanha promocional o desconto vai ser de 1, ou seja, nao ha desconto
+	currentCost = cost - (cost*discount);///se nao esta a haver nehuma campanha promocional o desconto vai ser de 0, ou seja, nao ha desconto
 }
 
 float FreeSwimUse::getCost() const {

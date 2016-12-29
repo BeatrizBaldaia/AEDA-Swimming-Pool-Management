@@ -12,6 +12,8 @@ using namespace std;
 
 void getInputInt(int &answer, int min, int max, string msg);///testa input de inteiros
 
+void getInputDouble(double &answer, double min, double max, string msg);///testa input de doubles
+
 Date getInputDate(string msg);///testa input de datas
 
 Time getInputTime(string msg);///testa input de tempos

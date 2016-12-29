@@ -31,6 +31,36 @@ void getInputInt(int &answer, int min, int max, string msg) {
 	}
 }
 
+void getInputDouble(double &answer, double min, double max, string msg) {
+	while (true) { ///sai do ciclo quando o input é aceite; passa o input válido por referência a partir de "answer"
+		try {
+			cout << endl << msg << ": ";
+			int tmp;
+			cin >> tmp;
+			if (cin.eof()) {
+				cin.clear();
+				throw(InvalidInputInt(answer, min, max));
+			}
+
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(10000, '\n');
+
+				throw(InvalidInputInt(answer, min, max));
+			} else if (min <= tmp && tmp <= max) {
+				answer = tmp;
+				cin.ignore(10000, '\n');
+				return;
+			} else {
+				throw(InvalidInputInt(answer, min, max));
+			}
+		} catch (InvalidInputInt &e) {
+			e.printError();
+		}
+	}
+}
+
+
 Date getInputDate(string msg) {
 	while (true) {
 		try {

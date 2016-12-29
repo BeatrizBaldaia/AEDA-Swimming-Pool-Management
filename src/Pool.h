@@ -108,6 +108,8 @@ public:
 	bool isCustomerInactive(Customer * c);///ver se cliente e inativo
 	void activateCustomer(Customer * c);///torna cliente inativo em ativo
 	hashCustomer getInactiveCustomer() const;
+	void eraseInactive(Customer * customer);
+	void insertInactive(Customer * customer);
 
 	vector<Item> getProviderItems();
 

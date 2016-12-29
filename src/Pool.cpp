@@ -318,6 +318,14 @@ hashCustomer Pool::getInactiveCustomer() const{
 	return inactiveCustomers;
 }
 
+void Pool::eraseInactive(Customer * customer){
+	inactiveCustomers.erase(customer);
+}
+
+void Pool::insertInactive(Customer * customer){
+	inactiveCustomers.insert(customer);
+}
+
 void Pool::writeShop(){
 	ofstream shopFile(fileNames[5]);
 	shopFile << shop->getName() << endl << shop->getNumberOfItems();
@@ -328,6 +336,7 @@ void Pool::writeShop(){
 		it.advance();
 	}
 }
+
 
 vector<PromotionalCampaign> Pool::getPromotionalCampaign() const
 {
