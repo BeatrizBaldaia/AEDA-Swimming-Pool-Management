@@ -1186,7 +1186,6 @@ MenuResult UpdateCustomersInfo::handle(){
 			PromotionalCampaign promo = pool.getCurrentPromotion();
 			cout << "One Promotional Campaign has started on " << promo.getBeginDate() << " and will end on " << promo.getEndDate() << ".\nAll lessons and free uses have a discount of " << promo.getDiscount() << endl << endl;
 			cout << "\nList of the current inactive Customers:\n\n";
-			//TODO: percorrer a tabela de dispersao
 			hashCustomer tab = pool.getInactiveCustomer();
 			hashCustomer::const_iterator it = tab.begin();
 			int i = 1;

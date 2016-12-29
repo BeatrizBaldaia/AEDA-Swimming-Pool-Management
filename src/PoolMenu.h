@@ -243,6 +243,8 @@ private:
  * trata da venda de produtos aos utentes e a compra de produtos ao fornecedor
  * */
 
+//TODO: guardar as compras ja feitas num ficheiro e num vetor
+
 class ShopSellItems: public MenuHandler{///vender produto aos utentes
 public:
 	ShopSellItems(Pool & pool);
