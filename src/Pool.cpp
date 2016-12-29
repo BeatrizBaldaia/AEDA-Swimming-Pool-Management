@@ -8,26 +8,29 @@
 
 int Pool::inactivityPeriod = 30;
 
-PromotionalCampaign::PromotionalCampaign(Date beginDate, Date endDate, int discount) :
+PromotionalCampaign::PromotionalCampaign(Date beginDate, Date endDate, double discount) :
 		beginDate(beginDate), endDate(endDate), discount(discount)
 {
 }
 
-Date PromotionalCampaign::getBeginDate()
+Date PromotionalCampaign::getBeginDate() const
 {
 	return beginDate;
 }
 
-Date PromotionalCampaign::getEndDate()
+Date PromotionalCampaign::getEndDate() const
 {
 	return endDate;
 }
 
-int PromotionalCampaign::getDiscount()
+double PromotionalCampaign::getDiscount() const
 {
 	return discount;
 }
 
+bool PromotionalCampaign::operator<(PromotionalCampaign & promCamp) const{
+	return beginDate > promCamp.getBeginDate();
+}
 //////////////////////////////////////////////////////////////////////
 
 /*
@@ -237,6 +240,7 @@ void Pool::writeCustomers() {
 		customersFile << i->getID() << ";";
 		customersFile << i->getName() << ";";
 		customersFile << i->getBirthDate() << ";";
+		customersFile << i->getCity() << ";" << i->getNumber() << ";" << i->getCity() << ";" << i->getPostalCode() << ";";
 		vector<PoolUse *> FreeSwimUses;
 		for (PoolUse * j : i->getPoolUses()) {
 			if (j->getLesson() == NULL) {
@@ -247,7 +251,7 @@ void Pool::writeCustomers() {
 		for (PoolUse * j : FreeSwimUses) {
 			customersFile << j->getDate() << ";";
 			customersFile << j->getTime() << ";";
-			customersFile << j->getDuration() << endl;
+			customersFile << j->getDuration() << ";" << j->getDiscount() << endl;
 		}
 	}
 	customersFile.close();
@@ -278,7 +282,7 @@ void Pool::writeSchedule() {
 	scheduleFile.close();
 }
 
-void Pool::testInactiveCustomers() {
+void Pool::testInactiveCustomers() {///percorre todos os utilizador e ve quais sao os inativos (colocando-os na tabela de dispersao)
 	Date d = getCurrentDate();
 	for (Customer * c : customers) {
 		if (c->getPoolUses().size() == 0){
@@ -325,16 +329,16 @@ void Pool::writeShop(){
 	}
 }
 
-vector<PromotionalCampaign*> Pool::getPromotionalCampaign() const
+vector<PromotionalCampaign> Pool::getPromotionalCampaign() const
 {
 	return promotions;
 }
 
-void Pool::addPromotionalCampaign(PromotionalCampaign* campaign)
+void Pool::addPromotionalCampaign(PromotionalCampaign campaign)
 {
-	for (PromotionalCampaign * p : promotions)
+	for (const PromotionalCampaign & p : promotions)
 	{
-		if(!(((p->getBeginDate() - campaign->getBeginDate())*(p->getBeginDate() - campaign->getEndDate()) > 0) && (p->getEndDate() - campaign->getBeginDate())*(p->getEndDate() - campaign->getEndDate()) > 0))
+		if((campaign.getBeginDate() >= p.getBeginDate() && campaign.getBeginDate() <= p.getEndDate()) || (campaign.getEndDate() >= p.getBeginDate() && campaign.getEndDate() <= p.getEndDate()))
 		{
 			throw OverlapingCampaign();
 		}
@@ -365,12 +369,24 @@ void Pool::writeOtherPools(){
 		queue.pop();
 	}
 }
+
+void Pool::writePromotions(){
+	ofstream promotionsFile(fileNames[8]); //nº GivenLessons \n ID de GivenLessons;ID do professor;modalidade;dia da semana da GivenLesson; hora da aula;data da aula;ID dos clientes separados por um espaço
+	promotionsFile << promotions.size() << endl;
+		for (const PromotionalCampaign & i : promotions) {
+			promotionsFile << i.getBeginDate() << ";";
+			promotionsFile << i.getEndDate()<< ";";
+			promotionsFile << i.getDiscount() << endl;
+		}
+		promotionsFile.close();
+
+}
 void Pool::addTeacher(Teacher* t) {
 	teachers.push_back(t);
 	distributeLessons();
 }
 
-void Pool::attendLesson(Lesson lesson, Customer* customer, Date date) {
+void Pool::attendLesson(Lesson lesson, Customer* customer, Date date, double discount) {
 	if (lesson.getDayOfWeek() != date.getDayOfWeek()) {
 		throw NotSameDayAsDate();
 	}
@@ -387,7 +403,7 @@ void Pool::attendLesson(Lesson lesson, Customer* customer, Date date) {
 		}
 	}
 	givenLesson->addCustomer(customer);
-	customer->attendLesson(givenLesson, date, lesson.getTime());
+	customer->attendLesson(givenLesson, date, lesson.getTime(), discount);
 }
 
 GivenLesson* Pool::getGivenLesson(Lesson lesson, Date date) {
@@ -402,9 +418,8 @@ GivenLesson* Pool::getGivenLesson(Lesson lesson, Date date) {
 	throw NonExistentGivenLesson(lesson, date);
 }
 
-void Pool::addFreeSwim(Customer* customer, Date date, Time time,
-		unsigned int duration) {
-	PoolUse * poolUse = new FreeSwimUse(date, time, duration);
+void Pool::addFreeSwim(Customer* customer, Date date, Time time, unsigned int duration, double discount) {
+	PoolUse * poolUse = new FreeSwimUse(date, time, duration, discount);
 	customer->addUse(poolUse);
 	freeUses.push_back(poolUse);
 }
@@ -514,7 +529,17 @@ void Pool::loadCustomers() {
 		Date birthDate;
 		customersFile >> birthDate;
 		customersFile.ignore();
-		Customer * c = new Customer(name, birthDate, ID);
+		string street;
+		getline(customersFile, street, ';');
+		int number;
+		customersFile >> number;
+		customersFile.ignore();
+		string city;
+		getline(customersFile, city, ';');
+		string postCode;
+		getline(customersFile, city, ';');
+		HomeAddress address(city, street, number, postCode);
+		Customer * c = new Customer(name, birthDate, ID, address);
 		unsigned int m;
 		customersFile >> m;
 		for (size_t j = 0; j < m; j++) {
@@ -526,7 +551,10 @@ void Pool::loadCustomers() {
 			customersFile.ignore();
 			unsigned int duration;
 			customersFile >> duration;
-			PoolUse * p = new FreeSwimUse(useDate, useTime, duration);
+			customersFile.ignore();
+			double discount;
+			customersFile >> discount;
+			PoolUse * p = new FreeSwimUse(useDate, useTime, duration, discount);
 			c->addUse(p);
 			freeUses.push_back(p);
 		}
@@ -547,7 +575,17 @@ void Pool::loadTeachers() {
 		Date birthDate;
 		teachersFile >> birthDate;
 		teachersFile.ignore();
-		Teacher * t = new Teacher(name, birthDate, ID);
+		string street;
+		getline(teachersFile, street, ';');
+		int number;
+		teachersFile >> number;
+		teachersFile.ignore();
+		string city;
+		getline(teachersFile, city, ';');
+		string postCode;
+		getline(teachersFile, city, ';');
+		HomeAddress address(city, street, number, postCode);
+		Teacher * t = new Teacher(name, birthDate, ID, address);
 		teachers.push_back(t);
 	}
 }
@@ -591,6 +629,9 @@ void Pool::loadGivenLessons() {
 		givenLessonsFile >> teacherID;
 		Teacher * t = getTeacher(teacherID);
 		givenLessonsFile.ignore();
+		double discount;
+		givenLessonsFile >> discount;
+		givenLessonsFile.ignore();
 		unsigned int modValue;
 		givenLessonsFile >> modValue;
 		Modality mod = static_cast<Modality>(modValue);
@@ -620,7 +661,7 @@ void Pool::loadGivenLessons() {
 //			cout << customerID << endl;
 			Customer * customer = getCustomer(customerID);
 			givenLesson->addCustomer(customer);
-			PoolUse * poolUse = new LessonUse(date, time, givenLesson);
+			PoolUse * poolUse = new LessonUse(date, time, givenLesson, discount);
 			customer->addUse(poolUse);
 		}
 	}
@@ -680,6 +721,34 @@ void Pool::loadOtherPools(){
 	}
 }
 
+void Pool::loadPromotions(){
+	ifstream promotionsFile(fileNames[8]);
+		unsigned int n;
+		promotionsFile >> n;
+		for (size_t i = 0; i < n; i++) {
+			Date dateBegin, dateEnd;
+			promotionsFile >> dateBegin;
+			promotionsFile.ignore();
+			promotionsFile >> dateEnd;
+			promotionsFile.ignore();
+			int zero;
+			promotionsFile >> zero;
+			promotionsFile.ignore();
+			int discount_aux;
+			promotionsFile >> discount_aux;
+			int quotient;
+			double discount = (discount_aux % 10)*0.1;
+			quotient = discount_aux/10;
+			while(quotient != 0){
+				discount = discount*0.1 + (quotient%10)*0.1;
+				quotient = quotient / 10;
+			}
+			PromotionalCampaign promCamp(dateBegin,dateEnd,discount);
+			promotions.push_back(promCamp);
+		}
+		sort(promotions.begin(), promotions.end());
+}
+
 void Pool::addCustomer(Customer* c) {
 	customers.push_back(c);
 }
@@ -692,6 +761,7 @@ void Pool::write() {
 	writeGivenLessons();
 	writeShop();
 	writeOtherPools();
+	writePromotions();
 }
 
 vector<GivenLesson *> Pool::getGivenLessons() {
@@ -757,6 +827,7 @@ void Pool::load() {
 	testInactiveCustomers();
 	loadShop();
 	loadOtherPools();
+	loadPromotions();
 }
 
 void Pool::removeLesson(unsigned int position) {
@@ -838,6 +909,21 @@ ptrOtherPool Pool::getNextPool(Modality modality){
 		queue.pop();
 	}
 	throw(NoModality(modality));
+}
+
+void Pool::addCampaign(PromotionalCampaign campaign){
+	promotions.push_back(campaign);
+}
+
+PromotionalCampaign Pool::getCurrentPromotion() const{
+	Date day = getCurrentDate();
+	for (const PromotionalCampaign & x : promotions){
+		if((day > x.getBeginDate()) && (day < x.getEndDate())){
+			PromotionalCampaign result = x;
+			return result;
+		}
+	}
+	throw(NoCurrentCampaign());
 }
 
 NotSameDayAsDate::NotSameDayAsDate() {

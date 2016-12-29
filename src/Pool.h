@@ -38,12 +38,13 @@ class PromotionalCampaign {
 private:
 	Date beginDate;
 	Date endDate;
-	int discount;
+	double discount;
 public:
-	PromotionalCampaign(Date beginDate, Date endDate, int discount);
-	Date getBeginDate();
-	Date getEndDate();
-	int getDiscount();
+	PromotionalCampaign(Date beginDate, Date endDate, double discount);
+	Date getBeginDate() const;
+	Date getEndDate() const;
+	double getDiscount() const;
+	bool operator<(PromotionalCampaign & promCamp) const;
 };
 
 class OtherPool{
@@ -98,9 +99,11 @@ public:
 	string getName() const; ///dá nome da piscina
 	vector<Lesson> getSchedule() const;
 	vector<Teacher *> getTeachers() const;
+	void addCampaign(PromotionalCampaign campaign);
+	PromotionalCampaign getCurrentPromotion() const;
 
-	vector<PromotionalCampaign*> getPromotionalCampaign() const;
-	void addPromotionalCampaign(PromotionalCampaign * campaign);///retorna exceção se houver algum overlap de campanhas promocionais
+	vector<PromotionalCampaign> getPromotionalCampaign() const;
+	void addPromotionalCampaign(PromotionalCampaign campaign);///retorna exceção se houver algum overlap de campanhas promocionais
 
 	bool isCustomerInactive(Customer * c);///ver se cliente e inativo
 	void activateCustomer(Customer * c);///torna cliente inativo em ativo
@@ -118,9 +121,8 @@ public:
 	void setFileNames(vector<string> v);
 	void addFreeUse(PoolUse * freeUse);
 
-	void attendLesson(Lesson lesson, Customer * customer, Date date);
-	void addFreeSwim(Customer * customer, Date date, Time time,
-			unsigned int duration);
+	void attendLesson(Lesson lesson, Customer * customer, Date date, double discount);
+	void addFreeSwim(Customer * customer, Date date, Time time,unsigned int duration, double discount);
 
 	void removeCustomer(unsigned int ID);
 	void removeTeacher(unsigned int ID);
@@ -141,6 +143,7 @@ public:
 	void testInactiveCustomers();
 	void loadShop();
 	void loadOtherPools();
+	void loadPromotions();
 
 	void write();///escreve para os ficheiros de texto
 	void writePoolInfo();
@@ -150,9 +153,9 @@ public:
 	void writeGivenLessons();
 	void writeShop();
 	void writeOtherPools();
+	void writePromotions();
 private:
 	vector<Customer *> customers;
-
 	vector<Teacher *> teachers; ///Quando Pool é criado os vetores devem ser logo ordenados usando as funções sort;
 	vector<Lesson> schedule;
 	vector<GivenLesson *> givenLessons;
@@ -167,13 +170,16 @@ private:
 	// 5 shop
 	// 6 provider
 	// 7 otherpools
+	// 8 promotions
 
 	Shop * shop;///apontador para a loja da piscina
 	hashCustomer inactiveCustomers;///tabela de dispersao com os clientes inativos
 	priority_queue<ptrOtherPool> otherPools;///fila de prioridade com as piscinas nas redondezas
+
 	string name;///nome da nossa piscina
 	unsigned int maxCustomers;///numero maximo de utentes que podem estar na piscina
-	vector<PromotionalCampaign*> promotions;
+
+	vector<PromotionalCampaign> promotions;
 };
 
 class NoMoreLessonsInDay {

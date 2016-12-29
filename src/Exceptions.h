@@ -105,4 +105,9 @@ public:
 private:
 	Modality modality;
 };
+
+class NoCurrentCampaign{
+public:
+	NoCurrentCampaign(){}
+};
 #endif /* SRC_EXCEPTIONS_H_ */

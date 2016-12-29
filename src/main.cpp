@@ -20,6 +20,7 @@ int main() {
 	fileNames.push_back("shop.txt");
 	fileNames.push_back("provider.txt");
 	fileNames.push_back("otherpools.txt");
+	fileNames.push_back("promotions.txt");
 
 	Pool pool;
 

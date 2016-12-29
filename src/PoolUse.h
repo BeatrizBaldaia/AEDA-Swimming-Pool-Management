@@ -12,6 +12,7 @@ public:
 	unsigned int getDuration() const;
 	virtual float getCost() const = 0;
 	virtual GivenLesson * getLesson() const = 0;
+	virtual double getDiscount() const = 0;
 
 private:
 	Date date;
@@ -21,21 +22,27 @@ private:
 
 class FreeSwimUse: public PoolUse {
 public:
-	FreeSwimUse(Date d, Time t, unsigned int dur);///retorna duração do uso livre
+	FreeSwimUse(Date d, Time t, unsigned int dur, double discount);///retorna duração do uso livre
 	float getCost() const;///retorna preço do uso livre
 	GivenLesson * getLesson() const;
+	virtual double getDiscount() const{return discount;}
 private:
+	double discount;
 	static float cost30;
+	float currentCost;
 };
 
 class LessonUse: public PoolUse {
 public:
-	LessonUse(Date d, Time t, GivenLesson *l); ///duração sempre 1 hora
+	LessonUse(Date d, Time t, GivenLesson *l, double discount); ///duração sempre 1 hora
 	float getCost() const;///retorna preço da aula dada (estático)
 	GivenLesson * getLesson() const;
-private:
-	GivenLesson * lesson;
+	virtual double getDiscount() const{return discount;}
 
+private:
+	double discount;
+	GivenLesson * lesson;
+	float currentCost;
 	static float lessonCost;
 };
 

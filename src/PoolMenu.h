@@ -295,5 +295,32 @@ private:
 	Pool & pool;
 };
 
+/*
+ * Promotional Campaign Manage
+ */
+
+class ViewCurrentCampaign: public MenuHandler{
+public:
+	ViewCurrentCampaign(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class AddCampaign: public MenuHandler{
+public:
+	AddCampaign(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
+
+class UpdateCustomersInfo: public MenuHandler{
+public:
+	UpdateCustomersInfo(Pool & pool);
+	MenuResult handle();
+private:
+	Pool & pool;
+};
 #endif /* SRC_POOLMENU_H_ */
 

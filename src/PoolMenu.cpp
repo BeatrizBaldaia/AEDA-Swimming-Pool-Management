@@ -29,7 +29,25 @@ MenuResult AddCustomer::handle() {
 	cout << "Insert customer's name: ";
 	getline(cin, name);
 	Date birthdate = getInputDate("Insert customer's birthday (DD/MM/YYYY)");
-	Customer * c = new Customer(name, birthdate);
+	cout <<"\nInsert customer's address:\n";
+	cout << "=> City: ";
+	string city;
+	getline(cin, city);
+	cout << "=> Street: ";
+	string street;
+	getline(cin, street);
+	cout << "=> Number of the door: ";
+	int number;
+	cin >> number;
+	cout << "Postal Code: ";
+	string code;
+	getline(cin, code);
+	HomeAddress address(city, street, number, code);
+	Customer * c = new Customer(name, birthdate, address);
+	c->setCity(city);
+	c->setStreet(street);
+	c->setNumber(number);
+	c->setPostalCode(code);
 	pool.addCustomer(c);
 	cout << endl << name << " created with ID " << c->getID() << "! \n";
 	pool.write();
@@ -312,9 +330,22 @@ MenuResult AddTeacher::handle() {
 	string teacherName;
 	cout << "\nInsert Teacher's name: ";
 	getline(cin, teacherName);
-
 	Date birthdate = getInputDate("Insert teacher's birthday (DD/MM/YYYY)");
-	Teacher * t = new Teacher(teacherName, birthdate);
+	cout <<"\nInsert customer's address:\n";
+	cout << "=> City: ";
+	string city;
+	getline(cin, city);
+	cout << "=> Street: ";
+	string street;
+	getline(cin, street);
+	cout << "=> Number of the door: ";
+	int number;
+	cin >> number;
+	cout << "Postal Code: ";
+	string code;
+	getline(cin, code);
+	HomeAddress address(city, street, number, code);
+	Teacher * t = new Teacher(teacherName, birthdate, address);
 
 	pool.addTeacher(t);
 	cout << endl << teacherName << " created!\n";
@@ -453,12 +484,26 @@ MenuResult AttendLesson::handle() {
 	if (choice == 0) {
 		return CONTINUE;
 	}
-	pool.attendLesson(lessons[choice - 1], c, getCurrentDate());
-	if(pool.isCustomerInactive(c)){
-		pool.activateCustomer(c);
+	double discount = 1;
+	try{
+		PromotionalCampaign promCamp = pool.getCurrentPromotion();
+		discount = promCamp.getDiscount();
+		cout <<"\nWe are in the middle of a promotional campaign. All lessons and free uses have a discount of " << promCamp.getDiscount() << ".\n";
+		pool.attendLesson(lessons[choice - 1], c, getCurrentDate(), discount);
+		if(pool.isCustomerInactive(c)){
+			pool.activateCustomer(c);
+		}
+		pool.write();
+		return CONTINUE;
+	}catch (NoCurrentCampaign & e){
+		cout << "\nNo campaign is currently running.\n";
+		pool.attendLesson(lessons[choice - 1], c, getCurrentDate(), discount);
+		if(pool.isCustomerInactive(c)){
+			pool.activateCustomer(c);
+		}
+		pool.write();
+		return CONTINUE;
 	}
-	pool.write();
-	return CONTINUE;
 }
 
 AttendToSpecificModality::AttendToSpecificModality(Pool & pool): pool(pool){
@@ -522,9 +567,25 @@ MenuResult AttendToSpecificModality::handle() {
 			++today;
 			diff--;
 		}
-		pool.attendLesson(lessons[choice], c, today);
-		if(pool.isCustomerInactive(c)){
-			pool.activateCustomer(c);
+		double discount = 1;
+		try{///caso estejamos numa campanha promocional
+			PromotionalCampaign promCamp = pool.getCurrentPromotion();
+			discount = promCamp.getDiscount();
+			cout <<"\nWe are in the middle of a promotional campaign. All lessons and free uses have a discount of " << promCamp.getDiscount() << ".\n";
+			pool.attendLesson(lessons[choice], c, today, discount);
+			if(pool.isCustomerInactive(c)){
+				pool.activateCustomer(c);
+			}
+			pool.write();
+			return CONTINUE;
+		}catch (NoCurrentCampaign & e){///nao esta a ocorrer nenhuma campanha promocional
+			cout << "\nNo campaign is currently running.\n";
+			pool.attendLesson(lessons[choice], c, today, discount);
+			if(pool.isCustomerInactive(c)){
+				pool.activateCustomer(c);
+			}
+			pool.write();
+			return CONTINUE;
 		}
 	}catch(InvalidModality &x){
 		x.printError();
@@ -740,16 +801,39 @@ MenuResult FreeSwimming::handle() {
 		}
 		break;
 	}
-
-	FreeSwimUse * f = new FreeSwimUse(getCurrentDate(), getCurrentTime(),
-			duration);
-	pool.addFreeUse(f);
-	c->addUse(f);
-	if(pool.isCustomerInactive(c)){
-		pool.activateCustomer(c);
-	}
-	pool.write();
-	return CONTINUE;
+	double discount = 1;
+		try{
+			PromotionalCampaign promCamp = pool.getCurrentPromotion();
+			discount = promCamp.getDiscount();
+			cout <<"\nWe are in the middle of a promotional campaign. All lessons and free uses have a discount of " << promCamp.getDiscount() << ".\n";
+			FreeSwimUse * f = new FreeSwimUse(getCurrentDate(), getCurrentTime(), duration, discount);
+			pool.addFreeUse(f);
+			c->addUse(f);
+			if(pool.isCustomerInactive(c)){
+				pool.activateCustomer(c);
+			}
+			pool.write();
+			return CONTINUE;
+			if(pool.isCustomerInactive(c)){
+				pool.activateCustomer(c);
+			}
+			pool.write();
+			return CONTINUE;
+		}catch (NoCurrentCampaign & e){
+			cout << "\nNo campaign is currently running.\n";
+			FreeSwimUse * f = new FreeSwimUse(getCurrentDate(), getCurrentTime(), duration, discount);
+			pool.addFreeUse(f);
+			c->addUse(f);
+			if(pool.isCustomerInactive(c)){
+				pool.activateCustomer(c);
+			}
+			pool.write();
+			return CONTINUE;if(pool.isCustomerInactive(c)){
+				pool.activateCustomer(c);
+			}
+			pool.write();
+			return CONTINUE;
+		}
 }
 
 /* VIEW CUSTOMERS */
@@ -1072,4 +1156,40 @@ MenuResult AddModalityToPool::handle(){
 	}
 	pool.writeOtherPools();
 	return CONTINUE;
+}
+
+/* PROMOTIONAL CAMPAIGN */
+
+
+ViewCurrentCampaign::ViewCurrentCampaign(Pool & pool): pool(pool){
+}
+
+MenuResult ViewCurrentCampaign::handle(){
+	Date day = getCurrentDate();
+	try{
+		PromotionalCampaign promo = pool.getCurrentPromotion();
+		cout << "One Promotional Campaign has started on " << promo.getBeginDate() << " and will end on " << promo.getEndDate() << ".\nAll lessons and free uses have a discount of " << promo.getDiscount() << endl << endl;
+		return CONTINUE;
+	}catch(NoCurrentCampaign &e){
+		cout << "\nNo campaign is currently running.\n";
+		return CONTINUE;
+	}
+}
+
+UpdateCustomersInfo::UpdateCustomersInfo(Pool & pool): pool(pool){
+
+}
+
+MenuResult UpdateCustomersInfo::handle(){
+	Date day = getCurrentDate();
+		try{
+			PromotionalCampaign promo = pool.getCurrentPromotion();
+			cout << "One Promotional Campaign has started on " << promo.getBeginDate() << " and will end on " << promo.getEndDate() << ".\nAll lessons and free uses have a discount of " << promo.getDiscount() << endl << endl;
+			cout << "\nList of the current inactive Customers:\n\n";
+			//TODO: percorrer a tabela de dispersao
+
+		}catch(NoCurrentCampaign &e){
+			cout << "\nNo campaign is currently running, so  there's no need to update inactive customers' address.\n";
+			return CONTINUE;
+		}
 }
