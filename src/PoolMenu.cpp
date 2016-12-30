@@ -1180,20 +1180,28 @@ UpdateCustomersInfo::UpdateCustomersInfo(Pool & pool): pool(pool){
 
 }
 
-MenuResult UpdateCustomersInfo::handle(){
+MenuResult UpdateCustomersInfo::handle() {
 	Date day = getCurrentDate();
-		try{
-			PromotionalCampaign promo = pool.getCurrentPromotion();
-			cout << "One Promotional Campaign has started on " << promo.getBeginDate() << " and will end on " << promo.getEndDate() << ".\nAll lessons and free uses have a discount of " << promo.getDiscount() << endl << endl;
-			cout << "\nList of the current inactive Customers:\n\n";
-			hashCustomer tab = pool.getInactiveCustomer();
-			hashCustomer::const_iterator it = tab.begin();
-			int i = 1;
-			for(;it !=  tab.end(); it++){
-				cout << i << " - " << (*it)->getName() << " : " << (*it)->getStreet() << ", " << (*it)->getNumber() << ", " << (*it)->getPostalCode() << ", " << (*it)->getCity() << endl;
-				int answer;
-				getInputInt(answer, 0, 1, "Do you want to update the customer's address?\n\n---------   ----------\n|0 -> No|   |1 -> Yes|\n---------   ----------\n");
-				if (answer == 1) {
+	try {
+		PromotionalCampaign promo = pool.getCurrentPromotion();
+		cout << "One Promotional Campaign has started on "
+				<< promo.getBeginDate() << " and will end on "
+				<< promo.getEndDate()
+				<< ".\nAll lessons and free uses have a discount of "
+				<< promo.getDiscount() << endl << endl;
+		cout << "\nList of the current inactive Customers:\n\n";
+		hashCustomer tab = pool.getInactiveCustomer();
+		hashCustomer::const_iterator it = tab.begin();
+		int i = 1;
+		for (; it != tab.end(); it++) {
+			cout << i << " - " << (*it)->getName() << " : "
+					<< (*it)->getStreet() << ", " << (*it)->getNumber() << ", "
+					<< (*it)->getPostalCode() << ", " << (*it)->getCity()
+					<< endl;
+			int answer;
+			getInputInt(answer, 0, 1,
+					"Do you want to update the customer's address?\n\n---------   ----------\n|0 -> No|   |1 -> Yes|\n---------   ----------\n");
+			if (answer == 1) {
 				pool.eraseInactive((*it));
 				cout << "=> City: ";
 				string city;
@@ -1213,17 +1221,18 @@ MenuResult UpdateCustomersInfo::handle(){
 				(*it)->setPostalCode(code);
 				pool.insertInactive((*it));
 			}
-				cout << endl <<endl;
-				i++;
-			}
-			cout << "All inactive customers were updated!\n\n";
-			pool.writeCustomers();
-			return CONTINUE;
-
-		}catch(NoCurrentCampaign &e){
-			cout << "\nNo campaign is currently running, so  there's no need to update inactive customers' address.\n";
-			return CONTINUE;
+			cout << endl << endl;
+			i++;
 		}
+		cout << "All inactive customers were updated!\n\n";
+		pool.writeCustomers();
+		return CONTINUE;
+
+	} catch (NoCurrentCampaign &e) {
+		cout
+				<< "\nNo campaign is currently running, so  there's no need to update inactive customers' address.\n";
+		return CONTINUE;
+	}
 }
 
 AddCampaign::AddCampaign(Pool & pool): pool(pool){
