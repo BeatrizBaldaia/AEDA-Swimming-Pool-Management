@@ -39,7 +39,8 @@ MenuResult AddCustomer::handle() {
 	cout << "=> Number of the door: ";
 	int number;
 	cin >> number;
-	cout << "Postal Code: ";
+	cin.ignore();
+	cout << "=> Postal Code: ";
 	string code;
 	getline(cin, code);
 	HomeAddress address(city, street, number, code);
@@ -341,7 +342,8 @@ MenuResult AddTeacher::handle() {
 	cout << "=> Number of the door: ";
 	int number;
 	cin >> number;
-	cout << "Postal Code: ";
+	cin.ignore();
+	cout << "=> Postal Code: ";
 	string code;
 	getline(cin, code);
 	HomeAddress address(city, street, number, code);

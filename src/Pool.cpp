@@ -29,7 +29,7 @@ double PromotionalCampaign::getDiscount() const
 }
 
 bool PromotionalCampaign::operator<(PromotionalCampaign & promCamp) const{
-	return beginDate > promCamp.getBeginDate();
+	return beginDate < promCamp.getBeginDate();
 }
 //////////////////////////////////////////////////////////////////////
 
@@ -240,7 +240,7 @@ void Pool::writeCustomers() {
 		customersFile << i->getID() << ";";
 		customersFile << i->getName() << ";";
 		customersFile << i->getBirthDate() << ";";
-		customersFile << i->getCity() << ";" << i->getNumber() << ";" << i->getCity() << ";" << i->getPostalCode() << ";";
+		customersFile << i->getStreet() << ";" << i->getNumber() << ";" << i->getCity() << ";" << i->getPostalCode() << ";";
 		vector<PoolUse *> FreeSwimUses;
 		for (PoolUse * j : i->getPoolUses()) {
 			if (j->getLesson() == NULL) {
@@ -263,7 +263,11 @@ void Pool::writeTeachers() {
 	for (Teacher * i : teachers) {
 		teachersFile << i->getID() << ";";
 		teachersFile << i->getName() << ";";
-		teachersFile << i->getBirthDate() << endl;
+		teachersFile << i->getBirthDate() << ";";
+		teachersFile << i->getStreet() << ";";
+		teachersFile << i->getNumber() << ";";
+		teachersFile << i->getCity() << ";";
+		teachersFile << i->getPostalCode() << endl;
 	}
 	teachersFile.close();
 }
@@ -372,15 +376,13 @@ void Pool::writeOtherPools(){
 			}
 		}
 		n--;
-		if(n == 0){
-			otherPoolsFile << '\n';
-		}
+		otherPoolsFile << '\n';
 		queue.pop();
 	}
 }
 
 void Pool::writePromotions(){
-	ofstream promotionsFile(fileNames[8]); //nº GivenLessons \n ID de GivenLessons;ID do professor;modalidade;dia da semana da GivenLesson; hora da aula;data da aula;ID dos clientes separados por um espaço
+	ofstream promotionsFile(fileNames[8]);
 	promotionsFile << promotions.size() << endl;
 		for (const PromotionalCampaign & i : promotions) {
 			promotionsFile << i.getBeginDate() << ";";
@@ -388,8 +390,8 @@ void Pool::writePromotions(){
 			promotionsFile << i.getDiscount() << endl;
 		}
 		promotionsFile.close();
-
 }
+
 void Pool::addTeacher(Teacher* t) {
 	teachers.push_back(t);
 	distributeLessons();
