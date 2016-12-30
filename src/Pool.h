@@ -18,7 +18,8 @@ struct hCustomer {
 
 	int operator()(Customer* c1) const{
 		int result;
-		for(int i; i < c1->getName().size(); i++){
+		string s = c1->getName();
+		for(int i; i < s.size(); i++){
 			result+= c1->getName()[i]*37;
 		}
 		return result;
