@@ -1192,24 +1192,27 @@ MenuResult UpdateCustomersInfo::handle(){
 			for(;it !=  tab.end(); it++){
 				cout << i << " - " << (*it)->getName() << " : " << (*it)->getStreet() << ", " << (*it)->getNumber() << ", " << (*it)->getPostalCode() << ", " << (*it)->getCity() << endl;
 				int answer;
-				getInputInt(answer, 0, 1, "Do you want to update the customer's address?\n\n---------   ----------\n|0 -> No|   |1 -> Yes|\n---------   ----------\n")
-				if(answer == 1){
-					pool.eraseInactive((*it));
-					cout << "=> City: ";
-					string city;
-					getline(cin, city);
-					cout << "=> Street: ";
-					string street;
-					getline(cin, street);
-					cout << "=> Number of the door: ";
-					int number;
-					cin >> number;
-					cout << "Postal Code: ";
-					string code;
-					getline(cin, code);
-					(*it)->setCity(city); (*it)->setStreet(street); (*it)->setNumber(number); (*it)->setPostalCode(code);
-					pool.insertInactive((*it));
-				}
+				getInputInt(answer, 0, 1, "Do you want to update the customer's address?\n\n---------   ----------\n|0 -> No|   |1 -> Yes|\n---------   ----------\n");
+				if (answer == 1) {
+				pool.eraseInactive((*it));
+				cout << "=> City: ";
+				string city;
+				getline(cin, city);
+				cout << "=> Street: ";
+				string street;
+				getline(cin, street);
+				cout << "=> Number of the door: ";
+				int number;
+				cin >> number;
+				cout << "Postal Code: ";
+				string code;
+				getline(cin, code);
+				(*it)->setCity(city);
+				(*it)->setStreet(street);
+				(*it)->setNumber(number);
+				(*it)->setPostalCode(code);
+				pool.insertInactive((*it));
+			}
 				cout << endl <<endl;
 				i++;
 			}

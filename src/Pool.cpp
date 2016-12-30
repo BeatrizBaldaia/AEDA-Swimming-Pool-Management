@@ -546,7 +546,7 @@ void Pool::loadCustomers() {
 		string city;
 		getline(customersFile, city, ';');
 		string postCode;
-		getline(customersFile, city, ';');
+		getline(customersFile, postCode, ';');
 		HomeAddress address(city, street, number, postCode);
 		Customer * c = new Customer(name, birthDate, ID, address);
 		unsigned int m;
@@ -592,7 +592,7 @@ void Pool::loadTeachers() {
 		string city;
 		getline(teachersFile, city, ';');
 		string postCode;
-		getline(teachersFile, city, ';');
+		getline(teachersFile, postCode);
 		HomeAddress address(city, street, number, postCode);
 		Teacher * t = new Teacher(name, birthDate, ID, address);
 		teachers.push_back(t);
@@ -725,6 +725,7 @@ void Pool::loadOtherPools(){
 			}
 			m.push_back(lesson);
 		}
+		otherPoolsFile.ignore(INT_MAX, '\n');
 		ptrOtherPool oP(new OtherPool(name, distance, m));
 		otherPools.push(oP);
 	}
@@ -740,20 +741,11 @@ void Pool::loadPromotions(){
 			promotionsFile.ignore();
 			promotionsFile >> dateEnd;
 			promotionsFile.ignore();
-			int zero;
-			promotionsFile >> zero;
-			promotionsFile.ignore();
-			int discount_aux;
-			promotionsFile >> discount_aux;
-			int quotient;
-			double discount = (discount_aux % 10)*0.1;
-			quotient = discount_aux/10;
-			while(quotient != 0){
-				discount = discount*0.1 + (quotient%10)*0.1;
-				quotient = quotient / 10;
-			}
+			double discount;
+			promotionsFile >> discount;
 			PromotionalCampaign promCamp(dateBegin,dateEnd,discount);
 			promotions.push_back(promCamp);
+			promotionsFile.ignore(INT_MAX, '\n');
 		}
 		sort(promotions.begin(), promotions.end());
 }
