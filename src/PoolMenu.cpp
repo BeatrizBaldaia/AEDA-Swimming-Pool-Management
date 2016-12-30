@@ -1140,17 +1140,17 @@ MenuResult AddModalityToPool::handle(){
 	cout << "5 -> " << static_cast<Modality>(4) << "\n \n";
 	cout << "0 -> Stop adding Modalities\n \n";
 	int modN;
-	while(true){
+	while (true) {
 		getInputInt(modN, 0, 5, "Insert the Modality number");
-		if(modN == 0){
+		if (modN == 0) {
 			break;
 		}
-		Modality mod = static_cast<Modality>((modN-1));
+		Modality mod = static_cast<Modality>((modN - 1));
 		vM.push_back(mod);
 	}
-	try{
+	try {
 		pool.addModalityToPool(name, vM);
-	}catch(InvalidPool &x){
+	} catch (InvalidPool &x) {
 		x.printError();
 		return CONTINUE;
 	}
@@ -1166,11 +1166,15 @@ ViewCurrentCampaign::ViewCurrentCampaign(Pool & pool): pool(pool){
 
 MenuResult ViewCurrentCampaign::handle(){
 	Date day = getCurrentDate();
-	try{
+	try {
 		PromotionalCampaign promo = pool.getCurrentPromotion();
-		cout << "One Promotional Campaign has started on " << promo.getBeginDate() << " and will end on " << promo.getEndDate() << ".\nAll lessons and free uses have a discount of " << promo.getDiscount() << endl << endl;
+		cout << "One Promotional Campaign has started on "
+				<< promo.getBeginDate() << " and will end on "
+				<< promo.getEndDate()
+				<< ".\nAll lessons and free uses have a discount of "
+				<< promo.getDiscount() << endl << endl;
 		return CONTINUE;
-	}catch(NoCurrentCampaign &e){
+	} catch (NoCurrentCampaign &e) {
 		cout << "\nNo campaign is currently running.\n";
 		return CONTINUE;
 	}
@@ -1242,13 +1246,14 @@ MenuResult AddCampaign::handle(){
 	Date startDate = getInputDate("Insert the start date (DD/MM/YYYY)");
 	Date endDate = getInputDate("Insert the end date (DD/MM/YYYY)");
 	double discount;
-	getInputDouble(discount, 0, 1, "Insert the Promotional Campaign discount value");
-	PromotionalCampaign promo(startDate,endDate,discount);
-	try{
+	getInputDouble(discount, 0, 1,
+			"Insert the Promotional Campaign discount value");
+	PromotionalCampaign promo(startDate, endDate, discount);
+	try {
 		pool.addPromotionalCampaign(promo);
 		pool.writePromotions();
 		return CONTINUE;
-	}catch(OverlapingCampaign &e){
+	} catch (OverlapingCampaign &e) {
 		cout << "There's already one Promotional Campaign occurring\n";
 		return CONTINUE;
 	}
