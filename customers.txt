@@ -16,9 +16,9 @@
 14;Gabriela Castro Correia;31/08/2000;Avenida Rebelo Mesquita;136;Vila Nova de Famalicão;4760-013;123456789;1
 31/12/2016;08:35;40;0.15
 15;Aline Melo Araujo;02/06/1964;Rua José R Silva Júnior;315;Vermoin;4470-316;123456789;0
-16;Clara Pinto Goncalves;02/11/1997;Rua Campo Alegre;17;Porto;4150-177;123456789;0
+16;Clara Pinto Goncalves;02/11/1997;Rua das Andorinhas;17;Porto;;123456789;0
 17;Mariana Pinto Gomes;10/08/1991;Rua Campo Alegre;17;Porto;4150-177;123456789;0
 18;Julieta Carvalho Costa;10/05/1981;Avenida Rebelo Mesquita;136;Vila Nova de Famalicão;4760-013;123456789;0
-19;Julia Dias Barros;06/12/1973;Avenida da República;2302;Vila Nova de Gaia;4430-196;123456789;0
+19;Julia Dias Barros;06/12/1973;Rua dos Autistas;132;Porto;1231-010;982738123;0
 20;Luana Carvalho Cunha;10/03/2002;Rua José R Silva Júnior;315;Vermoin;4470-316;123456789;1
 22/12/2016;19:18;100;0.2

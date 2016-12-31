@@ -63,7 +63,7 @@ int main() {
 	viewInfo(pool), viewTeachers(pool), viewCustomers(pool), viewCustomerInfo(
 			pool),
 
-	manageCustomers(pool), manageTeachers(pool), manageSchedule(pool),
+	manageCustomers(pool), manageTeachers(pool), manageSchedule(pool), managePromotions(pool),
 
 	usePool(pool),
 
@@ -77,12 +77,15 @@ int main() {
 
 	AddCustomer addCustomer(pool);
 	RemoveCustomer removeCustomer(pool);
+	UpdateCustomersInfo updateCustomersInfo(pool);
 
 	AddTeacher addTeacher(pool);
 	RemoveTeacher removeTeacher(pool);
 
 	AddLesson addLesson(pool);
 	RemoveLesson removeLesson(pool);
+
+	AddCampaign addCampaign(pool);
 
 	FreeSwimming freeSwimming(pool);
 	AttendLesson attendLesson(pool);
@@ -112,6 +115,8 @@ int main() {
 	ViewTeacherSchedule viewTeacherSchedule(pool);
 	ViewTeacherGivenLessons viewTeacherGivenLessons(pool);
 
+	ViewCurrentCampaign viewCurrentCampaign(pool);
+
 	/* MANAGE SHOP */
 
 	ShopSellItems shopSell(pool);
@@ -138,12 +143,15 @@ int main() {
 	manage.entries.push_back(MenuEntry("Manage customers", manageCustomers));
 	manage.entries.push_back(MenuEntry("Manage teachers", manageTeachers));
 	manage.entries.push_back(MenuEntry("Manage schedule", manageSchedule));
+	manage.entries.push_back(MenuEntry("Manage promotional campaigns", managePromotions));
 	manage.entries.push_back(MenuEntry("Use pool", usePool));
 
 	manageCustomers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	manageCustomers.entries.push_back(MenuEntry("Add customer", addCustomer));
 	manageCustomers.entries.push_back(
 			MenuEntry("Remove customer", removeCustomer));
+	manageCustomers.entries.push_back(MenuEntry("Update customer's info",updateCustomersInfo));
+
 
 	manageTeachers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	manageTeachers.entries.push_back(MenuEntry("Add teacher", addTeacher));
@@ -153,6 +161,9 @@ int main() {
 	manageSchedule.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	manageSchedule.entries.push_back(MenuEntry("Add lesson", addLesson));
 	manageSchedule.entries.push_back(MenuEntry("Remove lesson", removeLesson));
+
+	managePromotions.entries.push_back(MenuEntry("Back", Menu::exitHandler));
+	managePromotions.entries.push_back(MenuEntry("Add campaign",addCampaign));
 
 	usePool.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	usePool.entries.push_back(MenuEntry("Free swimming", freeSwimming));
@@ -169,6 +180,7 @@ int main() {
 	viewInfo.entries.push_back(MenuEntry("View schedule", viewSchedule));
 	viewInfo.entries.push_back(MenuEntry("View teachers", viewTeachers));
 	viewInfo.entries.push_back(MenuEntry("View customers", viewCustomers));
+	viewInfo.entries.push_back(MenuEntry("View promotional campaign",viewCurrentCampaign));
 
 	viewTeachers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	viewTeachers.entries.push_back(

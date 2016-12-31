@@ -190,7 +190,7 @@ MenuResult CustomerMakeCurrentBill::handle() {
 	unsigned int customerID;
 	unsigned int month = getCurrentDate().getMonth();
 	unsigned int year = getCurrentDate().getYear();
-	cout << "Insert Customer ID: ";
+	cout << "\nInsert Customer ID: ";
 	cin >> customerID;
 	Customer * c;
 	try {
@@ -232,8 +232,14 @@ MenuResult CustomerMakeCurrentBill::handle() {
 			<< year << endl << endl << endl;
 	bill << "Lessons assisted: " << customerGivenLessons.size() << endl << endl;
 	for (GivenLesson * g : customerGivenLessons) {
+		double cost;
+		for(PoolUse * p : c->getPoolUses())
+		{
+			if(p->getLesson() == g)
+				cost = p->getCost();
+		}
 		bill << g->getLesson().getModality() << " (" << g->getDate()
-				<< ").....................................€3.00" << endl;
+				<< ").....................................€" << setprecision(3) << cost << endl;
 	}
 	bill << endl << endl << "Free swimming usage: "
 			<< customerFreeSwimUses.size() << " times\n\n";
@@ -262,7 +268,7 @@ MenuResult CustomerMakeBill::handle() {
 	string monthString;
 	unsigned int month;
 	unsigned int year;
-	cout << "Insert Customer ID: ";
+	cout << "\nInsert Customer ID: ";
 	cin >> customerID;
 	Customer * c;
 	try {
@@ -313,8 +319,14 @@ MenuResult CustomerMakeBill::handle() {
 			<< endl << endl << endl;
 	bill << "Lessons assisted: " << customerGivenLessons.size() << endl << endl;
 	for (GivenLesson * g : customerGivenLessons) {
+		double cost;
+		for(PoolUse * p : c->getPoolUses())
+		{
+			if(p->getLesson() == g)
+				cost = p->getCost();
+		}
 		bill << g->getLesson().getModality() << " (" << g->getDate()
-				<< ").....................................€3.00" << endl;
+				<< ").....................................€" << setprecision(3) << cost << endl;
 	}
 	bill << endl << endl << "Free swimming usage: "
 			<< customerFreeSwimUses.size() << " times\n\n";
@@ -1234,7 +1246,7 @@ MenuResult ViewCurrentCampaign::handle() {
 //	Date day = getCurrentDate();
 	try {
 		PromotionalCampaign promo = pool.getCurrentPromotion();
-		cout << "One Promotional Campaign has started on "
+		cout << "The promotional campaign has started on "
 				<< promo.getBeginDate() << " and will end on "
 				<< promo.getEndDate()
 				<< ".\nAll lessons and free uses have a discount of "
@@ -1267,7 +1279,7 @@ MenuResult UpdateCustomersInfo::handle() {
 		for (; it != tab.end(); it++) {
 			cout << i << " - " << (*it)->getName() << " : "
 					<< (*it)->getStreet() << ", " << (*it)->getNumber() << ", "
-					<< (*it)->getPostalCode() << ", " << (*it)->getCity()
+					<< (*it)->getPostalCode() << ", " << (*it)->getCity() << ", " << (*it)->getCellphoneNum()
 					<< endl;
 			int answer;
 			getInputInt(answer, 0, 1,
@@ -1283,13 +1295,19 @@ MenuResult UpdateCustomersInfo::handle() {
 				cout << "=> Number of the door: ";
 				int number;
 				cin >> number;
-				cout << "Postal Code: ";
+				cin.ignore();
+				cout << "=> Postal Code: ";
 				string code;
 				getline(cin, code);
+				cout << "=> Contact number: ";
+				long phoneNumber;
+				cin >> phoneNumber;
+				cin.ignore();
 				(*it)->setCity(city);
 				(*it)->setStreet(street);
 				(*it)->setNumber(number);
 				(*it)->setPostalCode(code);
+				(*it)->setCellphoneNum(phoneNumber);
 				pool.insertInactive((*it));
 			}
 			cout << endl << endl;
