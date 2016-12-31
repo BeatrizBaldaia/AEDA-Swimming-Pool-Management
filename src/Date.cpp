@@ -1,7 +1,6 @@
 #include "Date.h"
 
 #include <crtdefs.h>
-#include <cmath>
 #include <ctime>
 #include <cwchar>
 #include <sstream>
@@ -157,7 +156,7 @@ bool Date::operator==(const Date & date) const {
 int Date::operator -(const Date& date) const {
 	int d1 = 0, d2 = 0;
 
-	for(size_t i = 1970; i < year; i++) {
+	for (size_t i = 1970; i < year; i++) {
 		if (isLeapYear(i)) {
 			d1 += 366;
 		} else {
@@ -171,7 +170,7 @@ int Date::operator -(const Date& date) const {
 
 	d1 += day;
 
-	for(size_t i = 1970; i < date.getYear(); i++) {
+	for (size_t i = 1970; i < date.getYear(); i++) {
 		if (isLeapYear(i)) {
 			d2 += 366;
 		} else {
@@ -259,14 +258,14 @@ DayOfWeek Date::getDayOfWeek() const {
 	}
 }
 
-Date & Date::operator++(){
-	if((month == 12) && (day == daysInMonth(month,year))){
+Date & Date::operator++() {
+	if ((month == 12) && (day == daysInMonth(month, year))) {
 		day = 1;
 		month = 1;
 		year++;
 		return *this;
 	}
-	if(day == daysInMonth(month,year)){
+	if (day == daysInMonth(month, year)) {
 		day = 1;
 		month++;
 		return *this;
@@ -392,7 +391,7 @@ void Time::setMinute(unsigned int m) {
 }
 
 unsigned int Time::getTimeGap(const Time &time) {
-	if((hour * 60 + minute) >= (time.getHour() * 60 + time.getMinute()))
+	if ((hour * 60 + minute) >= (time.getHour() * 60 + time.getMinute()))
 		return (hour * 60 + minute) - (time.getHour() * 60 + time.getMinute());
 	else
 		return (time.getHour() * 60 + time.getMinute()) - (hour * 60 + minute);
@@ -482,7 +481,7 @@ Time getCurrentTime() {  //retorna tempo atual
 }
 
 DayOfWeek getCurrentDayOfWeek() {  //retorna atual dia da semana
-	static const DayOfWeek wday_name[] = { SUN, MON, TUE, WED, THU, FRI, SAT};
+	static const DayOfWeek wday_name[] = { SUN, MON, TUE, WED, THU, FRI, SAT };
 
 	DayOfWeek dw;
 	time_t rawtime;

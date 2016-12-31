@@ -1,10 +1,11 @@
 #ifndef SRC_EXCEPTIONS_H_
 #define SRC_EXCEPTIONS_H_
 
-#include <iostream>
 #include <string>
-#include "Shop.h"
+#include <vector>
+
 #include "Lesson.h"
+#include "Shop.h"
 
 using namespace std;
 
@@ -44,7 +45,7 @@ public:
 
 /* INVALID ITEM */
 
-class InvalidItem{
+class InvalidItem {
 public:
 	InvalidItem(string designation, string size);
 	void printError();
@@ -53,7 +54,7 @@ private:
 	string size;
 };
 
-class InvalidItems{
+class InvalidItems {
 public:
 	InvalidItems(vector<Item> v);
 	void printError();
@@ -61,7 +62,7 @@ private:
 	vector<Item> items;
 };
 
-class InvalidRemoveItem{
+class InvalidRemoveItem {
 public:
 	InvalidRemoveItem(vector<Item> nonexistent, vector<Item> overflowItems);
 	void printError();
@@ -70,7 +71,7 @@ private:
 	vector<Item> overflowItems;
 };
 
-class InvalidStock{
+class InvalidStock {
 public:
 	InvalidStock(vector<Item> v);
 	void printError();
@@ -80,7 +81,7 @@ private:
 
 /* INVALID POOL */
 
-class InvalidPool{
+class InvalidPool {
 public:
 	InvalidPool(string name);
 	void printError();
@@ -90,7 +91,7 @@ private:
 
 /* INVALID MODALITY */
 
-class InvalidModality{
+class InvalidModality {
 public:
 	InvalidModality(Modality modality);
 	void printError();
@@ -98,7 +99,7 @@ private:
 	Modality modality;
 };
 
-class NoModality{
+class NoModality {
 public:
 	NoModality(Modality modality);
 	void printError();
@@ -106,8 +107,9 @@ private:
 	Modality modality;
 };
 
-class NoCurrentCampaign{
+class NoCurrentCampaign {
 public:
-	NoCurrentCampaign(){}
+	NoCurrentCampaign() {
+	}
 };
 #endif /* SRC_EXCEPTIONS_H_ */

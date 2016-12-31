@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -5,7 +6,6 @@
 #include "Menu.h"
 #include "Pool.h"
 #include "PoolMenu.h"
-#include "Utilities.h"
 
 int main() {
 	//cout << getInputDayOfWeek("help") << endl;
@@ -60,7 +60,8 @@ int main() {
 
 	manage(pool),
 
-	viewInfo(pool), viewTeachers(pool), viewCustomers(pool), viewCustomerInfo(pool),
+	viewInfo(pool), viewTeachers(pool), viewCustomers(pool), viewCustomerInfo(
+			pool),
 
 	manageCustomers(pool), manageTeachers(pool), manageSchedule(pool),
 
@@ -113,15 +114,15 @@ int main() {
 
 	/* MANAGE SHOP */
 
-	 ShopSellItems shopSell(pool);
-	 ShopBuyItems shopBuy(pool);
-	 ViewShopInfo viewShop(pool);
+	ShopSellItems shopSell(pool);
+	ShopBuyItems shopBuy(pool);
+	ViewShopInfo viewShop(pool);
 
-	 /* MANAGE OTHER POOLS */
+	/* MANAGE OTHER POOLS */
 
-	 AddOtherPool addOtherPool(pool);
-	 AddModalityToPool addModality(pool);
-	 ViewOtherPools viewOtherPools(pool);
+	AddOtherPool addOtherPool(pool);
+	AddModalityToPool addModality(pool);
+	ViewOtherPools viewOtherPools(pool);
 
 	/* MAIN MENU */
 
@@ -141,11 +142,13 @@ int main() {
 
 	manageCustomers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	manageCustomers.entries.push_back(MenuEntry("Add customer", addCustomer));
-	manageCustomers.entries.push_back(MenuEntry("Remove customer", removeCustomer));
+	manageCustomers.entries.push_back(
+			MenuEntry("Remove customer", removeCustomer));
 
 	manageTeachers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	manageTeachers.entries.push_back(MenuEntry("Add teacher", addTeacher));
-	manageTeachers.entries.push_back(MenuEntry("Remove teacher", removeTeacher));
+	manageTeachers.entries.push_back(
+			MenuEntry("Remove teacher", removeTeacher));
 
 	manageSchedule.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	manageSchedule.entries.push_back(MenuEntry("Add lesson", addLesson));
@@ -154,40 +157,63 @@ int main() {
 	usePool.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	usePool.entries.push_back(MenuEntry("Free swimming", freeSwimming));
 	usePool.entries.push_back(MenuEntry("Attend lesson", attendLesson));
-	usePool.entries.push_back(MenuEntry("Attend to one specific Modality", specificModality));
+	usePool.entries.push_back(
+			MenuEntry("Attend to one specific Modality", specificModality));
 
 	/* VIEW INFORMATION MENU */
 
 	viewInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	viewInfo.entries.push_back(MenuEntry("View attendances", viewAttendance));
-	viewInfo.entries.push_back(MenuEntry("View current occupation", occupation));
+	viewInfo.entries.push_back(
+			MenuEntry("View current occupation", occupation));
 	viewInfo.entries.push_back(MenuEntry("View schedule", viewSchedule));
 	viewInfo.entries.push_back(MenuEntry("View teachers", viewTeachers));
 	viewInfo.entries.push_back(MenuEntry("View customers", viewCustomers));
 
 	viewTeachers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	viewTeachers.entries.push_back(MenuEntry("View one teacher's info", viewTeacherInfo));
-	viewTeachers.entries.push_back(MenuEntry("View all teachers sorted by ID", viewTeachersByID));
-	viewTeachers.entries.push_back(MenuEntry("View all teachers sorted by name", viewTeachersByName));
-	viewTeachers.entries.push_back(MenuEntry("View all teachers sorted by lessons given",viewTeachersByGivenLessons));
-	viewTeachers.entries.push_back(MenuEntry("View all teachers sorted by number of lessons per week",viewTeachersByLessons));
+	viewTeachers.entries.push_back(
+			MenuEntry("View one teacher's info", viewTeacherInfo));
+	viewTeachers.entries.push_back(
+			MenuEntry("View all teachers sorted by ID", viewTeachersByID));
+	viewTeachers.entries.push_back(
+			MenuEntry("View all teachers sorted by name", viewTeachersByName));
+	viewTeachers.entries.push_back(
+			MenuEntry("View all teachers sorted by lessons given",
+					viewTeachersByGivenLessons));
+	viewTeachers.entries.push_back(
+			MenuEntry("View all teachers sorted by number of lessons per week",
+					viewTeachersByLessons));
 
 	viewCustomers.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	viewCustomers.entries.push_back(MenuEntry("View one customer's info", viewCustomerInfo));
-	viewCustomers.entries.push_back(MenuEntry("View all customers sorted by ID", viewCustomersByID));
-	viewCustomers.entries.push_back(MenuEntry("View all customers sorted by name", viewCustomersByName));
-	viewCustomers.entries.push_back(MenuEntry("View customers sorted by number of pool uses", viewCustomersByUses));
+	viewCustomers.entries.push_back(
+			MenuEntry("View one customer's info", viewCustomerInfo));
+	viewCustomers.entries.push_back(
+			MenuEntry("View all customers sorted by ID", viewCustomersByID));
+	viewCustomers.entries.push_back(
+			MenuEntry("View all customers sorted by name",
+					viewCustomersByName));
+	viewCustomers.entries.push_back(
+			MenuEntry("View customers sorted by number of pool uses",
+					viewCustomersByUses));
 
 	viewTeacherInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	viewTeacherInfo.entries.push_back(MenuEntry("View teacher's information", viewTeacherInformation));
-	viewTeacherInfo.entries.push_back(MenuEntry("View teacher's schedule", viewTeacherSchedule));
-	viewTeacherInfo.entries.push_back(MenuEntry("View teacher's given lessons", viewTeacherGivenLessons));
+	viewTeacherInfo.entries.push_back(
+			MenuEntry("View teacher's information", viewTeacherInformation));
+	viewTeacherInfo.entries.push_back(
+			MenuEntry("View teacher's schedule", viewTeacherSchedule));
+	viewTeacherInfo.entries.push_back(
+			MenuEntry("View teacher's given lessons", viewTeacherGivenLessons));
 
 	viewCustomerInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	viewCustomerInfo.entries.push_back(MenuEntry("View customer's information", viewCustomerInformation));
-	viewCustomerInfo.entries.push_back(MenuEntry("View customer's pool uses", viewCustomerUses));
-	viewCustomerInfo.entries.push_back(MenuEntry("Make customer's current month bill",customerMakeCurrentBill));
-	viewCustomerInfo.entries.push_back(MenuEntry("Make customer's specific month bill", customerMakeBill));
+	viewCustomerInfo.entries.push_back(
+			MenuEntry("View customer's information", viewCustomerInformation));
+	viewCustomerInfo.entries.push_back(
+			MenuEntry("View customer's pool uses", viewCustomerUses));
+	viewCustomerInfo.entries.push_back(
+			MenuEntry("Make customer's current month bill",
+					customerMakeCurrentBill));
+	viewCustomerInfo.entries.push_back(
+			MenuEntry("Make customer's specific month bill", customerMakeBill));
 
 	/* SHOP MENU */
 
@@ -199,12 +225,16 @@ int main() {
 	/* OTHER POOLS MENU */
 
 	otherPools.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	otherPools.entries.push_back(MenuEntry("View Pools nearby Info", viewOtherPools));
-	otherPools.entries.push_back(MenuEntry("Add a new Pool nearby record", addOtherPool));
-	otherPools.entries.push_back(MenuEntry("Edit Pools' nearby information", editOtherPool));
+	otherPools.entries.push_back(
+			MenuEntry("View Pools nearby Info", viewOtherPools));
+	otherPools.entries.push_back(
+			MenuEntry("Add a new Pool nearby record", addOtherPool));
+	otherPools.entries.push_back(
+			MenuEntry("Edit Pools' nearby information", editOtherPool));
 
 	editOtherPool.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	editOtherPool.entries.push_back(MenuEntry("Add one Modality to Pool nearby", addModality));
+	editOtherPool.entries.push_back(
+			MenuEntry("Add one Modality to Pool nearby", addModality));
 
 	cout << pool.getName() << endl;
 	menu.handle();

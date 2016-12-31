@@ -1,6 +1,10 @@
 #include "Utilities.h"
-#include "Exceptions.h"
 
+#include <cctype>
+
+#include "Exceptions.h"
+#include "Person.h"
+#include "PoolUse.h"
 
 void getInputInt(int &answer, int min, int max, string msg) {
 	while (true) { ///sai do ciclo quando o input é aceite; passa o input válido por referência a partir de "answer"
@@ -59,7 +63,6 @@ void getInputDouble(double &answer, double min, double max, string msg) {
 		}
 	}
 }
-
 
 Date getInputDate(string msg) {
 	while (true) {

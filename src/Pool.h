@@ -1,26 +1,25 @@
 #ifndef _POOL_H_
 #define _POOL_H_
 
+#include <queue>
 #include <string>
-#include <vector>
 #include <tr1/unordered_set>
+#include <vector>
 
 #include "Date.h"
 #include "Lesson.h"
 #include "Person.h"
 #include "PoolUse.h"
 #include "Shop.h"
-#include "Exceptions.h"
-
 
 /* HASH TABLE */
 struct hCustomer {
 
-	int operator()(Customer* c1) const{
+	int operator()(Customer* c1) const {
 		int result;
 		string s = c1->getName();
-		for(int i; i < s.size(); i++){
-			result+= c1->getName()[i]*37;
+		for (int i; i < s.size(); i++) {
+			result += c1->getName()[i] * 37;
 		}
 		return result;
 	}
@@ -33,7 +32,6 @@ struct hCustomer {
 typedef tr1::unordered_set<Customer *, hCustomer, hCustomer> hashCustomer;
 
 ///////////////////////////////////
-
 
 /**
  * \brief Classe que guarda a informação referente a uma campanha promocional.
@@ -84,9 +82,9 @@ public:
 	bool operator<(PromotionalCampaign & promCamp) const;
 };
 
-class OtherPool{
+class OtherPool {
 private:
-	string name;///nome da piscina
+	string name; ///nome da piscina
 	double distance; ///distancia da piscina secundaria em relacao a nossa piscina
 	vector<Modality> modalityLessons;
 public:
@@ -100,7 +98,7 @@ public:
 	bool operator<(OtherPool & oP2) const;
 };
 
-class ptrOtherPool{
+class ptrOtherPool {
 private:
 	OtherPool * ptr;
 public:
@@ -122,7 +120,7 @@ public:
 	vector<Lesson> getLessons(Date date, Time time);
 	vector<GivenLesson *> getGivenLessons(); /// dá o vetor givenLessons
 	vector<GivenLesson *> getGivenLessons(unsigned int ID);
-	vector<Lesson> getLessonByModality(Modality modality)const;
+	vector<Lesson> getLessonByModality(Modality modality) const;
 	GivenLesson * getGivenLesson(Lesson lesson, Date date); /// dá GivenLesson que tem uma certa Lesson e ocorreu num certo Date
 	void addLesson(Lesson lesson); /// adiciona aula ao vetor schedule e atribui a mesma um professor
 	unsigned int CustomersInLesson(GivenLesson lesson); /// dá o número de clientes numa certa aula
@@ -140,10 +138,10 @@ public:
 	PromotionalCampaign getCurrentPromotion() const;
 
 	vector<PromotionalCampaign> getPromotionalCampaign() const;
-	void addPromotionalCampaign(PromotionalCampaign campaign);///retorna exceção se houver algum overlap de campanhas promocionais
+	void addPromotionalCampaign(PromotionalCampaign campaign); ///retorna exceção se houver algum overlap de campanhas promocionais
 
-	bool isCustomerInactive(Customer * c);///ver se cliente e inativo
-	void activateCustomer(Customer * c);///torna cliente inativo em ativo
+	bool isCustomerInactive(Customer * c); ///ver se cliente e inativo
+	void activateCustomer(Customer * c); ///torna cliente inativo em ativo
 	hashCustomer getInactiveCustomer() const;
 	void eraseInactive(Customer * customer);
 	void insertInactive(Customer * customer);
@@ -151,7 +149,7 @@ public:
 	vector<Item> getProviderItems();
 
 	priority_queue<ptrOtherPool> getOtherPools() const;
-	void addOtherPool(ptrOtherPool oP);///adiciona a fila de prioridade uma piscina das redondezas
+	void addOtherPool(ptrOtherPool oP); ///adiciona a fila de prioridade uma piscina das redondezas
 	void addModalityToPool(string name, vector<Modality> vM); ///adiciona modalidade a uma piscina das redondezas (de nome name)
 	ptrOtherPool getNextPool(Modality modality);
 
@@ -160,8 +158,10 @@ public:
 	void setFileNames(vector<string> v);
 	void addFreeUse(PoolUse * freeUse);
 
-	void attendLesson(Lesson lesson, Customer * customer, Date date, double discount);
-	void addFreeSwim(Customer * customer, Date date, Time time,unsigned int duration, double discount);
+	void attendLesson(Lesson lesson, Customer * customer, Date date,
+			double discount);
+	void addFreeSwim(Customer * customer, Date date, Time time,
+			unsigned int duration, double discount);
 
 	void removeCustomer(unsigned int ID);
 	void removeTeacher(unsigned int ID);
@@ -173,7 +173,7 @@ public:
 
 	Shop * getShop() const;
 
-	void load();///le o que está nos ficheiros de texto
+	void load(); ///le o que está nos ficheiros de texto
 	void loadPoolInfo();
 	void loadCustomers();
 	void loadTeachers();
@@ -184,7 +184,7 @@ public:
 	void loadOtherPools();
 	void loadPromotions();
 
-	void write();///escreve para os ficheiros de texto
+	void write(); ///escreve para os ficheiros de texto
 	void writePoolInfo();
 	void writeCustomers();
 	void writeTeachers();
@@ -211,11 +211,11 @@ private:
 	// 7 otherpools
 	// 8 promotions
 
-	Shop * shop;///apontador para a loja da piscina
-	hashCustomer inactiveCustomers;///tabela de dispersao com os clientes inativos
+	Shop * shop;	///apontador para a loja da piscina
+	hashCustomer inactiveCustomers;	///tabela de dispersao com os clientes inativos
 	priority_queue<ptrOtherPool> otherPools;///fila de prioridade com as piscinas nas redondezas
 
-	string name;///nome da nossa piscina
+	string name;	///nome da nossa piscina
 	unsigned int maxCustomers;///numero maximo de utentes que podem estar na piscina
 
 	vector<PromotionalCampaign> promotions;
@@ -271,7 +271,6 @@ public:
 class CustomerAlreadyAttendedLesson {
 
 };
-
 
 #else
 

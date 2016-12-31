@@ -1,34 +1,37 @@
 #include "Pool.h"
 
+#include <crtdefs.h>
 #include <algorithm>
 #include <climits>
 #include <fstream>
+#include <iterator>
 #include <sstream>
+#include <tr1/unordered_map>
 #include <utility>
+
+#include "BST.h"
+#include "Exceptions.h"
 
 int Pool::inactivityPeriod = 30;
 
-PromotionalCampaign::PromotionalCampaign(Date beginDate, Date endDate, double discount) :
-		beginDate(beginDate), endDate(endDate), discount(discount)
-{
+PromotionalCampaign::PromotionalCampaign(Date beginDate, Date endDate,
+		double discount) :
+		beginDate(beginDate), endDate(endDate), discount(discount) {
 }
 
-Date PromotionalCampaign::getBeginDate() const
-{
+Date PromotionalCampaign::getBeginDate() const {
 	return beginDate;
 }
 
-Date PromotionalCampaign::getEndDate() const
-{
+Date PromotionalCampaign::getEndDate() const {
 	return endDate;
 }
 
-double PromotionalCampaign::getDiscount() const
-{
+double PromotionalCampaign::getDiscount() const {
 	return discount;
 }
 
-bool PromotionalCampaign::operator<(PromotionalCampaign & promCamp) const{
+bool PromotionalCampaign::operator<(PromotionalCampaign & promCamp) const {
 	return beginDate < promCamp.getBeginDate();
 }
 //////////////////////////////////////////////////////////////////////
@@ -37,46 +40,46 @@ bool PromotionalCampaign::operator<(PromotionalCampaign & promCamp) const{
  * OtherPool member functions
  * */
 
-OtherPool::OtherPool(string name, double distance){
+OtherPool::OtherPool(string name, double distance) {
 	this->name = name;
 	this->distance = distance;
 }
 
-OtherPool::OtherPool(string name, double distance, vector<Modality> lessons){
+OtherPool::OtherPool(string name, double distance, vector<Modality> lessons) {
 	this->name = name;
 	this->distance = distance;
 	this->modalityLessons = lessons;
 }
 
-string OtherPool::getName() const{
+string OtherPool::getName() const {
 	return name;
 }
 
-double OtherPool::getDistance() const{
+double OtherPool::getDistance() const {
 	return distance;
 }
 
-vector<Modality> OtherPool::getModalityLessons() const{
+vector<Modality> OtherPool::getModalityLessons() const {
 	return modalityLessons;
 }
 
-bool OtherPool::haveModality(Modality modality){
-	for(const Modality &x : modalityLessons){
-		if(x == modality){
+bool OtherPool::haveModality(Modality modality) {
+	for (const Modality &x : modalityLessons) {
+		if (x == modality) {
 			return true;
 		}
 	}
 	return false;
 }
 
-bool OtherPool::operator<(OtherPool & oP2) const{
-	if(distance == oP2.getDistance()){
+bool OtherPool::operator<(OtherPool & oP2) const {
+	if (distance == oP2.getDistance()) {
 		return name < oP2.getName();
 	}
 	return distance > oP2.getDistance();
 }
 
-void OtherPool::addModality(Modality modality){
+void OtherPool::addModality(Modality modality) {
 	modalityLessons.push_back(modality);
 }
 
@@ -84,35 +87,35 @@ void OtherPool::addModality(Modality modality){
  * ptrOtherPool member functions
  * */
 
-ptrOtherPool::ptrOtherPool(OtherPool * p){
+ptrOtherPool::ptrOtherPool(OtherPool * p) {
 	ptr = p;
 }
 
-string ptrOtherPool::getName() const{
+string ptrOtherPool::getName() const {
 	return ptr->getName();
 }
 
-double ptrOtherPool::getDistance() const{
+double ptrOtherPool::getDistance() const {
 	return ptr->getDistance();
 }
 
-vector<Modality> ptrOtherPool::getModalityLessons() const{
+vector<Modality> ptrOtherPool::getModalityLessons() const {
 	return ptr->getModalityLessons();
 }
 
-void ptrOtherPool::addModality(Modality modality){
+void ptrOtherPool::addModality(Modality modality) {
 	ptr->addModality(modality);
 }
 
-bool ptrOtherPool::haveModality(Modality modality){
+bool ptrOtherPool::haveModality(Modality modality) {
 	return ptr->haveModality(modality);
 }
 
-bool ptrOtherPool::operator<(ptrOtherPool oP2) const{
-	if(ptr->getDistance() == oP2.getDistance()){
-			return ptr->getName() < oP2.getName();
-		}
-		return ptr->getDistance() > oP2.getDistance();
+bool ptrOtherPool::operator<(ptrOtherPool oP2) const {
+	if (ptr->getDistance() == oP2.getDistance()) {
+		return ptr->getName() < oP2.getName();
+	}
+	return ptr->getDistance() > oP2.getDistance();
 }
 
 /*
@@ -211,8 +214,6 @@ unsigned int Pool::getMaxCustomers() const {
 	return maxCustomers;
 }
 
-
-
 void Pool::setMaxCustomers(unsigned int n) {
 	maxCustomers = n;
 }
@@ -255,7 +256,8 @@ void Pool::writeCustomers() {
 		for (PoolUse * j : FreeSwimUses) {
 			customersFile << j->getDate() << ";";
 			customersFile << j->getTime() << ";";
-			customersFile << j->getDuration() << ";" << j->getDiscount() << endl;
+			customersFile << j->getDuration() << ";" << j->getDiscount()
+					<< endl;
 		}
 	}
 	customersFile.close();
@@ -291,17 +293,17 @@ void Pool::writeSchedule() {
 	scheduleFile.close();
 }
 
-void Pool::testInactiveCustomers() {///percorre todos os utilizador e ve quais sao os inativos (colocando-os na tabela de dispersao)
+void Pool::testInactiveCustomers() { ///percorre todos os utilizador e ve quais sao os inativos (colocando-os na tabela de dispersao)
 	Date d = getCurrentDate();
 	for (Customer * c : customers) {
-		if (c->getPoolUses().size() == 0){
+		if (c->getPoolUses().size() == 0) {
 			inactiveCustomers.insert(c);
-		}
-		else{
+		} else {
 			vector<PoolUse *> v = c->getPoolUses();
-			PoolUse * pU = (*max_element(v.begin(), v.end(), [](PoolUse * a, PoolUse * b) {
-			return a->getDate() < b->getDate();
-			}));
+			PoolUse * pU = (*max_element(v.begin(), v.end(),
+					[](PoolUse * a, PoolUse * b) {
+						return a->getDate() < b->getDate();
+					}));
 			Date lastUse = pU->getDate();
 			if (d - lastUse > inactivityPeriod) {
 				inactiveCustomers.insert(c);
@@ -312,71 +314,72 @@ void Pool::testInactiveCustomers() {///percorre todos os utilizador e ve quais s
 
 bool Pool::isCustomerInactive(Customer* c) {
 	hashCustomer::iterator it = inactiveCustomers.find(c);
-	if(it != inactiveCustomers.end()){
+	if (it != inactiveCustomers.end()) {
 		return true;
 	}
 	return false;
 }
 
-void Pool::activateCustomer(Customer * c){
+void Pool::activateCustomer(Customer * c) {
 	hashCustomer::iterator it = inactiveCustomers.find(c);
 	inactiveCustomers.erase(it);
 }
 
-hashCustomer Pool::getInactiveCustomer() const{
+hashCustomer Pool::getInactiveCustomer() const {
 	return inactiveCustomers;
 }
 
-void Pool::eraseInactive(Customer * customer){
+void Pool::eraseInactive(Customer * customer) {
 	inactiveCustomers.erase(customer);
 }
 
-void Pool::insertInactive(Customer * customer){
+void Pool::insertInactive(Customer * customer) {
 	inactiveCustomers.insert(customer);
 }
 
-void Pool::writeShop(){
+void Pool::writeShop() {
 	ofstream shopFile(fileNames[5]);
 	shopFile << shop->getName() << endl << shop->getNumberOfItems();
-	BST<Item>tree = shop->getTree();
-	BSTItrIn<Item>it(tree);
-	while(!it.isAtEnd()){
-		shopFile << endl << it.retrieve().getDesignation() << ";" << it.retrieve().getSize() << ";" << it.retrieve().getStock();
+	BST<Item> tree = shop->getTree();
+	BSTItrIn<Item> it(tree);
+	while (!it.isAtEnd()) {
+		shopFile << endl << it.retrieve().getDesignation() << ";"
+				<< it.retrieve().getSize() << ";" << it.retrieve().getStock();
 		it.advance();
 	}
 }
 
-
-vector<PromotionalCampaign> Pool::getPromotionalCampaign() const
-{
+vector<PromotionalCampaign> Pool::getPromotionalCampaign() const {
 	return promotions;
 }
 
-void Pool::addPromotionalCampaign(PromotionalCampaign campaign)
-{
-	for (const PromotionalCampaign & p : promotions)
-	{
-		if((campaign.getBeginDate() >= p.getBeginDate() && campaign.getBeginDate() <= p.getEndDate()) || (campaign.getEndDate() >= p.getBeginDate() && campaign.getEndDate() <= p.getEndDate()))
-		{
+void Pool::addPromotionalCampaign(PromotionalCampaign campaign) {
+	for (const PromotionalCampaign & p : promotions) {
+		if ((campaign.getBeginDate() >= p.getBeginDate()
+				&& campaign.getBeginDate() <= p.getEndDate())
+				|| (campaign.getEndDate() >= p.getBeginDate()
+						&& campaign.getEndDate() <= p.getEndDate())) {
 			throw OverlapingCampaign();
 		}
 	}
 	promotions.push_back(campaign);
 }
 
-void Pool::writeOtherPools(){
+void Pool::writeOtherPools() {
 	ofstream otherPoolsFile(fileNames[7]);
 	otherPoolsFile << otherPools.size() << '\n';
-	int n = otherPools.size();///numero de outras piscinas
+	int n = otherPools.size(); ///numero de outras piscinas
 	priority_queue<ptrOtherPool> queue = otherPools;
-	while(n > 0){
+	while (n > 0) {
 		///nome da piscina;distancia;numero de modalidades;lista das modalidades (separadas por virgulas)
-		otherPoolsFile << queue.top().getName() << ';' << queue.top().getDistance() << ';' << queue.top().getModalityLessons().size() << ';';
+		otherPoolsFile << queue.top().getName() << ';'
+				<< queue.top().getDistance() << ';'
+				<< queue.top().getModalityLessons().size() << ';';
 		vector<Modality> vM = queue.top().getModalityLessons();
-		for(int i = 0; i < vM.size(); i++){
+		for (int i = 0; i < vM.size(); i++) {
 			int modInt = static_cast<int>(vM[i]);
 			otherPoolsFile << modInt;
-			if(i != (vM.size() - 1)){
+			if (i != (vM.size() - 1)) {
 				otherPoolsFile << ',';
 			}
 		}
@@ -388,15 +391,15 @@ void Pool::writeOtherPools(){
 	}
 }
 
-void Pool::writePromotions(){
+void Pool::writePromotions() {
 	ofstream promotionsFile(fileNames[8]);
 	promotionsFile << promotions.size() << endl;
-		for (const PromotionalCampaign & i : promotions) {
-			promotionsFile << i.getBeginDate() << ";";
-			promotionsFile << i.getEndDate()<< ";";
-			promotionsFile << i.getDiscount() << endl;
-		}
-		promotionsFile.close();
+	for (const PromotionalCampaign & i : promotions) {
+		promotionsFile << i.getBeginDate() << ";";
+		promotionsFile << i.getEndDate() << ";";
+		promotionsFile << i.getDiscount() << endl;
+	}
+	promotionsFile.close();
 }
 
 void Pool::addTeacher(Teacher* t) {
@@ -404,7 +407,8 @@ void Pool::addTeacher(Teacher* t) {
 	distributeLessons();
 }
 
-void Pool::attendLesson(Lesson lesson, Customer* customer, Date date, double discount) {
+void Pool::attendLesson(Lesson lesson, Customer* customer, Date date,
+		double discount) {
 	if (lesson.getDayOfWeek() != date.getDayOfWeek()) {
 		throw NotSameDayAsDate();
 	}
@@ -412,8 +416,8 @@ void Pool::attendLesson(Lesson lesson, Customer* customer, Date date, double dis
 	try {
 		givenLesson = getGivenLesson(lesson, date);
 	} catch (NonExistentGivenLesson &x) {
-			givenLesson = new GivenLesson(lesson, date);
-			givenLessons.push_back(givenLesson);
+		givenLesson = new GivenLesson(lesson, date);
+		givenLessons.push_back(givenLesson);
 	}
 	for (Customer * i : givenLesson->getCustomers()) {
 		if (i == customer) {
@@ -436,7 +440,8 @@ GivenLesson* Pool::getGivenLesson(Lesson lesson, Date date) {
 	throw NonExistentGivenLesson(lesson, date);
 }
 
-void Pool::addFreeSwim(Customer* customer, Date date, Time time, unsigned int duration, double discount) {
+void Pool::addFreeSwim(Customer* customer, Date date, Time time,
+		unsigned int duration, double discount) {
 	PoolUse * poolUse = new FreeSwimUse(date, time, duration, discount);
 	customer->addUse(poolUse);
 	freeUses.push_back(poolUse);
@@ -452,8 +457,8 @@ void Pool::removeCustomer(unsigned int ID) {
 }
 
 void Pool::removeTeacher(unsigned int ID) {
-	for(int i = 0; i < teachers.size(); i++) {
-		if(teachers[i]->getID() == ID) {
+	for (int i = 0; i < teachers.size(); i++) {
+		if (teachers[i]->getID() == ID) {
 			teachers.erase(teachers.begin() + i);
 			break;
 		}
@@ -507,10 +512,8 @@ void Pool::writeGivenLessons() {
 		givenLessonsFile << i->getID() << ";";
 		givenLessonsFile << i->getLesson().getTeacher()->getID() << ";";
 		double discount;
-		for (PoolUse * l : i->getCustomers()[0]->getPoolUses())
-		{
-			if (l->getLesson() == i)
-			{
+		for (PoolUse * l : i->getCustomers()[0]->getPoolUses()) {
+			if (l->getLesson() == i) {
 				discount = l->getDiscount();
 				break;
 			}
@@ -648,7 +651,7 @@ void Pool::loadSchedule() {
 		schedule.push_back(lesson);
 	}
 	distributeLessons();
-	sort(schedule.begin(),schedule.end());
+	sort(schedule.begin(), schedule.end());
 }
 
 void Pool::loadGivenLessons() {
@@ -695,7 +698,8 @@ void Pool::loadGivenLessons() {
 //			cout << customerID << endl;
 			Customer * customer = getCustomer(customerID);
 			givenLesson->addCustomer(customer);
-			PoolUse * poolUse = new LessonUse(date, time, givenLesson, discount);
+			PoolUse * poolUse = new LessonUse(date, time, givenLesson,
+					discount);
 			customer->addUse(poolUse);
 		}
 	}
@@ -724,7 +728,7 @@ void Pool::loadShop() {
 	shop = s;
 }
 
-void Pool::loadOtherPools(){
+void Pool::loadOtherPools() {
 	ifstream otherPoolsFile(fileNames[7]);
 	unsigned int n; ///numero de lojas na redondeza
 	vector<OtherPool> v; ///vetor com os itens da loja
@@ -739,14 +743,14 @@ void Pool::loadOtherPools(){
 		int numberModalities; ///numero de diferentes modalidades que a piscina da
 		otherPoolsFile >> numberModalities;
 		otherPoolsFile.ignore();
-		vector<Modality>m;
-		while(numberModalities > 0){
+		vector<Modality> m;
+		while (numberModalities > 0) {
 			numberModalities--;
 			unsigned int modValue;
 			otherPoolsFile >> modValue;
-			Modality lesson = static_cast<Modality>(modValue);///passar de unsigned int para enum Modality
-			if(numberModalities != 0){
-				otherPoolsFile.ignore();///ignorar virgula a frente
+			Modality lesson = static_cast<Modality>(modValue); ///passar de unsigned int para enum Modality
+			if (numberModalities != 0) {
+				otherPoolsFile.ignore(); ///ignorar virgula a frente
 			}
 			m.push_back(lesson);
 		}
@@ -756,23 +760,23 @@ void Pool::loadOtherPools(){
 	}
 }
 
-void Pool::loadPromotions(){
+void Pool::loadPromotions() {
 	ifstream promotionsFile(fileNames[8]);
-		unsigned int n;
-		promotionsFile >> n;
-		for (size_t i = 0; i < n; i++) {
-			Date dateBegin, dateEnd;
-			promotionsFile >> dateBegin;
-			promotionsFile.ignore();
-			promotionsFile >> dateEnd;
-			promotionsFile.ignore();
-			double discount;
-			promotionsFile >> discount;
-			PromotionalCampaign promCamp(dateBegin,dateEnd,discount);
-			promotions.push_back(promCamp);
-			promotionsFile.ignore(INT_MAX, '\n');
-		}
-		sort(promotions.begin(), promotions.end());
+	unsigned int n;
+	promotionsFile >> n;
+	for (size_t i = 0; i < n; i++) {
+		Date dateBegin, dateEnd;
+		promotionsFile >> dateBegin;
+		promotionsFile.ignore();
+		promotionsFile >> dateEnd;
+		promotionsFile.ignore();
+		double discount;
+		promotionsFile >> discount;
+		PromotionalCampaign promCamp(dateBegin, dateEnd, discount);
+		promotions.push_back(promCamp);
+		promotionsFile.ignore(INT_MAX, '\n');
+	}
+	sort(promotions.begin(), promotions.end());
 }
 
 void Pool::addCustomer(Customer* c) {
@@ -802,7 +806,7 @@ Lesson Pool::getNextLesson(DayOfWeek day, Time time,
 			if (i.getTime() < time) {
 				Time duration(1, 0);
 				Time sum = i.getTime() + duration;
-				if(sum > time) {
+				if (sum > time) {
 					currentlesson = true;
 					return i;
 				}
@@ -860,11 +864,11 @@ void Pool::removeLesson(unsigned int position) {
 	schedule.erase(schedule.begin() + position);
 }
 
-Shop * Pool::getShop() const{
+Shop * Pool::getShop() const {
 	return shop;
 }
 
-vector<Item> Pool::getProviderItems(){
+vector<Item> Pool::getProviderItems() {
 	ifstream providerFile(fileNames[6]);
 	vector<Item> result;
 	unsigned int n;
@@ -880,56 +884,56 @@ vector<Item> Pool::getProviderItems(){
 	return result;
 }
 
-priority_queue<ptrOtherPool > Pool::getOtherPools() const{
+priority_queue<ptrOtherPool> Pool::getOtherPools() const {
 	return otherPools;
 }
 
-void Pool::addOtherPool(ptrOtherPool oP){
+void Pool::addOtherPool(ptrOtherPool oP) {
 	otherPools.push(oP);
 }
 
-void Pool::addModalityToPool(string name, vector<Modality> vM){
+void Pool::addModalityToPool(string name, vector<Modality> vM) {
 	priority_queue<ptrOtherPool> queue = otherPools;
 	bool exist = false;
 	ptrOtherPool oP = queue.top();
-	while(!queue.empty()){
+	while (!queue.empty()) {
 		oP = queue.top();
 		//cout << "\n <<<<<<<<<< \n\n " << oP.getName() << " =? " << name << endl << oP.getName().compare(name) << endl << endl;
 		//if(oP.getName().compare(name)){
-		if(oP.getName() == name){
+		if (oP.getName() == name) {
 			exist = true;
 			break;
 		}
 		queue.pop();
 	}
-	if(!exist){
+	if (!exist) {
 		throw InvalidPool(name);
 	}
-	for (int i = 0; i < vM.size(); i++){
+	for (int i = 0; i < vM.size(); i++) {
 		oP.addModality(vM[i]);
 	}
 
 }
 
-vector<Lesson> Pool::getLessonByModality(Modality modality)const{
+vector<Lesson> Pool::getLessonByModality(Modality modality) const {
 	vector<Lesson> result;
-	for(const Lesson &x : schedule){
-		if(x.getModality() == modality){
+	for (const Lesson &x : schedule) {
+		if (x.getModality() == modality) {
 			result.push_back(x);
 		}
 	}
-	if(result.empty()){
+	if (result.empty()) {
 		throw InvalidModality(modality);
 	}
 	return result;
 }
 
-ptrOtherPool Pool::getNextPool(Modality modality){
+ptrOtherPool Pool::getNextPool(Modality modality) {
 	priority_queue<ptrOtherPool> queue = otherPools;
 	ptrOtherPool oP = queue.top();
-	while(!queue.empty()){
+	while (!queue.empty()) {
 		oP = queue.top();
-		if(oP.haveModality(modality)){
+		if (oP.haveModality(modality)) {
 			return oP;
 		}
 		queue.pop();
@@ -937,14 +941,14 @@ ptrOtherPool Pool::getNextPool(Modality modality){
 	throw(NoModality(modality));
 }
 
-void Pool::addCampaign(PromotionalCampaign campaign){
+void Pool::addCampaign(PromotionalCampaign campaign) {
 	promotions.push_back(campaign);
 }
 
-PromotionalCampaign Pool::getCurrentPromotion() const{
+PromotionalCampaign Pool::getCurrentPromotion() const {
 	Date day = getCurrentDate();
-	for (const PromotionalCampaign & x : promotions){
-		if((day > x.getBeginDate()) && (day < x.getEndDate())){
+	for (const PromotionalCampaign & x : promotions) {
+		if ((day > x.getBeginDate()) && (day < x.getEndDate())) {
 			PromotionalCampaign result = x;
 			return result;
 		}

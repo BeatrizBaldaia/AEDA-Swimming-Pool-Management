@@ -5,15 +5,13 @@
 #include <fstream>
 #include <iostream>
 
-
+#include "Date.h"
 
 ExitHandler Menu::exitHandler;
-
 
 MenuResult ExitHandler::handle() {
 	return EXIT;
 }
-
 
 MenuResult Menu::handle() {
 	if (entries.size() == 0) {

@@ -2,16 +2,9 @@
 #define SRC_POOLMENU_H_
 
 #include "Menu.h"
-#include "Date.h"
-#include "Lesson.h"
-#include "Person.h"
-#include "Pool.h"
-#include "PoolUse.h"
-#include "Utilities.h"
-#include "EXceptions.h"
 
 enum OrderBy {
-ID, NAME, NUMUSES, GIVENLESSONS, ASSLESSONS
+	ID, NAME, NUMUSES, GIVENLESSONS, ASSLESSONS
 };
 
 class Pool;
@@ -34,7 +27,6 @@ private:
 	 */
 	Pool & pool;
 };
-
 
 /**
  * Seleção do Menu referente à adição de um cliente à base de dados.
@@ -64,9 +56,9 @@ private:
 class RemoveCustomer: public MenuHandler {
 public:
 	/**
-	* Construtor da classe RemoveCustomer.
-	* @param pool
-	*/
+	 * Construtor da classe RemoveCustomer.
+	 * @param pool
+	 */
 	RemoveCustomer(Pool & pool);
 	/**
 	 * Função encarregue de criar a interface necessária para que o utilizador elimine um cliente.
@@ -101,7 +93,6 @@ private:
 	 */
 	Pool & pool;
 };
-
 
 /**
  *  Seleção do Menu referente à remoção de um professor à base de dados.
@@ -157,7 +148,7 @@ private:
  * \brief Semelhante ao Attend Lesson, mas desta vez procura a aula por modalidade.
  * Se não encontrar nenhuma aula da modalidade, procura nas outras piscinas (que estão numa fila de prioridade por distância) por uma piscina que tenha essa modalidade.
  */
-class AttendToSpecificModality: public MenuHandler{
+class AttendToSpecificModality: public MenuHandler {
 public:
 	/**
 	 * Construtor da classe AttendToSpecificModality.
@@ -517,7 +508,7 @@ private:
  * Trata da venda de produtos aos clientes.
  */
 //TODO: guardar as compras ja feitas num ficheiro e num vetor
-class ShopSellItems: public MenuHandler{
+class ShopSellItems: public MenuHandler {
 public:
 	/**
 	 * Construtor da classe ShopSellItems.
@@ -538,7 +529,7 @@ private:
 /**
  * Trata da compra de produtos ao fornecedor.
  */
-class ShopBuyItems: public MenuHandler{
+class ShopBuyItems: public MenuHandler {
 public:
 	/**
 	 * Construtor da classe ShopBuyItems.
@@ -560,7 +551,7 @@ private:
 /**
  * Mostra os itens da loja, bem como o seu stock atual.
  */
-class ViewShopInfo: public MenuHandler{
+class ViewShopInfo: public MenuHandler {
 public:
 	/**
 	 * Construtor da classe ViewShopInfo.
@@ -586,7 +577,7 @@ private:
 /**
  * Mostra as piscinas nas proximidades, bem como as modalidades que apresenta.
  */
-class ViewOtherPools: public MenuHandler{
+class ViewOtherPools: public MenuHandler {
 public:
 	/**
 	 * Construtor da classe ViewOtherPools.
@@ -608,7 +599,7 @@ private:
 /**
  * Adiciona outra piscina à fila de prioridade
  */
-class AddOtherPool: public MenuHandler{
+class AddOtherPool: public MenuHandler {
 public:
 	/**
 	 * Construtor da classe AddOtherPool.
@@ -630,7 +621,7 @@ private:
 /**
  * Adicionar uma modalidade a uma piscina.
  */
-class AddModalityToPool: public MenuHandler{
+class AddModalityToPool: public MenuHandler {
 public:
 	/**
 	 * Construtor da classe AddModalityToPool.
@@ -655,7 +646,7 @@ private:
 /**
  * Mostra a campanha atual.
  */
-class ViewCurrentCampaign: public MenuHandler{
+class ViewCurrentCampaign: public MenuHandler {
 public:
 	/**
 	 * Construtor da classe ViewCurrentCampaign.
@@ -677,7 +668,7 @@ private:
 /**
  * Cria uma campanha promocional.
  */
-class AddCampaign: public MenuHandler{
+class AddCampaign: public MenuHandler {
 public:
 	/**
 	 * Construtor da classe AddCampaign.
@@ -699,7 +690,7 @@ private:
 /**
  * Atualiza a tabela de dispersão de clientes inativos.
  */
-class UpdateCustomersInfo: public MenuHandler{
+class UpdateCustomersInfo: public MenuHandler {
 public:
 	/**
 	 * Construtor da classe UpdateCustomersInfo.

@@ -1,5 +1,7 @@
 #include "Exceptions.h"
 
+#include <iostream>
+
 /* Invalid input */
 
 InvalidInputInt::InvalidInputInt(int answer, int min, int max) {
@@ -49,81 +51,86 @@ void InvalidInputDayOfWeek::printError() {
 
 /* INVALID ITEM */
 
-InvalidItem::InvalidItem(string designation, string size){
+InvalidItem::InvalidItem(string designation, string size) {
 	this->designation = designation;
 	this->size = size;
 }
 
-void InvalidItem::printError(){
-	cout << endl << "There's no such Item: " << designation << " of size " << size << endl;
+void InvalidItem::printError() {
+	cout << endl << "There's no such Item: " << designation << " of size "
+			<< size << endl;
 }
 
-InvalidItems::InvalidItems(vector<Item> v){
+InvalidItems::InvalidItems(vector<Item> v) {
 	items = v;
 }
 
-void InvalidItems::printError(){
+void InvalidItems::printError() {
 	cout << endl << "There're no such Items: " << endl;
-	for(const Item &x : items){
+	for (const Item &x : items) {
 		cout << x.getDesignation() << " of size " << x.getSize() << endl;
 	}
 	cout << endl;
 }
 
-InvalidStock::InvalidStock(vector<Item> v){
+InvalidStock::InvalidStock(vector<Item> v) {
 	items = v;
 }
 
-void InvalidStock::printError(){
+void InvalidStock::printError() {
 	cout << endl << "The stock is not enough for the following Items: " << endl;
-	for(const Item &y : items){
-		cout << y.getDesignation() << " of size " << y.getSize() << ": lack of "<< y.getStock() << " units" << endl;
+	for (const Item &y : items) {
+		cout << y.getDesignation() << " of size " << y.getSize() << ": lack of "
+				<< y.getStock() << " units" << endl;
 	}
 	cout << endl;
 }
 
-InvalidRemoveItem::InvalidRemoveItem(vector<Item> nonexistent, vector<Item> overflowItems){
+InvalidRemoveItem::InvalidRemoveItem(vector<Item> nonexistent,
+		vector<Item> overflowItems) {
 	this->nonexistent = nonexistent;
 	this->overflowItems = overflowItems;
 }
 
-void InvalidRemoveItem::printError(){
+void InvalidRemoveItem::printError() {
 	cout << endl << "There're no such Items: " << endl;
-	for(const Item &x : nonexistent){
+	for (const Item &x : nonexistent) {
 		cout << x.getDesignation() << " of size " << x.getSize() << endl;
 	}
 	cout << endl << "The stock is not enough for the following Items: " << endl;
-	for(const Item &y : overflowItems){
-		cout << y.getDesignation() << " of size " << y.getSize()  << ": lack of "<< y.getStock() << " units" << endl;
+	for (const Item &y : overflowItems) {
+		cout << y.getDesignation() << " of size " << y.getSize() << ": lack of "
+				<< y.getStock() << " units" << endl;
 	}
 	cout << endl;
 }
 
-
 /* INVALID POOL */
 
-InvalidPool::InvalidPool(string name){
+InvalidPool::InvalidPool(string name) {
 	this->name = name;
 }
 
-void InvalidPool::printError(){
+void InvalidPool::printError() {
 	cout << endl << "There's no such Pool named " << name << endl << endl;
 }
 
 /* INAVALID MODALITY */
 
-InvalidModality::InvalidModality(Modality modality){
+InvalidModality::InvalidModality(Modality modality) {
 	this->modality = modality;
 }
 
-void InvalidModality::printError(){
-	cout << endl << "Our Pool doesn't give lessons of " << modality << endl << endl;
+void InvalidModality::printError() {
+	cout << endl << "Our Pool doesn't give lessons of " << modality << endl
+			<< endl;
 }
 
-NoModality::NoModality(Modality modality){
+NoModality::NoModality(Modality modality) {
 	this->modality = modality;
 }
 
-void NoModality::printError(){
-	cout << endl << "There's no Pool nearby that gives lessons of " << modality << endl << endl;
+void NoModality::printError() {
+	cout << endl << "There's no Pool nearby that gives lessons of " << modality
+			<< endl << endl;
 }

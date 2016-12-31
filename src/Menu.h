@@ -4,8 +4,8 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "Date.h"
 
+class Date;
 
 using namespace std;
 
@@ -39,9 +39,9 @@ public:
 
 class Menu: public MenuHandler {
 public:
-	virtual MenuResult handle();///trata de intrepretar os inputs postos no menu
-	virtual void invalidOption(int opt);///manda uma mensagem de erro com o input inserido
-	virtual void invalidOption(string opt);///manda uma mensagem de erro com o input inserido
+	virtual MenuResult handle(); ///trata de intrepretar os inputs postos no menu
+	virtual void invalidOption(int opt); ///manda uma mensagem de erro com o input inserido
+	virtual void invalidOption(string opt); ///manda uma mensagem de erro com o input inserido
 
 protected:
 	/**

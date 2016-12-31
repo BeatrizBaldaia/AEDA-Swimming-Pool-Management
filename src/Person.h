@@ -8,11 +8,10 @@
 #include "Date.h"
 #include "PoolUse.h"
 #include "Shop.h"
-#include "Lesson.h"
 
 using namespace std;
 
-class ContactInfo{
+class ContactInfo {
 private:
 	string city;
 	string street;
@@ -21,7 +20,8 @@ private:
 	long cellphoneNum;
 public:
 	ContactInfo();
-	ContactInfo(string city, string street, int number, string postalCode, long cellphoneNum);
+	ContactInfo(string city, string street, int number, string postalCode,
+			long cellphoneNum);
 	string getCity() const;
 	string getStreet() const;
 	int getNumber() const;
@@ -37,7 +37,8 @@ public:
 class Person {
 public:
 	Person(string name, Date birthDate, ContactInfo contactInfo);
-	Person(string name, Date birthDate, unsigned int ID, ContactInfo contactInfo);
+	Person(string name, Date birthDate, unsigned int ID,
+			ContactInfo contactInfo);
 
 	string getName() const;
 	unsigned int getID() const;
@@ -68,14 +69,17 @@ private:
 class Customer: public Person {
 public:
 	Customer(string name, Date birthDate, ContactInfo contactInfo);
-	Customer(string name, Date birthDate, unsigned int ID, ContactInfo contactInfo);
+	Customer(string name, Date birthDate, unsigned int ID,
+			ContactInfo contactInfo);
 
 	float getMonthCost(unsigned int month, unsigned int year) const;
 	int getEntryNumber() const; /// frequência com que os clientes vão á piscina
 	vector<PoolUse *> getPoolUses();
 
-	void attendLesson(GivenLesson * lesson, Date date, Time time, double discount); ///adicionar aula (cliente foi a aula)
-	void freeSwim(Time startTime, Date date, unsigned int duration, double discount); ///adicionar uso em modo livre
+	void attendLesson(GivenLesson * lesson, Date date, Time time,
+			double discount); ///adicionar aula (cliente foi a aula)
+	void freeSwim(Time startTime, Date date, unsigned int duration,
+			double discount); ///adicionar uso em modo livre
 	void addUse(PoolUse * pooluse); ///adicionar uso em modo livre
 
 	bool attendedLesson(const GivenLesson * lesson);
@@ -88,13 +92,14 @@ private:
 class Teacher: public Person {
 public:
 	Teacher(string name, Date birthDate, ContactInfo contactInfo);
-	Teacher(string name, Date birthDate, unsigned int ID, ContactInfo contactInfo);
+	Teacher(string name, Date birthDate, unsigned int ID,
+			ContactInfo contactInfo);
 
-	float getMonthCost(unsigned int month) const;///possivel implementação para a segunda parte do projeto
-	int getNumberLessons() const;///numero de aulas por semana
+	float getMonthCost(unsigned int month) const; ///possivel implementação para a segunda parte do projeto
+	int getNumberLessons() const; ///numero de aulas por semana
 	int getEntryNumber() const;
 
-	void setLesson();///atribuir aula ao professor, e atribuir o mesmo número de aulas aos professores
+	void setLesson(); ///atribuir aula ao professor, e atribuir o mesmo número de aulas aos professores
 
 	bool operator <(const Teacher & t2) const;
 private:

@@ -35,16 +35,16 @@ public:
 	 */
 	Date(unsigned int day, unsigned int month, unsigned int year);
 
-	unsigned int getDay() const;///retorna o dia
-	unsigned int getMonth() const;///retorna o mes
-	unsigned int getYear() const;///retorna o ano
-	DayOfWeek getDayOfWeek() const;///retorna o dia da semana
+	unsigned int getDay() const; ///retorna o dia
+	unsigned int getMonth() const; ///retorna o mes
+	unsigned int getYear() const; ///retorna o ano
+	DayOfWeek getDayOfWeek() const; ///retorna o dia da semana
 
-	void setDay(const unsigned int &day);///muda o dia
-	void setMonth(const unsigned int &month);///muda o mes
-	void setYear(const unsigned int &year);///muda o ano
+	void setDay(const unsigned int &day); ///muda o dia
+	void setMonth(const unsigned int &month); ///muda o mes
+	void setYear(const unsigned int &year); ///muda o ano
 
-	bool valid() const;///ve se uma data é válida (se não temos o mes 13 por exemplo)
+	bool valid() const; ///ve se uma data é válida (se não temos o mes 13 por exemplo)
 	const Date & operator=(const Date & d);
 	bool operator <=(const Date &date) const;
 	bool operator >=(const Date &date) const;
@@ -59,7 +59,7 @@ public:
 	 */
 	int operator -(const Date &date) const;
 
-	bool between(const Date &min, const Date &max);///ve se uma data está entre duas datas
+	bool between(const Date &min, const Date &max); ///ve se uma data está entre duas datas
 
 private:
 	unsigned int day;
@@ -72,8 +72,8 @@ public:
 	Time();
 	Time(unsigned int h, unsigned int m);
 
-	unsigned int getHour() const;///retorna hora
-	unsigned int getMinute() const;///retorna minuto
+	unsigned int getHour() const; ///retorna hora
+	unsigned int getMinute() const; ///retorna minuto
 
 	void setHour(unsigned int h);
 	void setMinute(unsigned int m);
@@ -85,10 +85,10 @@ public:
 	bool operator ==(const Time &time) const;
 	const Time & operator=(const Time & t);
 
-	Time operator +(const Time &time) const;///somar dois Times
-	Time operator +(unsigned int minutes) const;///somar um tempo com minutos
+	Time operator +(const Time &time) const; ///somar dois Times
+	Time operator +(unsigned int minutes) const; ///somar um tempo com minutos
 
-	unsigned int getTimeGap(const Time &time);///ver diferença de minutos entre dois tempos
+	unsigned int getTimeGap(const Time &time); ///ver diferença de minutos entre dois tempos
 private:
 	unsigned int hour;
 	unsigned int minute;

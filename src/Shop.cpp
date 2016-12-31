@@ -1,77 +1,77 @@
 #include "Shop.h"
 
-#include <cmath>
+#include <cstdlib>
 
 #include "Exceptions.h"
 #include "Person.h"
 
 /* Item */
 
-
-Item::Item(string designation, string size, unsigned int stock){
+Item::Item(string designation, string size, unsigned int stock) {
 	this->designation = designation;
 	this->size = size;
 	this->stock = stock;
 }
 
-string Item::getDesignation() const{
+string Item::getDesignation() const {
 	return designation;
 }
 
-string Item::getSize() const{
+string Item::getSize() const {
 	return size;
 }
 
-unsigned int Item::getStock() const{
+unsigned int Item::getStock() const {
 	return stock;
 }
 
-void Item::setSize(string newSize){
+void Item::setSize(string newSize) {
 	size = newSize;
 }
 
-void Item::setStock(unsigned int numberStock){
+void Item::setStock(unsigned int numberStock) {
 	stock = numberStock;
 }
 
-bool Item::operator< (Item item2) const{
-	if(designation == item2.getDesignation()){
+bool Item::operator<(Item item2) const {
+	if (designation == item2.getDesignation()) {
 		return size < item2.getSize();
 	}
 	return designation < item2.getDesignation();
 }
 
-bool Item::operator== (Item item2) const{
+bool Item::operator==(Item item2) const {
 	return ((designation == item2.getDesignation()) && (size == item2.getSize()));
 }
 
-
 /* Shop */
 
+Shop::Shop(string name) :
+		name(name), shopItems(Item("", "", 0)) {
+}
 
-Shop::Shop(string name): shopItems(Item("","",0)), name(name){}
-
-int Shop::getNumberOfItems() const{
+int Shop::getNumberOfItems() const {
 	int size;
 	size = getItems().size();
 	return size;
 }
 
-string Shop::getName() const{
+string Shop::getName() const {
 	return name;
 }
 
-void Shop::buyItem(vector<Item> items){
+void Shop::buyItem(vector<Item> items) {
 	bool exist = false;
-	for(const Item &x : items){
+	for (const Item &x : items) {
 		string d = x.getDesignation();
 		string s = x.getSize();
-		BSTItrIn<Item>it(shopItems);
-		while(!it.isAtEnd()){
-			if(it.retrieve().getDesignation() == d && it.retrieve().getSize() == s){
+		BSTItrIn<Item> it(shopItems);
+		while (!it.isAtEnd()) {
+			if (it.retrieve().getDesignation() == d
+					&& it.retrieve().getSize() == s) {
 				Item i = it.retrieve();
 				shopItems.remove(i);
-				unsigned int n = x.getStock()+i.getStock();
+				unsigned int n = x.getStock() + i.getStock();
 				i.setStock(n);
 				shopItems.insert(i);
 				exist = true;
@@ -79,14 +79,14 @@ void Shop::buyItem(vector<Item> items){
 			}
 			it.advance();
 		}
-		if(!exist){
+		if (!exist) {
 			shopItems.insert(x);
 		}
 		exist = false;
 	}
 }
 
-void Shop::sellItem(Customer *person, vector<Item> items){
+void Shop::sellItem(Customer *person, vector<Item> items) {
 	bool exist = false;
 	vector<Item> nonexistent;
 	vector<Item> overflowItems;
@@ -140,11 +140,10 @@ void Shop::sellItem(Customer *person, vector<Item> items){
 	}
 }
 
-
-vector<Item>Shop::getItems() const{
-	vector<Item>result;
-	BSTItrIn<Item>it(shopItems);
-	while(!it.isAtEnd()){
+vector<Item> Shop::getItems() const {
+	vector<Item> result;
+	BSTItrIn<Item> it(shopItems);
+	while (!it.isAtEnd()) {
 		Item i = it.retrieve();
 		result.push_back(i);
 		it.advance();
@@ -152,6 +151,6 @@ vector<Item>Shop::getItems() const{
 	return result;
 }
 
-BST<Item> Shop::getTree() const{
+BST<Item> Shop::getTree() const {
 	return shopItems;
 }
