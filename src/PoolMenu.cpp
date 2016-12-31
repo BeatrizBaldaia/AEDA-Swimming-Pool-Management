@@ -486,20 +486,31 @@ MenuResult AttendLesson::handle() {
 	if (choice == 0) {
 		return CONTINUE;
 	}
+
 	double discount = 0;
 	try{
 		PromotionalCampaign promCamp = pool.getCurrentPromotion();
 		discount = promCamp.getDiscount();
+		try {
+			pool.attendLesson(lessons[choice - 1], c, getCurrentDate(), discount);
+		} catch (CustomerAlreadyAttendedLesson & x) {
+			cout << "\nThe customer is already in the lesson.\n";
+			return CONTINUE;
+		}
 		cout <<"\nWe are in the middle of a promotional campaign. All lessons and free uses have a discount of " << promCamp.getDiscount() << ".\n";
-		pool.attendLesson(lessons[choice - 1], c, getCurrentDate(), discount);
 		if(pool.isCustomerInactive(c)){
 			pool.activateCustomer(c);
 		}
 		pool.write();
 		return CONTINUE;
 	}catch (NoCurrentCampaign & e){
+		try {
+			pool.attendLesson(lessons[choice - 1], c, getCurrentDate(), discount);
+		} catch (CustomerAlreadyAttendedLesson & x) {
+			cout << "\nThe customer is already in the lesson.\n";
+			return CONTINUE;
+		}
 		cout << "\nNo campaign is currently running.\n";
-		pool.attendLesson(lessons[choice - 1], c, getCurrentDate(), discount);
 		if(pool.isCustomerInactive(c)){
 			pool.activateCustomer(c);
 		}
@@ -573,16 +584,27 @@ MenuResult AttendToSpecificModality::handle() {
 		try{///caso estejamos numa campanha promocional
 			PromotionalCampaign promCamp = pool.getCurrentPromotion();
 			discount = promCamp.getDiscount();
+			try {
+				pool.attendLesson(lessons[choice], c, today, discount);
+			} catch (CustomerAlreadyAttendedLesson & x) {
+				cout << "\nThe customer is already in the lesson.\n";
+				return CONTINUE;
+			}
 			cout <<"\nWe are in the middle of a promotional campaign. All lessons and free uses have a discount of " << promCamp.getDiscount() << ".\n";
-			pool.attendLesson(lessons[choice], c, today, discount);
 			if(pool.isCustomerInactive(c)){
 				pool.activateCustomer(c);
 			}
 			pool.write();
 			return CONTINUE;
 		}catch (NoCurrentCampaign & e){///nao esta a ocorrer nenhuma campanha promocional
+			try {
+				pool.attendLesson(lessons[choice], c, today, discount);
+			} catch (CustomerAlreadyAttendedLesson & x) {
+				cout << "\nThe customer is already in the lesson.\n";
+				return CONTINUE;
+			}
 			cout << "\nNo campaign is currently running.\n";
-			pool.attendLesson(lessons[choice], c, today, discount);
+
 			if(pool.isCustomerInactive(c)){
 				pool.activateCustomer(c);
 			}
