@@ -501,6 +501,16 @@ void Pool::writeGivenLessons() {
 	for (GivenLesson * i : givenLessons) {
 		givenLessonsFile << i->getID() << ";";
 		givenLessonsFile << i->getLesson().getTeacher()->getID() << ";";
+		double discount;
+		for (PoolUse * l : i->getCustomers()[0]->getPoolUses())
+		{
+			if (l->getLesson() == i)
+			{
+				discount = l->getDiscount();
+				break;
+			}
+		}
+		givenLessonsFile << discount << ";";
 		int mod = i->getLesson().getModality();
 		givenLessonsFile << mod << ";";
 		int day = i->getLesson().getDayOfWeek();
