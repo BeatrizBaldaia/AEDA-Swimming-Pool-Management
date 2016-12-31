@@ -376,7 +376,9 @@ void Pool::writeOtherPools(){
 			}
 		}
 		n--;
-		otherPoolsFile << '\n';
+		if (n != 0) {
+			otherPoolsFile << '\n';
+		}
 		queue.pop();
 	}
 }

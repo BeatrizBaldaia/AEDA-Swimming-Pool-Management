@@ -13,7 +13,8 @@
 11;Luis Silva Azevedo;17/01/1959;Rua José R Silva Júnior;315;Vermoin;4470-316;0
 12;Ana Cardoso Araujo;15/10/1964;Rua Campo Alegre;17;Porto;4150-177;0
 13;Tomas Almeida Barros;17/02/1971;Avenida da República;2302;Vila Nova de Gaia;4430-196;0
-14;Gabriela Castro Correia;31/08/2000;Avenida Rebelo Mesquita;136;Vila Nova de Famalicão;4760-013;0
+14;Gabriela Castro Correia;31/08/2000;Avenida Rebelo Mesquita;136;Vila Nova de Famalicão;4760-013;1
+31/12/2016;08:35;40;0.15
 15;Aline Melo Araujo;02/06/1964;Rua José R Silva Júnior;315;Vermoin;4470-316;0
 16;Clara Pinto Goncalves;02/11/1997;Rua Campo Alegre;17;Porto;4150-177;0
 17;Mariana Pinto Gomes;10/08/1991;Rua Campo Alegre;17;Porto;4150-177;0

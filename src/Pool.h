@@ -35,16 +35,52 @@ typedef tr1::unordered_set<Customer *, hCustomer, hCustomer> hashCustomer;
 ///////////////////////////////////
 
 
+/**
+ * \brief Classe que guarda a informação referente a uma campanha promocional.
+ * Guarda a data de inicio e de fim data campanha, bem como o desconto. Contem funções que retornam os membros-dado e um operador de menor para fazer sort.
+ */
 class PromotionalCampaign {
 private:
+	/**
+	 * Data de inicio.
+	 */
 	Date beginDate;
+	/**
+	 * Data de fim.
+	 */
 	Date endDate;
+	/**
+	 * Desconto na campanha
+	 */
 	double discount;
 public:
+	/**
+	 * Construtor da classe PromotionalCampaign.
+	 * @param beginDate
+	 * @param endDate
+	 * @param discount
+	 */
 	PromotionalCampaign(Date beginDate, Date endDate, double discount);
+	/**
+	 * Retorna a data de ínicio.
+	 * @return
+	 */
 	Date getBeginDate() const;
+	/**
+	 * Retorna data de fim.
+	 * @return
+	 */
 	Date getEndDate() const;
+	/**
+	 * Retorna o desconto da campanha.
+	 * @return
+	 */
 	double getDiscount() const;
+	/**
+	 * Operador de menor. Uma campanha é menor que a outra se for mais recente.
+	 * @param promCamp
+	 * @return
+	 */
 	bool operator<(PromotionalCampaign & promCamp) const;
 };
 
