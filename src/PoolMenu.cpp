@@ -43,8 +43,12 @@ MenuResult AddCustomer::handle() {
 	cout << "=> Postal Code: ";
 	string code;
 	getline(cin, code);
-	HomeAddress address(city, street, number, code);
-	Customer * c = new Customer(name, birthdate, address);
+	cout << "=> Cellphone number:";
+	long cellphoneNum;
+	cin >> cellphoneNum;
+	cin.ignore();
+	ContactInfo contactInfo(city, street, number, code, cellphoneNum);
+	Customer * c = new Customer(name, birthdate, contactInfo);
 	c->setCity(city);
 	c->setStreet(street);
 	c->setNumber(number);
@@ -96,7 +100,7 @@ MenuResult CurrentOccupation::handle() {
 	cout << endl << day << endl;
 	Time duration(1,0);
 	Time time = getCurrentTime();
-	Date date = getCurrentDate();
+//	Date date = getCurrentDate();
 	bool existLessonsToday = true, currentlesson;
 	Lesson lesson;
 	try {
@@ -346,8 +350,12 @@ MenuResult AddTeacher::handle() {
 	cout << "=> Postal Code: ";
 	string code;
 	getline(cin, code);
-	HomeAddress address(city, street, number, code);
-	Teacher * t = new Teacher(teacherName, birthdate, address);
+	cout << "=> Cellphone number:";
+	long cellphoneNum;
+	cin >> cellphoneNum;
+	cin.ignore();
+	ContactInfo contactInfo(city, street, number, code, cellphoneNum);
+	Teacher * t = new Teacher(teacherName, birthdate, contactInfo);
 
 	pool.addTeacher(t);
 	cout << endl << teacherName << " created!\n";
@@ -896,8 +904,8 @@ MenuResult ViewCustomers::handle() {
 	}
 	else{
 		hashCustomer table = pool.getInactiveCustomer();
-		hashCustomer::iterator it = table.begin();
-		for(it; it != table.end(); it++){
+		hashCustomer::iterator it;
+		for(it = table.begin(); it != table.end(); it++){
 			cout << (*it)->getName();
 		}
 	}
@@ -993,7 +1001,7 @@ MenuResult ViewTeacherInformation::handle() {
 ShopSellItems::ShopSellItems(Pool & pool): pool(pool){
 }
 
-MenuResult ShopSellItems::handle(){
+MenuResult ShopSellItems::handle() {
 	string name;
 	cout << "Insert customer's name: ";
 	getline(cin, name);
@@ -1006,43 +1014,42 @@ MenuResult ShopSellItems::handle(){
 	}
 	cout << "\nList of our products: \n \n";
 	vector<Item> v = pool.getShop()->getItems();
-	int n = 0;
-	for(int i = 0; i < v.size(); i++){
-		cout << (i + 1) << " -> " << v[i].getDesignation() << " (size " << v[i].getSize() << ")" << endl;
+	for (int i = 0; i < v.size(); i++) {
+		cout << (i + 1) << " -> " << v[i].getDesignation() << " (size "
+				<< v[i].getSize() << ")" << endl;
 	}
 	cout << endl << "0 -> Stop adding products \n \n";
 	cout << endl;
 	vector<Item> items; ///itens que o utilizador vai comprar
-	while(true){
-	int prodN;
-	getInputInt(prodN, 0, v.size(), "Insert the product number");
-	if(prodN == 0){
-		break;
+	while (true) {
+		int prodN;
+		getInputInt(prodN, 0, v.size(), "Insert the product number");
+		if (prodN == 0) {
+			break;
+		}
+		int prodQ;
+		getInputInt(prodQ, 0, 30000, "Insert the product quantity");
+		if (prodN <= v.size()) {
+			Item i(v[prodN - 1].getDesignation(), v[prodN - 1].getSize(),
+					prodQ);
+			items.push_back(i);
+		}
 	}
-	int prodQ;
-	getInputInt(prodQ, 0, 30000, "Insert the product quantity");
-	if(prodN <= v.size()){
-		Item i(v[prodN-1].getDesignation(), v[prodN-1].getSize(), prodQ);
-		items.push_back(i);
-	}
-	}
-	if(items.empty()){
+	if (items.empty()) {
 		return CONTINUE;
 	}
 	Shop * s = pool.getShop();
-	try{
+	try {
 		s->sellItem(c, items);
 		pool.write();
 		return CONTINUE;
-	}catch(InvalidRemoveItem &x){
+	} catch (InvalidRemoveItem &x) {
 		x.printError();
 		pool.write();
-	}
-	catch(InvalidItems &x){
+	} catch (InvalidItems &x) {
 		x.printError();
 		pool.write();
-	}
-	catch(InvalidStock &x){
+	} catch (InvalidStock &x) {
 		x.printError();
 		pool.write();
 	}
@@ -1051,24 +1058,26 @@ MenuResult ShopSellItems::handle(){
 ShopBuyItems::ShopBuyItems(Pool & pool): pool(pool){
 }
 
-MenuResult ShopBuyItems::handle(){
+MenuResult ShopBuyItems::handle() {
 	cout << "\nList of provider's Products: \n \n";
-	vector<Item>v = pool.getProviderItems();
-	vector<Item>items;
-	for(int i = 0; i < v.size(); i++){
-		cout << (i + 1) << " -> " << v[i].getDesignation() << " (size " << v[i].getSize() << ") \n";
+	vector<Item> v = pool.getProviderItems();
+	vector<Item> items;
+	for (int i = 0; i < v.size(); i++) {
+		cout << (i + 1) << " -> " << v[i].getDesignation() << " (size "
+				<< v[i].getSize() << ") \n";
 	}
 	cout << endl << "0 -> Stop adding products \n \n";
-	while(true){
+	while (true) {
 		int prodN;
 		getInputInt(prodN, 0, v.size(), "Insert the product number");
-		if(prodN == 0){
+		if (prodN == 0) {
 			break;
 		}
 		int prodQ;
 		getInputInt(prodQ, 0, 30000, "Insert the product quantity");
-		if(prodN <= v.size()){
-			Item i(v[prodN-1].getDesignation(), v[prodN-1].getSize(), prodQ);
+		if (prodN <= v.size()) {
+			Item i(v[prodN - 1].getDesignation(), v[prodN - 1].getSize(),
+					prodQ);
 			items.push_back(i);
 		}
 	}
@@ -1112,6 +1121,7 @@ MenuResult ViewOtherPools::handle(){
 		queue.pop();
 	}
 	cout << endl;
+	return CONTINUE;
 }
 
 AddOtherPool::AddOtherPool(Pool & pool): pool(pool){
@@ -1189,7 +1199,7 @@ ViewCurrentCampaign::ViewCurrentCampaign(Pool & pool): pool(pool){
 }
 
 MenuResult ViewCurrentCampaign::handle(){
-	Date day = getCurrentDate();
+//	Date day = getCurrentDate();
 	try {
 		PromotionalCampaign promo = pool.getCurrentPromotion();
 		cout << "One Promotional Campaign has started on "
@@ -1209,7 +1219,7 @@ UpdateCustomersInfo::UpdateCustomersInfo(Pool & pool): pool(pool){
 }
 
 MenuResult UpdateCustomersInfo::handle() {
-	Date day = getCurrentDate();
+//	Date day = getCurrentDate();
 	try {
 		PromotionalCampaign promo = pool.getCurrentPromotion();
 		cout << "One Promotional Campaign has started on "

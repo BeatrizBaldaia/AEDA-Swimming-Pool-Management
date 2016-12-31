@@ -6,68 +6,77 @@
 
 unsigned int Person::lastID = 0;
 
-/* HOME ADDRESS */
+/* HOME contactInfo */
 
-HomeAddress::HomeAddress(){
+ContactInfo::ContactInfo(){
 	this->city = "";
 	this->street = "";
 	this->number = 0;
 	this->postalCode = "";
 }
 
-HomeAddress::HomeAddress(string city, string street, int number, string postalCode){
+ContactInfo::ContactInfo(string city, string street, int number, string postalCode, long cellphoneNum){
 	this->city = city;
 	this->street = street;
 	this->number = number;
 	this->postalCode = postalCode;
+	this->cellphoneNum = cellphoneNum;
 }
-string HomeAddress::getCity() const{
+string ContactInfo::getCity() const{
 	return city;
 }
 
-string HomeAddress::getStreet() const{
+string ContactInfo::getStreet() const{
 	return street;
 }
 
-int HomeAddress::getNumber() const{
+int ContactInfo::getNumber() const{
 	return number;
 }
 
-string HomeAddress::getPostalCode() const{
+string ContactInfo::getPostalCode() const{
 	return postalCode;
 }
 
-void HomeAddress::setCity(string city){
+void ContactInfo::setCity(string city){
 	this->city = city;
 }
 
-void HomeAddress::setStreet(string street){
+void ContactInfo::setStreet(string street){
 	this->street = street;
 }
 
-void HomeAddress::setNumber(int number){
+void ContactInfo::setNumber(int number){
 	this->number = number;
 }
 
-void HomeAddress::setPostalCode(string code){
+long ContactInfo::getCellphoneNum() const {
+	return cellphoneNum;
+}
+
+void ContactInfo::setCellphoneNum(long cellphoneNum) {
+	this->cellphoneNum = cellphoneNum;
+}
+
+void ContactInfo::setPostalCode(string code){
 	this->postalCode = code;
 }
 
 /* PERSON */
 
-Person::Person(string name, Date birthDate, HomeAddress address) :
+Person::Person(string name, Date birthDate, ContactInfo contactInfo) :
 		ID(lastID + 1) {
 	this->name = name;
 	this->birthDate = birthDate;
-	this->address = address;
+	this->contactInfo = contactInfo;
 	lastID++;
 }
 
-Person::Person(string name, Date birthDate, unsigned int ID, HomeAddress address) :
+Person::Person(string name, Date birthDate, unsigned int ID, ContactInfo contactInfo) :
 		ID(ID) {
 	this->name = name;
 	this->birthDate = birthDate;
-	this->address = address;
+	this->contactInfo = contactInfo;
 	if (ID > lastID) {
 		lastID = ID;
 	}
@@ -89,75 +98,47 @@ void Person::setName(string name) {
 	this->name = name;
 }
 string Person::getCity() const{
-	return address.getCity();
+	return contactInfo.getCity();
 }
 string Person::getStreet() const{
-	return address.getStreet();
+	return contactInfo.getStreet();
 }
 int Person::getNumber() const{
-	return address.getNumber();
+	return contactInfo.getNumber();
 }
 
 string Person::getPostalCode() const{
-	return address.getPostalCode();
+	return contactInfo.getPostalCode();
 }
 
 void Person::setCity(string city){
-	address.setCity(city);
+	contactInfo.setCity(city);
 }
 
 void Person::setStreet(string street){
-	address.setStreet(street);
+	contactInfo.setStreet(street);
 }
 
 void Person::setNumber(int number){
-	address.setNumber(number);
+	contactInfo.setNumber(number);
+}
+
+long Person::getCellphoneNum() const {
+	return contactInfo.getCellphoneNum();
 }
 
 void Person::setPostalCode(string code){
-	address.setPostalCode(code);
+	contactInfo.setPostalCode(code);
 }
 
 /* CUSTOMER */
 
-Customer::Customer(string name, Date birthDate, HomeAddress address) :
-		Person(name, birthDate, address) {
+Customer::Customer(string name, Date birthDate, ContactInfo contactInfo) :
+		Person(name, birthDate, contactInfo) {
 }
 
-Customer::Customer(string name, Date birthDate,  unsigned int ID, HomeAddress address) :
-				Person(name, birthDate, ID, address) {
-}
-
-string Customer::getCity() const{
-	return Person::getCity();
-}
-
-string Customer::getStreet() const{
-	return Person::getStreet();
-}
-
-int Customer::getNumber() const{
-	return Person::getNumber();
-}
-
-string Customer::getPostalCode() const{
-	return Person::getPostalCode();
-}
-
-void Customer::setCity(string city){
-	Person::setCity(city);
-}
-
-void Customer::setStreet(string street){
-	Person::setStreet(street);
-}
-
-void Customer::setNumber(int number){
-	Person::setNumber(number);
-}
-
-void Customer::setPostalCode(string code){
-	Person::setPostalCode(code);
+Customer::Customer(string name, Date birthDate,  unsigned int ID, ContactInfo contactInfo) :
+				Person(name, birthDate, ID, contactInfo) {
 }
 
 float Customer::getMonthCost(unsigned int month, unsigned int year) const {
@@ -222,13 +203,13 @@ void Customer::buyItem(vector<Item> items){
 
 /* TEACHER */
 
-Teacher::Teacher(string name, Date birthDate, HomeAddress address) :
-		Person(name, birthDate, address) {
+Teacher::Teacher(string name, Date birthDate, ContactInfo contactInfo) :
+		Person(name, birthDate, contactInfo) {
 	lessonsPerWeek = 0;
 }
 
-Teacher::Teacher(string name, Date birthDate, unsigned int ID, HomeAddress address) :
-		Person(name, birthDate, ID, address) {
+Teacher::Teacher(string name, Date birthDate, unsigned int ID, ContactInfo contactInfo) :
+		Person(name, birthDate, ID, contactInfo) {
 	lessonsPerWeek = 0;
 }
 
@@ -254,4 +235,8 @@ int Teacher::getEntryNumber() const {
 
 vector<PoolUse*> Customer::getPoolUses() {
 	return uses;
+}
+
+void Person::setCellphoneNum(long cellphoneNum) {
+	contactInfo.setCellphoneNum(cellphoneNum);
 }

@@ -12,15 +12,16 @@
 
 using namespace std;
 
-class HomeAddress{
+class ContactInfo{
 private:
 	string city;
 	string street;
 	int number;
 	string postalCode;
+	long cellphoneNum;
 public:
-	HomeAddress();
-	HomeAddress(string city, string street, int number, string postalCode);
+	ContactInfo();
+	ContactInfo(string city, string street, int number, string postalCode, long cellphoneNum);
 	string getCity() const;
 	string getStreet() const;
 	int getNumber() const;
@@ -29,12 +30,14 @@ public:
 	void setStreet(string street);
 	void setNumber(int number);
 	void setPostalCode(string code);
+	long getCellphoneNum() const;
+	void setCellphoneNum(long cellphoneNum);
 };
 
 class Person {
 public:
-	Person(string name, Date birthDate, HomeAddress address);
-	Person(string name, Date birthDate, unsigned int ID, HomeAddress address);
+	Person(string name, Date birthDate, ContactInfo contactInfo);
+	Person(string name, Date birthDate, unsigned int ID, ContactInfo contactInfo);
 
 	string getName() const;
 	unsigned int getID() const;
@@ -46,24 +49,26 @@ public:
 	string getStreet() const;
 	int getNumber() const;
 	string getPostalCode() const;
+	long getCellphoneNum() const;
 	void setCity(string city);
 	void setStreet(string street);
 	void setNumber(int number);
 	void setPostalCode(string code);
+	void setCellphoneNum(long cellphoneNum);
 
 	static unsigned int lastID;
 private:
 	const unsigned int ID;
 	string name;
 	Date birthDate;
-	HomeAddress address;
+	ContactInfo contactInfo;
 
 };
 
 class Customer: public Person {
 public:
-	Customer(string name, Date birthDate, HomeAddress address);
-	Customer(string name, Date birthDate, unsigned int ID, HomeAddress address);
+	Customer(string name, Date birthDate, ContactInfo contactInfo);
+	Customer(string name, Date birthDate, unsigned int ID, ContactInfo contactInfo);
 
 	float getMonthCost(unsigned int month, unsigned int year) const;
 	int getEntryNumber() const; /// frequência com que os clientes vão á piscina
@@ -72,15 +77,6 @@ public:
 	void attendLesson(GivenLesson * lesson, Date date, Time time, double discount); ///adicionar aula (cliente foi a aula)
 	void freeSwim(Time startTime, Date date, unsigned int duration, double discount); ///adicionar uso em modo livre
 	void addUse(PoolUse * pooluse); ///adicionar uso em modo livre
-
-	string getCity() const;
-	string getStreet() const;
-	int getNumber() const;
-	string getPostalCode() const;
-	void setCity(string city);
-	void setStreet(string street);
-	void setNumber(int number);
-	void setPostalCode(string code);
 
 	bool attendedLesson(const GivenLesson * lesson);
 	void buyItem(vector<Item> items);
@@ -91,8 +87,8 @@ private:
 
 class Teacher: public Person {
 public:
-	Teacher(string name, Date birthDate, HomeAddress address);
-	Teacher(string name, Date birthDate, unsigned int ID, HomeAddress address);
+	Teacher(string name, Date birthDate, ContactInfo contactInfo);
+	Teacher(string name, Date birthDate, unsigned int ID, ContactInfo contactInfo);
 
 	float getMonthCost(unsigned int month) const;///possivel implementação para a segunda parte do projeto
 	int getNumberLessons() const;///numero de aulas por semana

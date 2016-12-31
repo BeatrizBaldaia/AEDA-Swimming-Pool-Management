@@ -240,7 +240,11 @@ void Pool::writeCustomers() {
 		customersFile << i->getID() << ";";
 		customersFile << i->getName() << ";";
 		customersFile << i->getBirthDate() << ";";
-		customersFile << i->getStreet() << ";" << i->getNumber() << ";" << i->getCity() << ";" << i->getPostalCode() << ";";
+		customersFile << i->getStreet() << ";";
+		customersFile << i->getNumber() << ";";
+		customersFile << i->getCity() << ";";
+		customersFile << i->getPostalCode() << ";";
+		customersFile << i->getCellphoneNum() << ";";
 		vector<PoolUse *> FreeSwimUses;
 		for (PoolUse * j : i->getPoolUses()) {
 			if (j->getLesson() == NULL) {
@@ -267,7 +271,8 @@ void Pool::writeTeachers() {
 		teachersFile << i->getStreet() << ";";
 		teachersFile << i->getNumber() << ";";
 		teachersFile << i->getCity() << ";";
-		teachersFile << i->getPostalCode() << endl;
+		teachersFile << i->getPostalCode() << ";";
+		teachersFile << i->getCellphoneNum() << endl;
 	}
 	teachersFile.close();
 }
@@ -561,8 +566,11 @@ void Pool::loadCustomers() {
 		getline(customersFile, city, ';');
 		string postCode;
 		getline(customersFile, postCode, ';');
-		HomeAddress address(city, street, number, postCode);
-		Customer * c = new Customer(name, birthDate, ID, address);
+		long cellphoneNum;
+		customersFile >> cellphoneNum;
+		customersFile.ignore();
+		ContactInfo contactInfo(city, street, number, postCode, cellphoneNum);
+		Customer * c = new Customer(name, birthDate, ID, contactInfo);
 		unsigned int m;
 		customersFile >> m;
 		for (size_t j = 0; j < m; j++) {
@@ -606,9 +614,12 @@ void Pool::loadTeachers() {
 		string city;
 		getline(teachersFile, city, ';');
 		string postCode;
-		getline(teachersFile, postCode);
-		HomeAddress address(city, street, number, postCode);
-		Teacher * t = new Teacher(name, birthDate, ID, address);
+		getline(teachersFile, postCode, ';');
+		long cellphoneNum;
+		teachersFile >> cellphoneNum;
+		teachersFile.ignore();
+		ContactInfo contactInfo(city, street, number, postCode, cellphoneNum);
+		Teacher * t = new Teacher(name, birthDate, ID, contactInfo);
 		teachers.push_back(t);
 	}
 }
