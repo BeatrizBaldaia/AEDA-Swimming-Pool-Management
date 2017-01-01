@@ -111,95 +111,386 @@ public:
 	bool operator<(ptrOtherPool oP2) const;
 };
 
+/**
+ * \brief Mega classe que guarda toda a informação da piscina.
+ * Contem um vetor de clientes, de professores, de aulas, de aulas dadas, de usos livres da piscina, e de promoções.
+ * Contem também uma lista de prioridade com outras piscinas (ordenadas por proximidade), um nome (string), o número máximo de clientes, um apontador para uma loja, e uma tabela de dispersão com clientes inativos.
+ * É guardado na Pool o nome do ficheiros de texto a utilizar pelo programa.
+ */
 class Pool {
 public:
-	static int inactivityPeriod; /// days to be considered inactive
+	static int inactivityPeriod; ///Dias necessários para considerar um cliente inativo.
+	 /**
+	  * Retorna o número máximo de clientes da piscina
+	  * @return unsigned int
+	  */
 	unsigned int getMaxCustomers() const;
+	/**
+	 * Retorna a próxima aula no horário (em relação ao tempo atual), lança a exceção NoMoreLessonsInDay se não existir nenhuma.
+	 * @param day
+	 * @param time
+	 * @param currentlesson
+	 * @return Lesson
+	 */
 	Lesson getNextLesson(DayOfWeek day, Time time, bool & currentlesson) const;
-	vector<Lesson> getLessons(unsigned int ID); /// retorna vetor com as aulas dadas por um professor
+	/**
+	 * Retorna vetor com as aulas marcadas para um professor.
+	 * @param ID
+	 * @return vector<Lesson>
+	 */
+	vector<Lesson> getLessons(unsigned int ID);
+	/**
+	 * Retorna as aulas marcadas para um dia.
+	 * @param date
+	 * @param time
+	 * @return vector<Lesson>
+	 */
 	vector<Lesson> getLessons(Date date, Time time);
-	vector<GivenLesson *> getGivenLessons(); /// dá o vetor givenLessons
+	/**
+	 * Retorna todas as aulas dadas pela piscina.
+	 * @return vector<GivenLesson *>
+	 */
+	vector<GivenLesson *> getGivenLessons();
+	/**
+	 * Retorna todas as aulas dadas por um professor.
+	 * @param ID
+	 * @return vector<GivenLesson *>
+	 */
 	vector<GivenLesson *> getGivenLessons(unsigned int ID);
+	/**
+	 * Retorna as aulas do horário de uma determinada modalidade.
+	 * @param modality
+	 * @return vector<Lesson>
+	 */
 	vector<Lesson> getLessonByModality(Modality modality) const;
-	GivenLesson * getGivenLesson(Lesson lesson, Date date); /// dá GivenLesson que tem uma certa Lesson e ocorreu num certo Date
-	void addLesson(Lesson lesson); /// adiciona aula ao vetor schedule e atribui a mesma um professor
-	unsigned int CustomersInLesson(GivenLesson lesson); /// dá o número de clientes numa certa aula
-	unsigned int CustomersFreeUse(Date date, Time time); /// dá o número de clientes a usar a piscina numa certa data e tempo
-	Lesson getLesson(DayOfWeek day, Time time) const; ///usa exceção: try{...} catch(InvalidLesson x){cout << "There's no lesson on " << x.day << " at " << x.time;
-	vector<Customer *> getCustomers(); /// retorna vetor customers
-	Customer * getCustomer(string name); ///usa exceção: try{...} catch(NonExistentCustomer x){cout << "There's no such customer named " << x.name;
-	Customer * getCustomer(unsigned int ID); ///usa exceção: try{...} catch(NonExistentCustomer x){cout << "There's no such customer with ID " << x.ID;
-	void setName(string name); ///dá nome a piscina
-	void setMaxCustomers(unsigned int n); /// define o numero maximo de pessoas na piscina
-	string getName() const; ///dá nome da piscina
+	/**
+	 * \brief Retorna uma aula dada a partir de uma data e de uma aula marcada.
+	 * Se o dia da semana da aula marcada e da data não corresponderem, lança a exceção NotSameDayAsDate.
+	 * Se a aula marcada não for uma aula dada (não apareceu ninguém), retorna a exceção NonExistentGivenLesson.
+	 * @param lesson
+	 * @param date
+	 * @return GivenLesson *
+	 */
+	GivenLesson * getGivenLesson(Lesson lesson, Date date);
+	/**
+	 * Adiciona a aula marcada ao horário, e redistribui os professores pelas aulas.
+	 * @param lesson
+	 */
+	void addLesson(Lesson lesson);
+	/**
+	 * Retorna o número de clientes numa aula dada ou a decorrer.
+	 * @param lesson
+	 * @return unsigned int
+	 */
+	unsigned int CustomersInLesson(GivenLesson lesson);
+	/**
+	 * Retorna o número de clientes em uso livre numa determinada hora num determinado dia.
+	 * @param date
+	 * @param time
+	 * @return unsigned int
+	 */
+	unsigned int CustomersFreeUse(Date date, Time time);
+	/**
+	 * \brief Retorna uma aula marcada num deteminado dia da semana numa determinada hora.
+	 * Se não existir nenhuma aula marcada nesse instante, lança a exceção InvalidLesson.
+	 * @param day
+	 * @param time
+	 * @return Lesson
+	 */
+	Lesson getLesson(DayOfWeek day, Time time) const;
+	/**
+	 * Retorna todos os clientes da piscina.
+	 * @return vector<Customer *>
+	 */
+	vector<Customer *> getCustomers();
+	/**
+	 * \brief Retorna o cliente com um determinado nome.
+	 * Se não houver nenhum cliente com esse nome lança a exceção NonExistentCustomerName.
+	 * @param name
+	 * @return Customer *
+	 */
+	Customer * getCustomer(string name);
+	/**
+	 * \brief Retorna o cliente com um determinado ID.
+	 * Se não existir nenhum cliente com esse ID lança a exceção NonExistentCustomerID.
+	 * @param ID
+	 * @return Customer *
+	 */
+	Customer * getCustomer(unsigned int ID);
+	/**
+	 * Altera o nome da piscina.
+	 * @param name
+	 */
+	void setName(string name);
+	/**
+	 * Altera o número máximo de clientes permitidos na piscina.
+	 * @param n
+	 */
+	void setMaxCustomers(unsigned int n);
+	/**
+	 * Retorna o nome da piscina.
+	 * @return string
+	 */
+	string getName() const;
+	/**
+	 * Retorna o horário da piscina.
+	 * @return vector<Lesson>
+	 */
 	vector<Lesson> getSchedule() const;
+	/**
+	 * Retorna todos os professores da piscina.
+	 * @return vector<Teacher *>
+	 */
 	vector<Teacher *> getTeachers() const;
 	void addCampaign(PromotionalCampaign campaign);
+	/**
+	 * \brief Retorna a campanha promocional em vigor no momento.
+	 * Se não existir nenhuma campanha em vigor lança a exceção NoCurrentCampaign.
+	 * @return
+	 */
 	PromotionalCampaign getCurrentPromotion() const;
-
+	/**
+	 * Retorna todas as campanhas promocionais da piscina.
+	 * @return vector<PromotionalCampaign>
+	 */
 	vector<PromotionalCampaign> getPromotionalCampaign() const;
-	void addPromotionalCampaign(PromotionalCampaign campaign); ///retorna exceção se houver algum overlap de campanhas promocionais
-
-	bool isCustomerInactive(Customer * c); ///ver se cliente e inativo
-	void activateCustomer(Customer * c); ///torna cliente inativo em ativo
+	/**
+	 * \brief Adiciona uma campanha promocional à piscina.
+	 * Se esta campanha se sobrepor a outra, lança a exceção OverlapingCampaign.
+	 * @param campaign
+	 */
+	void addPromotionalCampaign(PromotionalCampaign campaign);
+	/**
+	 * Retorna o estado do cliente. Retorna verdade se ele estiver inativo, e falso se estiver ativo.
+	 * @param c
+	 * @return bool
+	 */
+	bool isCustomerInactive(Customer * c);
+	/**
+	 * Torna um cliente inativo em ativo
+	 * @param c
+	 */
+	void activateCustomer(Customer * c);
+	/**
+	 * Retorna um cliente inativo.
+	 * @return hashCustomer
+	 */
 	hashCustomer getInactiveCustomer() const;
+	/**
+	 * Elimina um customer inativo.
+	 * @param customer
+	 */
 	void eraseInactive(Customer * customer);
+	/**
+	 * Torna um cliente ativo em inativo.
+	 * @param customer
+	 */
 	void insertInactive(Customer * customer);
-
+	/**
+	 * Retorna os produtos vendidos pelo fornecedor.
+	 * @return vector<Item>
+	 */
 	vector<Item> getProviderItems();
-
+	/**
+	 * Retorna a fila de prioridade com as outras piscinas.
+	 * @return priority_queue<ptrOtherPool>
+	 */
 	priority_queue<ptrOtherPool> getOtherPools() const;
-	void addOtherPool(ptrOtherPool oP); ///adiciona a fila de prioridade uma piscina das redondezas
-	void addModalityToPool(string name, vector<Modality> vM); ///adiciona modalidade a uma piscina das redondezas (de nome name)
+	/**
+	 * Adiciona uma nova piscina à fila de prioridade.
+	 * @param oP
+	 */
+	void addOtherPool(ptrOtherPool oP);
+	/**
+	 * Adiciona modalidades a uma piscina das redondezas.
+	 * @param name
+	 * @param vM
+	 */
+	void addModalityToPool(string name, vector<Modality> vM); //TODO exceção de já existirem modalidades
+	/**
+	 * \brief Retorna a piscina mais próxima com a modalidade requerida.
+	 * Se nenhuma piscina tiver a modalidade, lança a exceção NoModality.
+	 * @param modality
+	 * @return ptrOtherPool
+	 */
 	ptrOtherPool getNextPool(Modality modality);
-
+	/**
+	 * Distribui as aulas marcadas pelos professores da piscina, de forma a ficarem iguais em número de aulas.
+	 */
 	void distributeLessons();
-
+	/**
+	 * Muda o nome dos ficheiros a ler.
+	 * @param v
+	 */
 	void setFileNames(vector<string> v);
+	/**
+	 * Adiciona um uso à piscina.
+	 * @param freeUse
+	 */
 	void addFreeUse(PoolUse * freeUse);
-
+	/**
+	 * \brief Atribui um cliente a um aula.
+	 * Se o dia da semana da aula marcada e do dia não coincidirem lança a exceção NotSameDayAsDate.
+	 * @param lesson
+	 * @param customer
+	 * @param date
+	 * @param discount
+	 */
 	void attendLesson(Lesson lesson, Customer * customer, Date date,
 			double discount);
+	/**
+	 * Adiciona um uso livre a um cliente (e à piscina).
+	 * @param customer
+	 * @param date
+	 * @param time
+	 * @param duration
+	 * @param discount
+	 */
 	void addFreeSwim(Customer * customer, Date date, Time time,
 			unsigned int duration, double discount);
-
+	/**
+	 * Remove o cliente com determinado ID.
+	 * @param ID
+	 */
 	void removeCustomer(unsigned int ID);
+	/**
+	 * Remove o professor com determinado ID.
+	 * @param ID
+	 */
 	void removeTeacher(unsigned int ID);
+	/**
+	 * Remove uma aula do horário de acordo com a sua posição no mesmo.
+	 * @param position
+	 */
 	void removeLesson(unsigned int position);
-
+	/**
+	 * Adiciona um cliente à piscina.
+	 * @param c
+	 */
 	void addCustomer(Customer * c);
+	/**
+	 * Adiciona um professor à piscina e redistribui as aulas novamente.
+	 * @param t
+	 */
 	void addTeacher(Teacher * t);
+	/**
+	 * \brief Retorna o professor com o ID requerido.
+	 * Se não existir nenhum professor com tal ID, lança a exceção NonExistentTeacherID.
+	 * @param ID
+	 * @return Teacher *
+	 */
 	Teacher * getTeacher(unsigned int ID);
-
+	/**
+	 * Retorna a loja da piscina.
+	 * @return
+	 */
 	Shop * getShop() const;
 
-	void load(); ///le o que está nos ficheiros de texto
+	/**
+	 * \brief lê todos os ficheiros de texto.
+	 * Corre todas as outras funções de load.
+	 */
+	void load();
+	/**
+	 * Lê a informação da piscina.
+	 */
 	void loadPoolInfo();
+	/**
+	 * Lê os clientes do ficheiro de texto.
+	 */
 	void loadCustomers();
+	/**
+	 * Lê os professores do ficheiro de texto.
+	 */
 	void loadTeachers();
+	/**
+	 * Lê o horário do ficheiro de texto.
+	 */
 	void loadSchedule();
+	/**
+	 * Lê as aulas dadas do ficheiro de texto.
+	 */
 	void loadGivenLessons();
+	/**
+	 * Lê os clientes inativos do ficheiro de texto.
+	 */
 	void testInactiveCustomers();
+	/**
+	 * Lê a loja do ficheiro de texto.
+	 */
 	void loadShop();
+	/**
+	 * Lê as outras piscinas do ficheiro de texto.
+	 */
 	void loadOtherPools();
+	/**
+	 * Lê as promoções da piscina do ficheiro de texto.
+	 */
 	void loadPromotions();
 
-	void write(); ///escreve para os ficheiros de texto
+	/**
+	 * Escreve para os ficheiros de texto
+	 */
+	void write();
+	/**
+	 * Escreve a informação da piscina para um ficheiro de texto.
+	 */
 	void writePoolInfo();
+	/**
+	 * Escreve os clientes para um ficheiro de texto.
+	 */
 	void writeCustomers();
+	/**
+	 * Escreve os professores para um ficheiro de texto.
+	 */
 	void writeTeachers();
+	/**
+	 * Escreve o horário da piscina para um ficheiro de texto.
+	 */
 	void writeSchedule();
+	/**
+	 * Escreve as aulas dadas para um ficheiro de texto.
+	 */
 	void writeGivenLessons();
+	/**
+	 * Escreve a loja para um ficheiro de texto.
+	 */
 	void writeShop();
+	/**
+	 * Escreve a informação das outras piscinas para um ficheiro de texto.
+	 */
 	void writeOtherPools();
+	/**
+	 * Escreve as promoções para um ficheiro de texto.
+	 */
 	void writePromotions();
 private:
+	/**
+	 * \brief Vetor que guarda a informação dos clientes da piscina.
+	 * Está ordenado por ID, mas podemos visualizá-lo por diferente ordenação no programa.
+	 */
 	vector<Customer *> customers;
-	vector<Teacher *> teachers; ///Quando Pool é criado os vetores devem ser logo ordenados usando as funções sort;
+	/**
+	 * \brief Vetor que guarda a informação dos clientes da piscina.
+	 * Está ordenado por ID, mas podemos visualizá-lo por diferente ordenação no programa.
+	 */
+	vector<Teacher *> teachers;
+	/**
+	 * \brief Vetor que guarda o horário.
+	 * Está ordenado por dia da semana e hora.
+	 */
 	vector<Lesson> schedule;
+	/**
+	 * Vetor de aulas dadas.
+	 */
 	vector<GivenLesson *> givenLessons;
-	vector<PoolUse *> freeUses; ///sempre que alguem que usar a piscina em modo livre, o uso é guardado neste vetor; usar freeuses.insert(freeuses.begin(), PoolUse * objeto) e não freeuses.push_back(...) para termos sempre os objetos mais recentes no inicio
-
+	/**
+	 * Vetor de usos livres da piscina.
+	 */
+	vector<PoolUse *> freeUses;
+	/**
+	 * Vetor com o nome dos ficheiros de texto.
+	 */
 	vector<string> fileNames;
 	// 0 poolinfo
 	// 1 customers
@@ -211,13 +502,29 @@ private:
 	// 7 otherpools
 	// 8 promotions
 
-	Shop * shop;	///apontador para a loja da piscina
-	hashCustomer inactiveCustomers;	///tabela de dispersao com os clientes inativos
-	priority_queue<ptrOtherPool> otherPools;///fila de prioridade com as piscinas nas redondezas
-
-	string name;	///nome da nossa piscina
-	unsigned int maxCustomers;///numero maximo de utentes que podem estar na piscina
-
+	/**
+	 * Loja.
+	 */
+	Shop * shop;
+	/**
+	 * Tabela de dispersao com os clientes inativos.
+	 */
+	hashCustomer inactiveCustomers;
+	/**
+	 * Fila de prioridade com as piscinas nas redondezas.
+	 */
+	priority_queue<ptrOtherPool> otherPools;
+	/**
+	 * Nome da nossa piscina
+	 */
+	string name;
+	/**
+	 * Número máximo de clientes que podem estar presentes na piscina.
+	 */
+	unsigned int maxCustomers;
+	/**
+	 * Vetor de campanhas promocionais.
+	 */
 	vector<PromotionalCampaign> promotions;
 };
 
