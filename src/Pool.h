@@ -82,19 +82,69 @@ public:
 	bool operator<(PromotionalCampaign & promCamp) const;
 };
 
+/**
+ * \brief Classe que contem a informação de uma piscina que não a nossa.
+ * Contem a distância à nossa piscina, o nome da mesma e as modalidades que tem disponível.
+ */
 class OtherPool {
 private:
-	string name; ///nome da piscina
-	double distance; ///distancia da piscina secundaria em relacao a nossa piscina
+	/**
+	 * Nome da piscina.
+	 */
+	string name;
+	/**
+	 * Distancia à nossa piscina.
+	 */
+	double distance;
+	/**
+	 * Vetor de modalidades disponíveis na piscina.
+	 */
 	vector<Modality> modalityLessons;
 public:
+	/**
+	 * Construtor da classe OtherPool sem modalidades.
+	 * @param name
+	 * @param distance
+	 */
 	OtherPool(string name, double distance);
+	/**
+	 * Construtor da classe OtherPool com modalidades.
+	 * @param name
+	 * @param distance
+	 * @param lessons
+	 */
 	OtherPool(string name, double distance, vector<Modality> lessons);
+	/**
+	 * Retorna o nome da piscina.
+	 * @return string
+	 */
 	string getName() const;
+	/**
+	 * Retorna a distância à nossa piscina.
+	 * @return double
+	 */
 	double getDistance() const;
+	/**
+	 * Retorna as modalidades de que a piscina dispõe.
+	 * @return vector<Modality>
+	 */
 	vector<Modality> getModalityLessons() const;
+	/**
+	 * Adiciona uma modalidade à piscina.
+	 * @param modality
+	 */
 	void addModality(Modality modality);
+	/**
+	 * Retorna verdadeiro se a piscina tem a modalidade disponível, caso contrário retorna falso.
+	 * @param modality
+	 * @return bool
+	 */
 	bool haveModality(Modality modality);
+	/**
+	 * Operador de menor para a lista de prioridade. A piscina é "maior" se a distância a nossa for menor (em caso de empate, é usada a ordem alfabética).
+	 * @param oP2
+	 * @return bool
+	 */
 	bool operator<(OtherPool & oP2) const;
 };
 
@@ -528,52 +578,108 @@ private:
 	vector<PromotionalCampaign> promotions;
 };
 
+/**
+ * Exceção que aparece quando não há mais aulas num certo dia.
+ */
 class NoMoreLessonsInDay {
 public:
+	/**
+	 * Construtor da classe NoMoreLessonsInDay.
+	 */
 	NoMoreLessonsInDay();
 };
 
+/**
+ * Exceção que aparece quando invocamos a função getLesson(Date,Time) e não existe nenhuma aula.
+ */
 class InvalidLesson {
 public:
+	/**
+	 * Construtor da classe NoMoreLessonsInDay.
+	 * @param day
+	 * @param t
+	 */
 	InvalidLesson(DayOfWeek day, Time &t);
 	DayOfWeek day;
 	Time time;
 };
 
+/**
+ * Exceção que aparece quando queremos um cliente a partir do nome, e não existe nenhum cliente com esse nome.
+ */
 class NonExistentCustomerName {
 public:
+	/**
+	 * Construtor da classe NonExistentCustomerName.
+	 * @param name
+	 */
 	NonExistentCustomerName(string name);
 	string name;
 };
 
+/**
+ * Exceção que aparece quando queremos um cliente a partir do ID, e não existe nenhum cliente com esse ID.
+ */
 class NonExistentCustomerID {
 public:
+	/**
+	 *  Construtor da classe NonExistentCustomerID.
+	 * @param ID
+	 */
 	NonExistentCustomerID(unsigned int ID);
 	unsigned int ID;
 };
 
+/**
+ * Exceção que aparece quando queremos um professor a partir do ID, e não existe nenhum professor com esse ID.
+ */
 class NonExistentTeacherID {
 public:
+	/**
+	 * Construtor da classe NonExistentTeacherID
+	 * @param ID
+	 */
 	NonExistentTeacherID(unsigned int ID);
 	unsigned int ID;
 };
 
+/**
+ * Exceção que aparece quando comparamos o dia da semana de uma aula com o dia da semana da data e não coincidem.
+ */
 class NotSameDayAsDate {
 public:
+	/**
+	 *  Construtor da classe NotSameDayAsDate.
+	 */
 	NotSameDayAsDate();
 };
 
+/**
+ * Exceção que aparece quando invocamos getGivenLesson(Lesson,Date) e não existe a GivenLesson dessa aula nessa data.
+ */
 class NonExistentGivenLesson {
 public:
+	/**
+	 * Construtor da classe NonExistentGivenLesson.
+	 * @param lesson
+	 * @param date
+	 */
 	NonExistentGivenLesson(Lesson lesson, Date date);
 	Lesson lesson;
 	Date date;
 };
 
+/**
+ * Exceção que aparece quando adicionamos uma campanha promocional e ele se sobrepõe a outra.
+ */
 class OverlapingCampaign {
 public:
+	/**
+	 * Construtor da classe OverlapingCampaign
+	 */
 	OverlapingCampaign();
 };
+
 
 class CustomerAlreadyAttendedLesson {
 
