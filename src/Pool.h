@@ -61,23 +61,23 @@ public:
 	PromotionalCampaign(Date beginDate, Date endDate, double discount);
 	/**
 	 * Retorna a data de ínicio.
-	 * @return
+	 * @return Data
 	 */
 	Date getBeginDate() const;
 	/**
 	 * Retorna data de fim.
-	 * @return
+	 * @return Data
 	 */
 	Date getEndDate() const;
 	/**
 	 * Retorna o desconto da campanha.
-	 * @return
+	 * @return double
 	 */
 	double getDiscount() const;
 	/**
 	 * Operador de menor. Uma campanha é menor que a outra se for mais recente.
 	 * @param promCamp
-	 * @return
+	 * @return bool
 	 */
 	bool operator<(PromotionalCampaign & promCamp) const;
 };
@@ -148,16 +148,52 @@ public:
 	bool operator<(OtherPool & oP2) const;
 };
 
+/**
+ * \brief Classe que representa as piscinas nas redondezas (proximas da nossa piscina)
+ */
 class ptrOtherPool {
 private:
+	/**
+	 * \brief apontador para um objeto da classe OtherPool
+	 */
 	OtherPool * ptr;
 public:
+	/**
+	 * Construtor da classe ptrOtherPool sem modalidades.
+	 * @param *p (apontador para objeto da classe OtherPool)
+	 */
 	ptrOtherPool(OtherPool * p);
+	/**
+	 * Retorna o nome da OtherPool
+	 * @return string
+	 */
 	string getName() const;
+	/**
+	 * Retorna a distancia a que a OtherPool se encontra de nos
+	 * @return double
+	 */
 	double getDistance() const;
+	/**
+	 * Retorna as modalidades dadas pela OtherPool
+	 * @return vector<Modality>
+	 */
 	vector<Modality> getModalityLessons() const;
+	/**
+	 * Adiciona uma modalidade a OtherPool
+	 * @param modality
+	 */
 	void addModality(Modality modality);
+	/**
+	 * Retorna true se a modalidade (parametro modality) for dada na OtherPool
+	 * @param modality
+	 * @return bool
+	 */
 	bool haveModality(Modality modality);
+	/**
+	 * Operador de menor. E menor a piscina mais distante. Piscinas a mesma distancia sao comparadas pelo seu nome
+	 * @param ptrOtherPool oP2
+	 * @return bool
+	 */
 	bool operator<(ptrOtherPool oP2) const;
 };
 
@@ -170,10 +206,10 @@ public:
 class Pool {
 public:
 	static int inactivityPeriod; ///Dias necessários para considerar um cliente inativo.
-	 /**
-	  * Retorna o número máximo de clientes da piscina
-	  * @return unsigned int
-	  */
+	/**
+	 * Retorna o número máximo de clientes da piscina
+	 * @return unsigned int
+	 */
 	unsigned int getMaxCustomers() const;
 	/**
 	 * Retorna a próxima aula no horário (em relação ao tempo atual), lança a exceção NoMoreLessonsInDay se não existir nenhuma.
