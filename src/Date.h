@@ -7,14 +7,14 @@
 using namespace std;
 
 /**
- * Day of week type.
+ * \brief Day of week type.
  */
 enum DayOfWeek {
 	MON, TUE, WED, THU, FRI, SAT, SUN
 };
 
 /**
- * Date class.
+ * \brief Date class.
  */
 class Date {
 public:
@@ -66,7 +66,9 @@ private:
 	unsigned int month;
 	unsigned int year;
 };
-
+/**
+ * \brief classe que representa o tempo (tem as horas e minutos)
+ * */
 class Time {
 public:
 	Time();
@@ -107,16 +109,20 @@ Date getCurrentDate();
 Time getCurrentTime();
 DayOfWeek getCurrentDayOfWeek();
 
+/**
+ * \brief exceçao dia invalido*/
 class InvalidDay {
 public:
 	InvalidDay();
 };
-
+/**
+ * \brief excecao mes invalido*/
 class InvalidMonth {
 public:
 	InvalidMonth();
 };
-
+/**
+ * \brief excecao gama de tempo excedida; tempo invalido*/
 class InvalidTimeRange {
 public:
 	InvalidTimeRange();

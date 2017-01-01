@@ -9,7 +9,8 @@
 
 using namespace std;
 
-/* INVALID INPUT */
+/**
+ *  INVALID INPUT */
 
 class InvalidInputInt {
 	int answer;
@@ -19,7 +20,8 @@ public:
 	void printError();
 };
 
-/* INVALID INPUT DATE */
+/**
+ *  INVALID INPUT DATE */
 
 class InvalidInputDate {
 public:
@@ -27,7 +29,8 @@ public:
 	void printError();
 };
 
-/* INVALID INPUT TIME */
+/**
+ *  INVALID INPUT TIME */
 
 class InvalidInputTime {
 public:
@@ -35,7 +38,8 @@ public:
 	void printError();
 };
 
-/* INVALID INPUT DAY OF WEEK */
+/**
+ *  INVALID INPUT DAY OF WEEK */
 
 class InvalidInputDayOfWeek {
 public:
@@ -43,7 +47,8 @@ public:
 	void printError();
 };
 
-/* INVALID ITEM */
+/**
+ *  INVALID ITEM */
 
 class InvalidItem {
 public:
@@ -79,7 +84,7 @@ private:
 	vector<Item> items;
 };
 
-/* INVALID POOL */
+/** INVALID POOL */
 
 class InvalidPool {
 public:
@@ -89,7 +94,7 @@ private:
 	string name;
 };
 
-/* INVALID MODALITY */
+/** INVALID MODALITY */
 
 class InvalidModality {
 public:
