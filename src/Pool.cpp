@@ -31,6 +31,9 @@ double PromotionalCampaign::getDiscount() const {
 	return discount;
 }
 
+PromotionalCampaign::PromotionalCampaign() {
+}
+
 bool PromotionalCampaign::operator<(PromotionalCampaign & promCamp) const {
 	return beginDate < promCamp.getBeginDate();
 }
@@ -423,6 +426,9 @@ void Pool::attendLesson(Lesson lesson, Customer* customer, Date date,
 		if (i == customer) {
 			throw CustomerAlreadyAttendedLesson();
 		}
+	}
+	if (givenLesson->getCustomers().size() >= maxCustomers) {
+		throw PoolIsFull();
 	}
 	givenLesson->addCustomer(customer);
 	customer->attendLesson(givenLesson, date, lesson.getTime(), discount);

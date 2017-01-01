@@ -1,7 +1,9 @@
-YOLO
-5
-Long Sleeve Tops;m;7
-Long Sleeve Tops;s;2
-Sleeveless Tops;l;5
-Sleeveless Tops;m;10
-Sleeveless Tops;s;30
+Sports Items
+7
+Swim Cap;l;10
+Swim Cap;m;7
+Swim Cap;s;0
+Swimming Goggles;l;5
+Swimming Goggles;m;10
+Swimming Goggles;s;30
+Yoga Pants;s;0

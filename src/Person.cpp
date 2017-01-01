@@ -13,6 +13,7 @@ ContactInfo::ContactInfo() {
 	this->street = "";
 	this->number = 0;
 	this->postalCode = "";
+	this->cellphoneNum = 0;
 }
 
 ContactInfo::ContactInfo(string city, string street, int number,

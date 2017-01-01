@@ -72,8 +72,8 @@ bool Lesson::operator ==(const Lesson &lesson) const {
 			&& lessonTime.first == lesson.getDayOfWeek()
 			&& lessonTime.second == lesson.getTime();
 }
-GivenLesson::GivenLesson(Lesson lesson, Date date) :
-		ID(lastID + 1) {
+GivenLesson::GivenLesson(Lesson lesson, Date date) {
+	this->ID = lastID + 1;
 	this->lesson = lesson;
 	this->date = date;
 	lastID++;
@@ -82,6 +82,7 @@ GivenLesson::GivenLesson(Lesson lesson, Date date) :
 GivenLesson::GivenLesson(Lesson lesson, Date date, unsigned int ID) {
 	this->lesson = lesson;
 	this->date = date;
+	this->ID = ID;
 	if (ID > lastID) {
 		lastID = ID;
 	}

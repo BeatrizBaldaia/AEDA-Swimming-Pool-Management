@@ -486,16 +486,16 @@ MenuResult AttendLesson::handle() {
 			getCurrentTime());
 	int choice;
 	int customerID;
-	getInputInt(customerID, 0, 500, "\nInsert customer's ID");
 
 	Customer * c;
 	bool noExistID = false;
 	do {
-		noExistID = false;
 		try {
+			getInputInt(customerID, 0,500, "\nInsert customer's ID");
 			c = pool.getCustomer(customerID);
+			noExistID = false;
 		} catch (NonExistentCustomerID & x) {
-			cout << "\nNo customer with such ID\n";
+			cout << "\nNo customer with such ID";
 			noExistID = true;
 		}
 	} while (noExistID);
@@ -519,36 +519,26 @@ MenuResult AttendLesson::handle() {
 	try {
 		PromotionalCampaign promCamp = pool.getCurrentPromotion();
 		discount = promCamp.getDiscount();
-		try {
-			pool.attendLesson(lessons[choice - 1], c, getCurrentDate(),
-					discount);
-		} catch (CustomerAlreadyAttendedLesson & x) {
-			cout << "\nThe customer is already in the lesson.\n";
-			return CONTINUE;
-		}
 		cout
 				<< "\nWe are in the middle of a promotional campaign. All lessons and free uses have a discount of "
 				<< promCamp.getDiscount() << ".\n";
-		if (pool.isCustomerInactive(c)) {
-			pool.activateCustomer(c);
-		}
-		pool.write();
-		return CONTINUE;
 	} catch (NoCurrentCampaign & e) {
-		try {
-			pool.attendLesson(lessons[choice - 1], c, getCurrentDate(),
-					discount);
-		} catch (CustomerAlreadyAttendedLesson & x) {
-			cout << "\nThe customer is already in the lesson.\n";
-			return CONTINUE;
-		}
-		cout << "\nNo campaign is currently running.\n";
-		if (pool.isCustomerInactive(c)) {
-			pool.activateCustomer(c);
-		}
-		pool.write();
+
+	}
+	try {
+		pool.attendLesson(lessons[choice - 1], c, getCurrentDate(), discount);
+	} catch (CustomerAlreadyAttendedLesson & x) {
+		cout << "\nThe customer is already in the lesson.\n";
+		return CONTINUE;
+	} catch (PoolIsFull & x) {
+		cout << "\nLesson is full.\n";
 		return CONTINUE;
 	}
+	if (pool.isCustomerInactive(c)) {
+		pool.activateCustomer(c);
+	}
+	pool.write();
+	return CONTINUE;
 }
 
 AttendToSpecificModality::AttendToSpecificModality(Pool & pool) :
@@ -557,16 +547,16 @@ AttendToSpecificModality::AttendToSpecificModality(Pool & pool) :
 
 MenuResult AttendToSpecificModality::handle() {
 	int customerID;
-	getInputInt(customerID, 0, 500, "\nInsert customer's ID");
-
 	Customer * c;
+
 	bool noExistID = false;
 	do {
-		noExistID = false;
 		try {
+			getInputInt(customerID, 0, 500, "\nInsert customer's ID");
 			c = pool.getCustomer(customerID);
+			noExistID = false;
 		} catch (NonExistentCustomerID & x) {
-			cout << "\nNo customer with such ID\n";
+			cout << "\nNo customer with such ID";
 			noExistID = true;
 		}
 	} while (noExistID);
@@ -587,67 +577,6 @@ MenuResult AttendToSpecificModality::handle() {
 	vector<Lesson> lessons;
 	try {
 		lessons = pool.getLessonByModality(mod);
-		for (int i = 0; i < lessons.size(); i++) {
-			cout << i + 1 << " -> " << lessons[i].getDayOfWeek() << " at "
-					<< lessons[i].getTime() << " with "
-					<< lessons[i].getTeacher()->getName() << endl;
-		}
-		cout << endl << "0 -> Cancel \n\n";
-		int choice;
-		getInputInt(choice, 0, lessons.size(),
-				"Choose the lesson you want to book/attend");
-		if (choice == 0) {
-			return CONTINUE;
-		}
-		Date today = getCurrentDate();
-		choice--;
-		DayOfWeek dayLesson = lessons[choice].getDayOfWeek();
-		int dayOfWeekLesson = static_cast<int>(dayLesson);
-		int dayOfWeekToday = static_cast<int>(getCurrentDayOfWeek());
-		int diff;
-		///obter o dia da aula escolhida partindo do dia atual
-		if (dayOfWeekLesson >= dayOfWeekToday) {
-			diff = dayOfWeekLesson - dayOfWeekToday;
-		} else {
-			diff = (7 - dayOfWeekToday) + dayOfWeekLesson;
-		}
-		while (diff > 0) {
-			++today;
-			diff--;
-		}
-		double discount = 0;
-		try { ///caso estejamos numa campanha promocional
-			PromotionalCampaign promCamp = pool.getCurrentPromotion();
-			discount = promCamp.getDiscount();
-			try {
-				pool.attendLesson(lessons[choice], c, today, discount);
-			} catch (CustomerAlreadyAttendedLesson & x) {
-				cout << "\nThe customer is already in the lesson.\n";
-				return CONTINUE;
-			}
-			cout
-					<< "\nWe are in the middle of a promotional campaign. All lessons and free uses have a discount of "
-					<< promCamp.getDiscount() << ".\n";
-			if (pool.isCustomerInactive(c)) {
-				pool.activateCustomer(c);
-			}
-			pool.write();
-			return CONTINUE;
-		} catch (NoCurrentCampaign & e) { ///nao esta a ocorrer nenhuma campanha promocional
-			try {
-				pool.attendLesson(lessons[choice], c, today, discount);
-			} catch (CustomerAlreadyAttendedLesson & x) {
-				cout << "\nThe customer is already in the lesson.\n";
-				return CONTINUE;
-			}
-			cout << "\nNo campaign is currently running.\n";
-
-			if (pool.isCustomerInactive(c)) {
-				pool.activateCustomer(c);
-			}
-			pool.write();
-			return CONTINUE;
-		}
 	} catch (InvalidModality &x) {
 		x.printError();
 		try {
@@ -655,13 +584,71 @@ MenuResult AttendToSpecificModality::handle() {
 			cout << "You can visit the nearest Pool ( " << oP.getName() << ", "
 					<< oP.getDistance()
 					<< " Km from here ) to have a lesson of " << mod;
-			return CONTINUE;
 		} catch (NoModality &y) {
 			y.printError();
-			return CONTINUE;
 		}
+		return CONTINUE;
 	}
 
+	for (int i = 0; i < lessons.size(); i++) {
+		cout << i + 1 << " -> " << lessons[i].getDayOfWeek() << " at "
+				<< lessons[i].getTime() << " with "
+				<< lessons[i].getTeacher()->getName() << endl;
+	}
+	cout << endl << "0 -> Cancel \n\n";
+	int choice;
+	getInputInt(choice, 0, lessons.size(),
+			"Choose the lesson you want to book/attend");
+	if (choice == 0) {
+		return CONTINUE;
+	}
+	Date today = getCurrentDate();
+	choice--;
+	DayOfWeek dayLesson = lessons[choice].getDayOfWeek();
+	int dayOfWeekLesson = dayLesson;
+	int dayOfWeekToday = getCurrentDayOfWeek();
+	int diff;
+	///obter o dia da aula escolhida partindo do dia atual
+	if (dayOfWeekLesson >= dayOfWeekToday) {
+		diff = dayOfWeekLesson - dayOfWeekToday;
+	} else {
+		diff = (7 - dayOfWeekToday) + dayOfWeekLesson;
+	}
+	while (diff > 0) {
+		++today;
+		diff--;
+	}
+
+	double discount = 0;
+	try {
+		PromotionalCampaign promCamp = pool.getCurrentPromotion();
+		discount = promCamp.getDiscount();
+		cout
+				<< "\nWe are in the middle of a promotional campaign. All lessons and free uses have a discount of "
+				<< promCamp.getDiscount() << ".\n";
+	} catch (NoCurrentCampaign & e) {
+
+	}
+	try {
+		pool.attendLesson(lessons[choice], c, today, discount);
+	} catch (CustomerAlreadyAttendedLesson & x) {
+		cout << "\nThe customer is already in the lesson.\n";
+		return CONTINUE;
+	} catch (PoolIsFull & x) {
+		cout << "\nLesson is full.\n";
+		try {
+			ptrOtherPool oP(pool.getNextPool(mod));
+			cout << "You can visit the nearest Pool ( " << oP.getName() << ", "
+					<< oP.getDistance()
+					<< " Km from here ) to have a lesson of " << mod;
+		} catch (NoModality &y) {
+			y.printError();
+		}
+		return CONTINUE;
+	}
+	if (pool.isCustomerInactive(c)) {
+		pool.activateCustomer(c);
+	}
 	pool.write();
 	return CONTINUE;
 }

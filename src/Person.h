@@ -46,7 +46,7 @@ public:
 	 * @param number
 	 * @param number
 	 * @param postalCode
-	 * @param cellphoneNumber
+	 * @param cellphoneNum
 	 */
 	ContactInfo(string city, string street, int number, string postalCode,
 			long cellphoneNum);
@@ -73,25 +73,21 @@ public:
 	/**
 	 * altera a cidade
 	 * @param city
-	 * @return void
 	 */
 	void setCity(string city);
 	/**
 	 * altera a rua
 	 * @param street
-	 * @return void
 	 */
 	void setStreet(string street);
 	/**
 	 * altera o numero da casa
 	 * @param number
-	 * @return void
 	 */
 	void setNumber(int number);
 	/**
 	 * altera o codigo postal
 	 * @param code
-	 * @return void
 	 */
 	void setPostalCode(string code);
 	/**
@@ -101,8 +97,7 @@ public:
 	long getCellphoneNum() const;
 	/**
 	 * altera o contacto
-	 * @param cellphoneNumber
-	 * @return void
+	 * @param cellphoneNum
 	 */
 	void setCellphoneNum(long cellphoneNum);
 };
@@ -130,65 +125,62 @@ public:
 			ContactInfo contactInfo);
 	/**
 	 * retorna o nome da pessoa
-	 * @return string
+	 * @return
 	 */
 	string getName() const;
 	/**
 	 * retorna o ID da pessoa
-	 * @return unsigned int
+	 * @return
 	 */
 	unsigned int getID() const;
 	/**
 	 * retorna a data de aniversario da pessoa
-	 * @return Date
+	 * @return
 	 */
 	Date getBirthDate() const;
 	/**
 	 * retorna o numero de vezes que a pessoa frequentou a piscina
-	 * @return int
+	 * @return
 	 */
 	virtual int getEntryNumber() const = 0;
 	/**
 	 * altera o nome da pessoa
 	 * @param name
-	 * @return void
 	 */
 	void setName(string name);
 	/**
 	 * retorna a cidade
-	 * @return string
+	 * @return
 	 */
 	string getCity() const;
 	/**
 	 * retorna a rua
-	 * @return string
+	 * @return
 	 */
 	string getStreet() const;
 	/**
 	 * retorna o numero da casa
-	 * @return int
+	 * @return
 	 */
 	int getNumber() const;
 	/**
 	 * retorna o codigo postal
-	 * @return string
+	 * @return
 	 */
 	string getPostalCode() const;
 	/**
 	 * retorna o codigo postal
-	 * @return string
+	 * @return
 	 */
 	long getCellphoneNum() const;
 	/**
 	 * altera a cidade em que vive
 	 * @param city
-	 * @return void
 	 */
 	void setCity(string city);
 	/**
 	 * altera a rua em que vive
 	 * @param street
-	 * @return void
 	 */
 	void setStreet(string street);
 	/**
@@ -203,8 +195,7 @@ public:
 	void setPostalCode(string code);
 	/**
 	 * altera o contacto
-	 * @param cellphoneNumber
-	 * @return void
+	 * @param cellphoneNum
 	 */
 	void setCellphoneNum(long cellphoneNum);
 	/**
@@ -243,17 +234,17 @@ public:
 	 * retorna o que o cliente tem a pagar num determinado mes do ano
 	 * @param month
 	 * @param year
-	 * @return float
+	 * @return
 	 */
 	float getMonthCost(unsigned int month, unsigned int year) const;
 	/**
 	 * retorna o numero de vezes que a pessoa frequentou a piscina
-	 * @return int
+	 * @return
 	 */
 	int getEntryNumber() const; /// frequência com que os clientes vão á piscina
 	/**
 	 * retorna o vetor com os usos da piscina que o utente ja realizou
-	 * @return vector<PoolUse*>
+	 * @return
 	 */
 	vector<PoolUse *> getPoolUses();
 	/**
@@ -261,7 +252,7 @@ public:
 	 * @param lesson
 	 * @param date
 	 * @param time
-	 * @return void
+	 * @param discount
 	 */
 	void attendLesson(GivenLesson * lesson, Date date, Time time,
 			double discount); ///adicionar aula (cliente foi a aula)
@@ -270,26 +261,25 @@ public:
 	 * @param startTime
 	 * @param date
 	 * @param duration
-	 * @return void
+	 * @param discount
 	 */
 	void freeSwim(Time startTime, Date date, unsigned int duration,
 			double discount); ///adicionar uso em modo livre
 	/**
 	 * adiciona uso em modo livre ao cliente
 	 * @param pooluse
-	 * @return void
 	 */
 	void addUse(PoolUse * pooluse); ///adicionar uso em modo livre
 	/**
 	 * verifica se o cliente ja participou numa determinada aula na piscina
 	 * @param lesson
-	 * @return bool
+	 * @return
 	 */
 	bool attendedLesson(const GivenLesson * lesson);
 	/**
 	 * realiza uma compra (de um ou varios produtos) ao cliente, na loja da piscina
-	 * @param vector<Item> items
-	 * @return void
+	 * @param items
+	 * @return
 	 */
 	void buyItem(vector<Item> items);
 private:
@@ -324,29 +314,27 @@ public:
 	/**
 	 * retorna o que o cliente tem a pagar num determinado mes do ano
 	 * @param month
-	 * @param year
-	 * @return float
+	 * @return
 	 */
 	float getMonthCost(unsigned int month) const; ///possivel implementação para a segunda parte do projeto
 	/**
 	 * retorna o numero de aulas que o professor esta a dar por semana
-	 * @return int
+	 * @return
 	 * */
 	int getNumberLessons() const; ///numero de aulas por semana
 	/**
 	 * retorna o numero de vezes que a pessoa frequentou a piscina
-	 * @return int
+	 * @return
 	 */
 	int getEntryNumber() const;
 	/**
 	 * atribuir aula ao professor, e atribuir o mesmo número de aulas aos professores(tenta equilibrar o numero de aulas atribuidas a todos os professores)
-	 * @return void
 	 * */
 	void setLesson(); ///atribuir aula ao professor, e atribuir o mesmo número de aulas aos professores
 	/**
 	 * operador menor. um professor e menor que outro quando tem menos aulas dadas por semana que o outro
-	 * @param const Teacher & t2
-	 * @return bool
+	 * @param t2
+	 * @return
 	 * */
 	bool operator <(const Teacher & t2) const;
 private:

@@ -51,7 +51,6 @@ public:
 	/**
 	 * altera o tamanho do produto
 	 * @param newSize
-	 * @return void
 	 */
 	void setSize(string newSize);
 	/**
@@ -62,14 +61,14 @@ public:
 	void setStock(unsigned int numberStock);
 	/**
 	 * oprador menor. esta comparacao e feita a partir da designaca de cada produto
-	 * @param Item item2
-	 * @return bool
+	 * @param item2
+	 * @return
 	 */
 	bool operator<(Item item2) const;
 	/**
 	 * operador de igualdade. produtos iguais tem a mesma designacao e tamanho
-	 * @param Item item2
-	 * @return bool
+	 * @param item2
+	 * @return
 	 */
 	bool operator==(Item item2) const;
 };
@@ -102,30 +101,28 @@ public:
 	int getNumberOfItems() const;
 	/**
 	 * retorna o nome da loja
-	 * @return string
+	 * @return
 	 */
 	string getName() const;
 	/**
 	 * funcionario da loja vende artigos a um utente; numero do stock diminui
-	 * @param Customer *person
-	 * @param vector<Item> items
-	 * @return void
+	 * @param person
+	 * @param items
 	 */
 	void sellItem(Customer *person, vector<Item> items); ///funcionario da loja vende artigo; numero do stock diminui
 	/**
 	 * funcionario compra artigos ao fornecedor; numero de stock aumenta
-	 * @param vector<Item> items
-	 * @return void
+	 * @param items
 	 */
 	void buyItem(vector<Item> items); ///funcionario compra artigos ao fornecedor; numero de stock aumenta
 	/**
 	 * retorna um vetor com todos os itens da loja
-	 * @return vector<Item> items
+	 * @return
 	 */
 	vector<Item> getItems() const;
 	/**
 	 * retorna a arvore binaria de pesquisa que contem todos os produtos da loja
-	 * @return BST<Item>
+	 * @return
 	 */
 	BST<Item> getTree() const;
 };

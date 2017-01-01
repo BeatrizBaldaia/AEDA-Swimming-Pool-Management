@@ -135,7 +135,7 @@ int main() {
 	menu.entries.push_back(MenuEntry("Manage", manage));
 	menu.entries.push_back(MenuEntry("View information", viewInfo));
 	menu.entries.push_back(MenuEntry("Shop", shop));
-	menu.entries.push_back(MenuEntry("Other Pools nearby", otherPools));
+	menu.entries.push_back(MenuEntry("Other pools", otherPools));
 
 	/* MANAGE OPTION and DERIVATES*/
 
@@ -230,23 +230,23 @@ int main() {
 	/* SHOP MENU */
 
 	shop.entries.push_back(MenuEntry("Back", Menu::exitHandler));
-	shop.entries.push_back(MenuEntry("View Shop Information", viewShop));
-	shop.entries.push_back(MenuEntry("Costumer -> Buy Products!", shopSell));
-	shop.entries.push_back(MenuEntry("Increase Stock", shopBuy));
+	shop.entries.push_back(MenuEntry("View shop information", viewShop));
+	shop.entries.push_back(MenuEntry("Sell to customer", shopSell));
+	shop.entries.push_back(MenuEntry("Buy from distributor", shopBuy));
 
 	/* OTHER POOLS MENU */
 
 	otherPools.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	otherPools.entries.push_back(
-			MenuEntry("View Pools nearby Info", viewOtherPools));
+			MenuEntry("View nearby pools' info", viewOtherPools));
 	otherPools.entries.push_back(
-			MenuEntry("Add a new Pool nearby record", addOtherPool));
+			MenuEntry("Add a nearby pool", addOtherPool));
 	otherPools.entries.push_back(
-			MenuEntry("Edit Pools' nearby information", editOtherPool));
+			MenuEntry("Edit nearby pools' information", editOtherPool));
 
 	editOtherPool.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	editOtherPool.entries.push_back(
-			MenuEntry("Add one Modality to Pool nearby", addModality));
+			MenuEntry("Add one modality to nearby pool", addModality));
 
 	cout << pool.getName() << endl;
 	menu.handle();

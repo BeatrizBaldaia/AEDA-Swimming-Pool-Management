@@ -1,19 +1,19 @@
 18
-Sleeveless Tops;s
-Sleeveless Tops;m
-Sleeveless Tops;l
-Long Sleeve Tops;s
-Long Sleeve Tops;m
-Long Sleeve Tops;l
-Hoodies;s
-Hoodies;m
-Hoodies;l
-Jackets;s
-Jackets;m
-Jackets;l
+Swim Cap;s
+Swim Cap;m
+Swim Cap;l
+Swimming Goggles;s
+Swimming Goggles;m
+Swimming Goggles;l
+Swimming Shorts;s
+Swimming Shorts;m
+Swimming Shorts;l
+Swimming Suits;s
+Swimming Suits;m
+Swimming Suits;l
 Shorts;s
 Shorts;m
 Shorts;l
-Pants;s
-Pants;m
-Pants;l
+Yoga Pants;s
+Yoga Pants;m
+Yoga Pants;l

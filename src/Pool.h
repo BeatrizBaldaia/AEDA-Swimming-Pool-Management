@@ -52,6 +52,7 @@ private:
 	 */
 	double discount;
 public:
+	PromotionalCampaign();
 	/**
 	 * Construtor da classe PromotionalCampaign.
 	 * @param beginDate
@@ -61,23 +62,23 @@ public:
 	PromotionalCampaign(Date beginDate, Date endDate, double discount);
 	/**
 	 * Retorna a data de ínicio.
-	 * @return Data
+	 * @return
 	 */
 	Date getBeginDate() const;
 	/**
 	 * Retorna data de fim.
-	 * @return Data
+	 * @return
 	 */
 	Date getEndDate() const;
 	/**
 	 * Retorna o desconto da campanha.
-	 * @return double
+	 * @return
 	 */
 	double getDiscount() const;
 	/**
 	 * Operador de menor. Uma campanha é menor que a outra se for mais recente.
 	 * @param promCamp
-	 * @return bool
+	 * @return
 	 */
 	bool operator<(PromotionalCampaign & promCamp) const;
 };
@@ -116,17 +117,17 @@ public:
 	OtherPool(string name, double distance, vector<Modality> lessons);
 	/**
 	 * Retorna o nome da piscina.
-	 * @return string
+	 * @return
 	 */
 	string getName() const;
 	/**
 	 * Retorna a distância à nossa piscina.
-	 * @return double
+	 * @return
 	 */
 	double getDistance() const;
 	/**
 	 * Retorna as modalidades de que a piscina dispõe.
-	 * @return vector<Modality>
+	 * @return
 	 */
 	vector<Modality> getModalityLessons() const;
 	/**
@@ -137,13 +138,13 @@ public:
 	/**
 	 * Retorna verdadeiro se a piscina tem a modalidade disponível, caso contrário retorna falso.
 	 * @param modality
-	 * @return bool
+	 * @return
 	 */
 	bool haveModality(Modality modality);
 	/**
 	 * Operador de menor para a lista de prioridade. A piscina é "maior" se a distância a nossa for menor (em caso de empate, é usada a ordem alfabética).
 	 * @param oP2
-	 * @return bool
+	 * @return
 	 */
 	bool operator<(OtherPool & oP2) const;
 };
@@ -160,22 +161,22 @@ private:
 public:
 	/**
 	 * Construtor da classe ptrOtherPool sem modalidades.
-	 * @param *p (apontador para objeto da classe OtherPool)
+	 * @param p apontador para objeto da classe OtherPool
 	 */
 	ptrOtherPool(OtherPool * p);
 	/**
 	 * Retorna o nome da OtherPool
-	 * @return string
+	 * @return
 	 */
 	string getName() const;
 	/**
 	 * Retorna a distancia a que a OtherPool se encontra de nos
-	 * @return double
+	 * @return
 	 */
 	double getDistance() const;
 	/**
 	 * Retorna as modalidades dadas pela OtherPool
-	 * @return vector<Modality>
+	 * @return
 	 */
 	vector<Modality> getModalityLessons() const;
 	/**
@@ -186,13 +187,13 @@ public:
 	/**
 	 * Retorna true se a modalidade (parametro modality) for dada na OtherPool
 	 * @param modality
-	 * @return bool
+	 * @return
 	 */
 	bool haveModality(Modality modality);
 	/**
 	 * Operador de menor. E menor a piscina mais distante. Piscinas a mesma distancia sao comparadas pelo seu nome
-	 * @param ptrOtherPool oP2
-	 * @return bool
+	 * @param oP2
+	 * @return
 	 */
 	bool operator<(ptrOtherPool oP2) const;
 };
@@ -216,37 +217,37 @@ public:
 	 * @param day
 	 * @param time
 	 * @param currentlesson
-	 * @return Lesson
+	 * @return
 	 */
 	Lesson getNextLesson(DayOfWeek day, Time time, bool & currentlesson) const;
 	/**
 	 * Retorna vetor com as aulas marcadas para um professor.
 	 * @param ID
-	 * @return vector<Lesson>
+	 * @return
 	 */
 	vector<Lesson> getLessons(unsigned int ID);
 	/**
 	 * Retorna as aulas marcadas para um dia.
 	 * @param date
 	 * @param time
-	 * @return vector<Lesson>
+	 * @return
 	 */
 	vector<Lesson> getLessons(Date date, Time time);
 	/**
 	 * Retorna todas as aulas dadas pela piscina.
-	 * @return vector<GivenLesson *>
+	 * @return
 	 */
 	vector<GivenLesson *> getGivenLessons();
 	/**
 	 * Retorna todas as aulas dadas por um professor.
 	 * @param ID
-	 * @return vector<GivenLesson *>
+	 * @return
 	 */
 	vector<GivenLesson *> getGivenLessons(unsigned int ID);
 	/**
 	 * Retorna as aulas do horário de uma determinada modalidade.
 	 * @param modality
-	 * @return vector<Lesson>
+	 * @return
 	 */
 	vector<Lesson> getLessonByModality(Modality modality) const;
 	/**
@@ -255,7 +256,7 @@ public:
 	 * Se a aula marcada não for uma aula dada (não apareceu ninguém), retorna a exceção NonExistentGivenLesson.
 	 * @param lesson
 	 * @param date
-	 * @return GivenLesson *
+	 * @return
 	 */
 	GivenLesson * getGivenLesson(Lesson lesson, Date date);
 	/**
@@ -266,14 +267,14 @@ public:
 	/**
 	 * Retorna o número de clientes numa aula dada ou a decorrer.
 	 * @param lesson
-	 * @return unsigned int
+	 * @return
 	 */
 	unsigned int CustomersInLesson(GivenLesson lesson);
 	/**
 	 * Retorna o número de clientes em uso livre numa determinada hora num determinado dia.
 	 * @param date
 	 * @param time
-	 * @return unsigned int
+	 * @return
 	 */
 	unsigned int CustomersFreeUse(Date date, Time time);
 	/**
@@ -281,26 +282,26 @@ public:
 	 * Se não existir nenhuma aula marcada nesse instante, lança a exceção InvalidLesson.
 	 * @param day
 	 * @param time
-	 * @return Lesson
+	 * @return
 	 */
 	Lesson getLesson(DayOfWeek day, Time time) const;
 	/**
 	 * Retorna todos os clientes da piscina.
-	 * @return vector<Customer *>
+	 * @return
 	 */
 	vector<Customer *> getCustomers();
 	/**
 	 * \brief Retorna o cliente com um determinado nome.
 	 * Se não houver nenhum cliente com esse nome lança a exceção NonExistentCustomerName.
 	 * @param name
-	 * @return Customer *
+	 * @return
 	 */
 	Customer * getCustomer(string name);
 	/**
 	 * \brief Retorna o cliente com um determinado ID.
 	 * Se não existir nenhum cliente com esse ID lança a exceção NonExistentCustomerID.
 	 * @param ID
-	 * @return Customer *
+	 * @return
 	 */
 	Customer * getCustomer(unsigned int ID);
 	/**
@@ -315,17 +316,17 @@ public:
 	void setMaxCustomers(unsigned int n);
 	/**
 	 * Retorna o nome da piscina.
-	 * @return string
+	 * @return
 	 */
 	string getName() const;
 	/**
 	 * Retorna o horário da piscina.
-	 * @return vector<Lesson>
+	 * @return
 	 */
 	vector<Lesson> getSchedule() const;
 	/**
 	 * Retorna todos os professores da piscina.
-	 * @return vector<Teacher *>
+	 * @return
 	 */
 	vector<Teacher *> getTeachers() const;
 	void addCampaign(PromotionalCampaign campaign);
@@ -337,7 +338,7 @@ public:
 	PromotionalCampaign getCurrentPromotion() const;
 	/**
 	 * Retorna todas as campanhas promocionais da piscina.
-	 * @return vector<PromotionalCampaign>
+	 * @return
 	 */
 	vector<PromotionalCampaign> getPromotionalCampaign() const;
 	/**
@@ -349,7 +350,7 @@ public:
 	/**
 	 * Retorna o estado do cliente. Retorna verdade se ele estiver inativo, e falso se estiver ativo.
 	 * @param c
-	 * @return bool
+	 * @return
 	 */
 	bool isCustomerInactive(Customer * c);
 	/**
@@ -359,7 +360,7 @@ public:
 	void activateCustomer(Customer * c);
 	/**
 	 * Retorna um cliente inativo.
-	 * @return hashCustomer
+	 * @return
 	 */
 	hashCustomer getInactiveCustomer() const;
 	/**
@@ -374,12 +375,12 @@ public:
 	void insertInactive(Customer * customer);
 	/**
 	 * Retorna os produtos vendidos pelo fornecedor.
-	 * @return vector<Item>
+	 * @return
 	 */
 	vector<Item> getProviderItems();
 	/**
 	 * Retorna a fila de prioridade com as outras piscinas.
-	 * @return priority_queue<ptrOtherPool>
+	 * @return
 	 */
 	priority_queue<ptrOtherPool> getOtherPools() const;
 	/**
@@ -397,7 +398,7 @@ public:
 	 * \brief Retorna a piscina mais próxima com a modalidade requerida.
 	 * Se nenhuma piscina tiver a modalidade, lança a exceção NoModality.
 	 * @param modality
-	 * @return ptrOtherPool
+	 * @return
 	 */
 	ptrOtherPool getNextPool(Modality modality);
 	/**
@@ -463,7 +464,7 @@ public:
 	 * \brief Retorna o professor com o ID requerido.
 	 * Se não existir nenhum professor com tal ID, lança a exceção NonExistentTeacherID.
 	 * @param ID
-	 * @return Teacher *
+	 * @return
 	 */
 	Teacher * getTeacher(unsigned int ID);
 	/**
@@ -718,6 +719,10 @@ public:
 
 
 class CustomerAlreadyAttendedLesson {
+
+};
+
+class PoolIsFull {
 
 };
 
