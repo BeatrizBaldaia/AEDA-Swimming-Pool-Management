@@ -927,7 +927,7 @@ MenuResult ViewCustomers::handle() {
 		hashCustomer table = pool.getInactiveCustomer();
 		hashCustomer::iterator it;
 		for (it = table.begin(); it != table.end(); it++) {
-			cout << (*it)->getName();
+			cout << (*it)->getName() << endl;
 		}
 	}
 	return CONTINUE;
@@ -1237,7 +1237,7 @@ MenuResult ViewCurrentCampaign::handle() {
 //	Date day = getCurrentDate();
 	try {
 		PromotionalCampaign promo = pool.getCurrentPromotion();
-		cout << "The promotional campaign has started on "
+		cout << "\nThe promotional campaign has started on "
 				<< promo.getBeginDate() << " and will end on "
 				<< promo.getEndDate()
 				<< ".\nAll lessons and free uses have a discount of "
@@ -1338,4 +1338,18 @@ MenuResult AddCampaign::handle() {
 		return CONTINUE;
 	}
 
+}
+
+ViewInactiveCustomers::ViewInactiveCustomers(Pool & pool) :
+		pool(pool) {
+}
+
+MenuResult ViewInactiveCustomers::handle() {
+	cout << "List of the Inactive Customers:\n\n";
+	hashCustomer tab = pool.getInactiveCustomer();
+	hashCustomer::iterator it = tab.begin();
+	for(it; it != tab.end(); it++) {
+		cout << (*it)->getID() << " - " << (*it)->getName() << endl;
+	}
+	return CONTINUE;
 }

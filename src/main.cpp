@@ -105,6 +105,7 @@ int main() {
 	ViewCustomers viewCustomersByID(pool, ID);
 	ViewCustomers viewCustomersByName(pool, NAME);
 	ViewCustomers viewCustomersByUses(pool, NUMUSES);
+	ViewInactiveCustomers viewInactiveCustomers(pool);
 
 	ViewCustomersInformation viewCustomerInformation(pool);
 	ViewCustomerUses viewCustomerUses(pool);
@@ -207,6 +208,9 @@ int main() {
 	viewCustomers.entries.push_back(
 			MenuEntry("View customers sorted by number of pool uses",
 					viewCustomersByUses));
+	viewCustomers.entries.push_back(
+				MenuEntry("View inactive customers",
+						viewInactiveCustomers));
 
 	viewTeacherInfo.entries.push_back(MenuEntry("Back", Menu::exitHandler));
 	viewTeacherInfo.entries.push_back(

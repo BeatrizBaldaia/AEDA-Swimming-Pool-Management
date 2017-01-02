@@ -708,5 +708,21 @@ private:
 	 */
 	Pool & pool;
 };
+
+class ViewInactiveCustomers: public MenuHandler {
+public:
+	/**
+	 * Construtor da classe ViewInactiveCustomers
+	 * @param pool
+	 */
+	ViewInactiveCustomers(Pool & pool);
+	/**
+	 * Mostra a lista de clientes inativos
+	 * @return
+	 */
+	MenuResult handle();
+private:
+	Pool & pool;
+};
 #endif /* SRC_POOLMENU_H_ */
 
