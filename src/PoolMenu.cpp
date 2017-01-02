@@ -1181,7 +1181,11 @@ MenuResult AddOtherPool::handle() {
 		Modality mod = static_cast<Modality>((modN - 1));
 		vM.push_back(mod);
 	}
-	ptrOtherPool oP(new OtherPool(name, distance, vM));
+	ptrOtherPool oP(new OtherPool(name, distance, vector<Modality>()));
+	for (const Modality & m : vM)
+	{
+		oP.addModality(m);
+	}
 	pool.addOtherPool(oP);
 	pool.writeOtherPools();
 	return CONTINUE;
@@ -1254,61 +1258,60 @@ MenuResult UpdateCustomersInfo::handle() {
 //	Date day = getCurrentDate();
 	try {
 		PromotionalCampaign promo = pool.getCurrentPromotion();
-		cout << "One Promotional Campaign has started on "
+		cout << "\nOne Promotional Campaign has started on "
 				<< promo.getBeginDate() << " and will end on "
 				<< promo.getEndDate()
 				<< ".\nAll lessons and free uses have a discount of "
-				<< promo.getDiscount() << endl << endl;
-		cout << "\nList of the current inactive Customers:\n\n";
-		hashCustomer tab = pool.getInactiveCustomer();
-		hashCustomer::const_iterator it = tab.begin();
-		int i = 1;
-		for (; it != tab.end(); it++) {
-			cout << i << " - " << (*it)->getName() << " : "
-					<< (*it)->getStreet() << ", " << (*it)->getNumber() << ", "
-					<< (*it)->getPostalCode() << ", " << (*it)->getCity() << ", " << (*it)->getCellphoneNum()
-					<< endl;
-			int answer;
-			getInputInt(answer, 0, 1,
-					"Do you want to update the customer's address?\n\n---------   ----------\n|0 -> No|   |1 -> Yes|\n---------   ----------\n");
-			if (answer == 1) {
-				pool.eraseInactive((*it));
-				cout << "=> City: ";
-				string city;
-				getline(cin, city);
-				cout << "=> Street: ";
-				string street;
-				getline(cin, street);
-				cout << "=> Number of the door: ";
-				int number;
-				cin >> number;
-				cin.ignore();
-				cout << "=> Postal Code: ";
-				string code;
-				getline(cin, code);
-				cout << "=> Contact number: ";
-				long phoneNumber;
-				cin >> phoneNumber;
-				cin.ignore();
-				(*it)->setCity(city);
-				(*it)->setStreet(street);
-				(*it)->setNumber(number);
-				(*it)->setPostalCode(code);
-				(*it)->setCellphoneNum(phoneNumber);
-				pool.insertInactive((*it));
-			}
-			cout << endl << endl;
-			i++;
-		}
-		cout << "All inactive customers were updated!\n\n";
-		pool.writeCustomers();
-		return CONTINUE;
-
+				<< promo.getDiscount() << endl;
 	} catch (NoCurrentCampaign &e) {
-		cout
-				<< "\nNo campaign is currently running, so  there's no need to update inactive customers' address.\n";
+		cout << "\nNo campaign is currently running, so  there's no need to update inactive customers' address.\n";
 		return CONTINUE;
 	}
+	cout << "\nList of the current inactive Customers:\n\n";
+	hashCustomer tab = pool.getInactiveCustomer();
+	hashCustomer::const_iterator it = tab.begin();
+	int i = 1;
+	for (; it != tab.end(); it++) {
+		cout << i << " - " << (*it)->getName() << " : " << (*it)->getStreet()
+				<< ", " << (*it)->getNumber() << ", " << (*it)->getPostalCode()
+				<< ", " << (*it)->getCity() << ", " << (*it)->getCellphoneNum()
+				<< endl;
+		int answer;
+		getInputInt(answer, 0, 1,
+				"Do you want to update the customer's address?\n\n---------   ----------\n|0 -> No|   |1 -> Yes|\n---------   ----------\n");
+		if (answer == 1)
+		{
+			pool.eraseInactive((*it));
+			cout << "=> City: ";
+			string city;
+			getline(cin, city);
+			cout << "=> Street: ";
+			string street;
+			getline(cin, street);
+			int number;
+			getInputInt(number,0,999,"=> Number of the door");
+			cout << "=> Postal Code: ";
+			string code;
+			getline(cin, code);
+			cout << "=> Contact number: ";
+			long phoneNumber;
+			cin >> phoneNumber;
+			cin.ignore();
+			(*it)->setCity(city);
+			(*it)->setStreet(street);
+			(*it)->setNumber(number);
+			(*it)->setPostalCode(code);
+			(*it)->setCellphoneNum(phoneNumber);
+			pool.insertInactive((*it));
+		}
+		cout << endl << endl;
+		i++;
+	}
+	cout << "All inactive customers were updated!\n\n";
+	pool.writeCustomers();
+	return CONTINUE;
+
+
 }
 
 AddCampaign::AddCampaign(Pool & pool) :
@@ -1318,6 +1321,10 @@ AddCampaign::AddCampaign(Pool & pool) :
 MenuResult AddCampaign::handle() {
 	Date startDate = getInputDate("Insert the start date (DD/MM/YYYY)");
 	Date endDate = getInputDate("Insert the end date (DD/MM/YYYY)");
+	if (endDate - startDate < 0) {
+		cout << "\nInvalid dates.\n";
+		return CONTINUE;
+	}
 	double discount;
 	getInputDouble(discount, 0, 1,
 			"Insert the Promotional Campaign discount value");

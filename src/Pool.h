@@ -140,7 +140,7 @@ public:
 	 * @param modality
 	 * @return
 	 */
-	bool haveModality(Modality modality);
+	bool hasModality(Modality modality);
 	/**
 	 * Operador de menor para a lista de prioridade. A piscina é "maior" se a distância a nossa for menor (em caso de empate, é usada a ordem alfabética).
 	 * @param oP2
@@ -189,7 +189,7 @@ public:
 	 * @param modality
 	 * @return
 	 */
-	bool haveModality(Modality modality);
+	bool hasModality(Modality modality);
 	/**
 	 * Operador de menor. E menor a piscina mais distante. Piscinas a mesma distancia sao comparadas pelo seu nome
 	 * @param oP2

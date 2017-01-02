@@ -20,6 +20,14 @@ public:
 	void printError();
 };
 
+class InvalidInputDouble {
+	double answer;
+	double min, max;
+public:
+	InvalidInputDouble(double answer, double min, double max);
+	void printError();
+};
+
 /**
  *  INVALID INPUT DATE */
 

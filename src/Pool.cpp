@@ -66,7 +66,7 @@ vector<Modality> OtherPool::getModalityLessons() const {
 	return modalityLessons;
 }
 
-bool OtherPool::haveModality(Modality modality) {
+bool OtherPool::hasModality(Modality modality) {
 	for (const Modality &x : modalityLessons) {
 		if (x == modality) {
 			return true;
@@ -83,7 +83,9 @@ bool OtherPool::operator<(OtherPool & oP2) const {
 }
 
 void OtherPool::addModality(Modality modality) {
-	modalityLessons.push_back(modality);
+	if (!hasModality(modality)) {
+		modalityLessons.push_back(modality);
+	}
 }
 
 /*
@@ -110,8 +112,8 @@ void ptrOtherPool::addModality(Modality modality) {
 	ptr->addModality(modality);
 }
 
-bool ptrOtherPool::haveModality(Modality modality) {
-	return ptr->haveModality(modality);
+bool ptrOtherPool::hasModality(Modality modality) {
+	return ptr->hasModality(modality);
 }
 
 bool ptrOtherPool::operator<(ptrOtherPool oP2) const {
@@ -939,7 +941,7 @@ ptrOtherPool Pool::getNextPool(Modality modality) {
 	ptrOtherPool oP = queue.top();
 	while (!queue.empty()) {
 		oP = queue.top();
-		if (oP.haveModality(modality)) {
+		if (oP.hasModality(modality)) {
 			return oP;
 		}
 		queue.pop();

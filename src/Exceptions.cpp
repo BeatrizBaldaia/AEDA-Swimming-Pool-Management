@@ -134,3 +134,11 @@ void NoModality::printError() {
 	cout << endl << "There's no Pool nearby that gives lessons of " << modality
 			<< endl << endl;
 }
+
+InvalidInputDouble::InvalidInputDouble(double answer, double min, double max) : answer(answer), min(min), max(max){
+}
+
+void InvalidInputDouble::printError() {
+	cout << endl << "Invalid input. Insert a double in the range [" << min
+					<< ", " << max << "]." << endl;
+}
